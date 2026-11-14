@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="410" viewBox="0 0 1280 410" role="img" aria-label="Implemented audio-to-message data flow">
+<title>Implemented audio-to-message data flow</title>
+<style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
+<rect width="1280" height="410" rx="24" fill="#FFFFFF"/>
+<defs><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5L0 7Z" fill="#2563EB"/></marker></defs>
+<text x="40" y="51" font-size="28" fill="#111827" font-weight="600" text-anchor="start" >From a press to a message</text>
+<text x="40" y="83" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Audio is decoded and transcribed on your Mac. Final text goes to the selected Codex thread.</text>
+<rect x="339" y="116" width="602" height="194" rx="12" fill="#F8FAFC" stroke="#D1D5DB" stroke-dasharray="6 5"/>
+<text x="359" y="139" font-size="11" fill="#6B7280" font-weight="600" text-anchor="start" letter-spacing="2">ON YOUR MAC</text>
+<path d="M288 229L352 229" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="320.0" y="215" font-size="13" fill="#6B7280" font-weight="400" text-anchor="middle" >BLE</text>
+<path d="M608 229L672 229" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="640.0" y="215" font-size="13" fill="#6B7280" font-weight="400" text-anchor="middle" >PCM</text>
+<path d="M928 229L992 229" fill="none" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="960.0" y="215" font-size="13" fill="#6B7280" font-weight="400" text-anchor="middle" >final text</text>
+<rect x="40" y="155" width="240" height="136" rx="8" fill="#EFF6FF" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="255" y="181" font-size="12" fill="#6B7280" font-weight="500" text-anchor="end" class="mono">01</text>
+<rect x="62" y="175" width="29" height="37" rx="14" fill="#2563EB"/>
+<path d="M75 181V203" stroke="white" stroke-width="3" stroke-linecap="round"/>
+<text x="62" y="244" font-size="23" fill="#111827" font-weight="600" text-anchor="start" >D3200</text>
+<text x="62" y="270" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Press to start / stop</text>
+<rect x="360" y="155" width="240" height="136" rx="8" fill="#F0FDFA" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="575" y="181" font-size="12" fill="#6B7280" font-weight="500" text-anchor="end" class="mono">02</text>
+<path d="M383 195V201M391 184V212M399 178V218M407 188V207M415 195V201" stroke="#0F766E" stroke-width="3" stroke-linecap="round"/>
+<text x="382" y="244" font-size="23" fill="#111827" font-weight="600" text-anchor="start" >Decode</text>
+<text x="382" y="270" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Encrypted Opus to audio</text>
+<rect x="680" y="155" width="240" height="136" rx="8" fill="#F0FDF4" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="895" y="181" font-size="12" fill="#6B7280" font-weight="500" text-anchor="end" class="mono">03</text>
+<rect x="702" y="181" width="35" height="4" rx="2" fill="#16A34A"/>
+<rect x="702" y="193" width="44" height="4" rx="2" fill="#16A34A"/>
+<rect x="702" y="205" width="27" height="4" rx="2" fill="#16A34A"/>
+<text x="702" y="244" font-size="23" fill="#111827" font-weight="600" text-anchor="start" >Local ASR</text>
+<text x="702" y="270" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Whisper + live preview</text>
+<rect x="1000" y="155" width="240" height="136" rx="8" fill="#FAF5FF" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="1215" y="181" font-size="12" fill="#6B7280" font-weight="500" text-anchor="end" class="mono">04</text>
+<rect x="1020" y="176" width="49" height="37" rx="6" fill="#111827"/>
+<path d="M1031 186L1040 194L1031 202M1044 202H1056" fill="none" stroke="#D8B4FE" stroke-width="2.6" stroke-linecap="round"/>
+<text x="1022" y="244" font-size="23" fill="#111827" font-weight="600" text-anchor="start" >Codex queue</text>
+<text x="1022" y="270" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Explicit thread ID</text>
+<line x1="40" y1="338" x2="1240" y2="338" stroke="#E5E7EB"/>
+<text x="40" y="372" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >The recorder retains its own audio.</text>
+<text x="1240" y="372" font-size="14" fill="#6B7280" font-weight="400" text-anchor="end" >Queued does not always mean processing immediately.</text>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>dev.codex.anker-voice-bridge</string>
+    <key>CFBundleName</key>
+    <string>安克豆语音桥</string>
+    <key>CFBundleExecutable</key>
+    <string>anker-voice-bridge</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>通过蓝牙连接安克 AI 录音豆，转发你主动开启的实时语音。</string>
+</dict>
+</plist>

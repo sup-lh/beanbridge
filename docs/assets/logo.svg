@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="BeanBridge logo: a bean and an audio waveform">
+<title>BeanBridge logo: a bean and an audio waveform</title>
+<style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
+<g transform="translate(0 0) scale(1.0)">
+<rect width="256" height="256" rx="62" fill="#12372D"/>
+<path d="M141 39C102 25 58 49 43 85C27 124 41 169 74 194C100 214 133 215 155 195C177 175 159 151 169 132C178 115 205 114 210 91C215 67 181 51 141 39Z" fill="#C6F38A"/>
+<path d="M139 56C100 74 96 105 116 130C133 153 128 178 104 190" fill="none" stroke="#12372D" stroke-width="15" stroke-linecap="round"/>
+<path d="M174 156V175M194 143V186M214 157V173" fill="none" stroke="#C6F38A" stroke-width="10" stroke-linecap="round"/>
+</g>
+</svg>
