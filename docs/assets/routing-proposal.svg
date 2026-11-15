@@ -21,7 +21,7 @@
 <text x="62" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Show the destination in the panel.</text>
 <text x="62" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Send only to the captured target.</text>
 <text x="62" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Changing tabs does not redirect audio.</text>
-<text x="220" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Needs a trusted UI-state source</text>
+<text x="220" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Copy-link verified manually; automation pending</text>
 <rect x="460" y="260" width="360" height="236" rx="8" fill="#EFF6FF" stroke="#D1D5DB" stroke-width="1.5"/>
 <text x="482" y="292" font-size="14" fill="#6B7280" font-weight="500" text-anchor="start" class="mono">B</text>
 <text x="482" y="330" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >Codex is not running</text>

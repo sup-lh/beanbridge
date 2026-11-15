@@ -147,7 +147,7 @@ def routing():
     for x in [220,640,1060]:
         lines.append(f'<path d="M{x} 217V253" fill="none" stroke="#2563EB" stroke-width="1.8" marker-end="url(#arrow)"/>')
     content = [
-      (40,"A","A reliable thread is known","Pin that exact thread ID",["Show the destination in the panel.","Send only to the captured target.","Changing tabs does not redirect audio."],"#F0FDF4","Needs a trusted UI-state source"),
+      (40,"A","A reliable thread is known","Pin that exact thread ID",["Show the destination in the panel.","Send only to the captured target.","Changing tabs does not redirect audio."],"#F0FDF4","Copy-link verified manually; automation pending"),
       (460,"B","Codex is not running","Launch, then create",["Use a configured workspace.","Wait for creation acknowledgement.","Open and submit to the returned ID."],"#EFF6FF","Creation APIs exist; UI handoff untested"),
       (880,"C","No clear destination","Show a destination picker",["Keep the transcript pending.","Choose an existing or new thread.","Do not guess the last active thread."],"#FFF7ED","Safe fallback when state is ambiguous")
     ]

@@ -70,7 +70,7 @@ brew install ffmpeg whisper.cpp
 python3 scripts/set-target.py
 ```
 
-脚本使用该会话提供的 `CODEX_THREAD_ID`，通过只读 `thread/read` 验证后才保存。普通终端不一定有这个环境变量，可以显式指定：
+脚本使用该会话提供的 `CODEX_THREAD_ID`，通过只读 `thread/read` 验证后才保存。也可以在目标聊天窗口按 **⌘⌥L**，从复制的 `codex://threads/<UUID>` 中取得 ID。普通终端不一定有环境变量，可以显式指定：
 
 ```bash
 python3 scripts/set-target.py --thread-id "替换为目标会话的 UUID"
@@ -139,7 +139,7 @@ swift build -c release --product anker-voice-bridge
 
 | 场景 | 计划中的行为 | 当前结论 |
 |---|---|---|
-| Codex 显示明确的对话 | 首次按键时锁定该对话，第二次按键提交 | **缺少已验证的前台对话来源**；会话列表不代表选中状态 |
+| Codex 显示明确的对话 | 首次按键时锁定该对话，第二次按键提交 | **官方复制链接命令已通过 A/B 对话手动测试**；后台触发与焦点一致性待验证 |
 | Codex 未运行 | 启动应用，在配置的工作目录创建新对话并发送 | 启动与建会话有接口，完整桌面交付链路还需验证 |
 | Codex 在运行但目标不明确 | 弹出选择器，允许选择或新建 | 可实现；尚未加入当前版本 |
 
