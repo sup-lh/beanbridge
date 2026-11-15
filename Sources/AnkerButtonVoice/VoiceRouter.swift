@@ -6,6 +6,11 @@ struct RouteResult: Sendable {
     let target: VoiceTarget?
     let reason: String?
     var createNew: Bool = false
+
+    func applyingUserMark(_ marked: Bool) -> RouteResult {
+        guard marked else { return self }
+        return RouteResult(target: nil, reason: "录音中轻敲已确认，发往独立新会话", createNew: true)
+    }
 }
 private struct CreationReceipt: Decodable {
     let target: VoiceTarget?

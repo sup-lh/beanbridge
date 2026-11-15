@@ -5,6 +5,7 @@
 import Foundation
 
 public struct Transfer {
+    public let userMarked: Bool
     public let fileId: UInt32
     public let audio: [UInt8]       // 解密后的裸 Opus 帧串
     public let head: FileHead?
@@ -52,6 +53,8 @@ final class TransferState {
     var newFileAt: Date?
     /// 每个新帧（解密后）到达时在 BLE 队列上回调
     var onFrame: ((UInt32, [UInt8]) -> Void)?
+    var onUserMark: (() -> Void)?
+    var userMarked = false
 
     init(fileId: UInt32) { self.fileId = fileId }
     var bytes: Int { chunks.count * OggOpus.frameSize }
@@ -127,7 +130,13 @@ public final class D3200Session {
                 if isNew { st.arrivals[s.seq] = now }
                 st.slices += 1
                 let plain: [UInt8]
-                if let d = st.decryptor, let p = try? d.decrypt(seq: s.seq, data: s.data) { plain = p } else { plain = s.data }
+                if let d = st.decryptor, let p = try? d.decrypt(seq: s.seq, data: s.data) {
+                    plain = p
+                    if s.isUserMark, !st.userMarked {
+                        st.userMarked = true
+                        st.onUserMark?()
+                    }
+                } else { plain = s.data }
                 st.chunks[s.seq] = plain
                 if isNew, st.decryptor != nil { st.onFrame?(s.seq, plain) }
             }
@@ -142,7 +151,7 @@ public final class D3200Session {
         let seqs = st.chunks.keys.sorted()
         let audio = seqs.flatMap { st.chunks[$0]! }
         let missing = seqs.isEmpty ? 0 : Int(seqs.last! - seqs.first!) + 1 - seqs.count
-        return Transfer(fileId: st.fileId, audio: audio, head: st.head, decrypted: st.decryptor != nil,
+        return Transfer(userMarked: st.userMarked, fileId: st.fileId, audio: audio, head: st.head, decrypted: st.decryptor != nil,
                         decryptError: st.decryptError, slices: st.slices, firstSeq: seqs.first,
                         lastSeq: seqs.last, missingSeqs: missing, gotDone: st.done,
                         seconds: Date().timeIntervalSince(started),
@@ -326,9 +335,10 @@ extension D3200Session {
     }
 
     /// 对正在录的文件开实时流。`onFrame` 在 BLE 队列上收到每个解密后的 Opus 帧。
-    public func startRealtime(fileId: UInt32, onFrame: @escaping (UInt32, [UInt8]) -> Void) throws -> RealtimeStream {
+    public func startRealtime(fileId: UInt32, onUserMark: (() -> Void)? = nil, onFrame: @escaping (UInt32, [UInt8]) -> Void) throws -> RealtimeStream {
         let st = TransferState(fileId: fileId)
         st.onFrame = onFrame
+        st.onUserMark = onUserMark
         let stream = RealtimeStream(fileId: fileId, state: st, session: self)
         link.sync { installTransfer(st) }
         try link.send(Cmd.transferFile(id: fileId, realtime: true))

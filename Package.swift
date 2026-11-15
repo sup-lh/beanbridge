@@ -11,6 +11,11 @@ let package = Package(
     targets: [
         .target(name: "OpenBeanKit"),
         .target(name: "VoiceRouting"),
+        .executableTarget(name: "AnkerEventProbe", dependencies: ["OpenBeanKit"],
+            linkerSettings: [.unsafeFlags([
+                "-Xlinker", "-sectcreate", "-Xlinker", "__TEXT",
+                "-Xlinker", "__info_plist", "-Xlinker", "Support/Info.plist"
+            ])]),
         .executableTarget(
             name: "AnkerVoiceBridge",
             dependencies: ["OpenBeanKit"],

@@ -211,7 +211,7 @@ private final class ButtonCoordinator: @unchecked Sendable {
     private let submissions = DispatchQueue(label: "anker.button.submissions")
     private var link: Link?
     private var session: D3200Session?
-    private var active: (stream: RealtimeStream, energy: Energy, preview: LivePreview, route: Task<RouteResult, Never>, token: UUID)?
+    private var active: (stream: RealtimeStream, energy: Energy, preview: LivePreview, route: Task<RouteResult, Never>, token: UUID, marked: Bool)?
 
     init(panel: VoicePanel, router: VoiceRouter, dryRun: Bool) {
         self.panel = panel; self.router = router; self.dryRun = dryRun
@@ -276,15 +276,21 @@ private final class ButtonCoordinator: @unchecked Sendable {
                 let decoder = try OpusDecoder()
                 let energy = Energy()
                 let preview = LivePreview(panel: panel)
-                let stream = try session.startRealtime(fileId: fileID) { sequence, frame in
+                let stream = try session.startRealtime(fileId: fileID, onUserMark: { [weak self] in
+                    self?.events.async { [weak self] in
+                        guard let self, self.active?.token == token else { return }
+                        self.active?.marked = true
+                        self.panel.setTarget("轻敲已确认 · 结束后发往新会话")
+                    }
+                }) { sequence, frame in
                     if let decoded = try? decoder.decode(frame) { energy.add(decoded) }
                     preview.append(sequence: sequence, frame: frame)
                 }
-                active = (stream, energy, preview, route, token)
+                active = (stream, energy, preview, route, token, false)
                 Task {
                     let result = await route.value
                     self.events.async {
-                        guard self.active?.token == token else { return }
+                        guard self.active?.token == token, self.active?.marked == false else { return }
                         self.panel.setTarget(result.createNew ? "录音结束后新建独立对话" : (result.target?.title ?? "待选择（不会自动发送）"))
                     }
                 }
@@ -309,8 +315,10 @@ private final class ButtonCoordinator: @unchecked Sendable {
             panel.show("正在生成最终文字…", "\(dryRun ? "本轮只测试识别。" : "完成后放入指定对话的队列。")")
             processing = true
             let audio = transfer.audio
+            let userMarked = transfer.userMarked
             Task {
-                let destination = await current.route.value
+                let initialDestination = await current.route.value
+                let destination = initialDestination.applyingUserMark(userMarked)
                 submissions.async { [weak self] in
                     guard let self else { return }
                     self.transcribeAndSubmit(audio, destination: destination)

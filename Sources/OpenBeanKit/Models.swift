@@ -133,15 +133,22 @@ public struct FileHead {
 }
 
 /// 1A/08、1A/12 切片：从第 9 字节起，每单元 `seq u32 | flags u8 | 160 字节数据 | 1 字节填充`。
-public struct Slice { public let seq: UInt32; public let data: [UInt8] }
+public struct Slice {
+    public let seq: UInt32
+    public let data: [UInt8]
+    public let flags: UInt8
+    /// D3200 04.92: observed on tap/vibration, absent in no-tap control recordings.
+    public var isUserMark: Bool { flags & 0x01 != 0 }
+}
 
 public func parseSlices(frame r: [UInt8]) -> [Slice] {
     var out: [Slice] = []
     var i = 9
     while r.count - i >= 165 {
         let seq = readU32(r, i)
+        let flags = r[i + 4]
         i += 5
-        out.append(Slice(seq: seq, data: Array(r[i..<(i + 160)])))
+        out.append(Slice(seq: seq, data: Array(r[i..<(i + 160)]), flags: flags))
         i += 160
         if i < r.count { i += 1 }
     }
