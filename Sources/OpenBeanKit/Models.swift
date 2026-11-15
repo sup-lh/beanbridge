@@ -113,7 +113,7 @@ public struct FileListPage {
 }
 
 /// 1A/07 文件头（加密时 ≥ 97 字节整帧）。
-public struct FileHead {
+public struct FileHead: Sendable {
     public let fileId: UInt32
     public let size: UInt32
     public let nonce: [UInt8]           // 16

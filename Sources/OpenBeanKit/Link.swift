@@ -61,6 +61,15 @@ public final class Link: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     public var onDisconnect: (() -> Void)?
     public var verbose = false
     public private(set) var rxBytes = 0
+    public private(set) var lastConnectedPeripheralID: UUID?
+
+    public var isConnected: Bool {
+        q.sync { established && peripheral?.state == .connected }
+    }
+
+    public var currentPeripheralID: UUID? {
+        q.sync { peripheral?.identifier ?? lastConnectedPeripheralID }
+    }
 
     public override init() {
         super.init()
@@ -162,7 +171,10 @@ public final class Link: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     private func finishConnect(_ r: Result<Void, Error>) {
         guard let c = connecting else { return }
         connecting = nil
-        if case .success = r { established = true }
+        if case .success = r {
+            established = true
+            lastConnectedPeripheralID = peripheral?.identifier
+        }
         c.resume(with: r)
     }
 
@@ -314,8 +326,42 @@ public final class Link: NSObject, CBCentralManagerDelegate, CBPeripheralDelegat
     /// 在 BLE 队列上执行一段代码（给 onPacket 回调之外的状态读写用）。
     public func sync<T>(_ body: () throws -> T) rethrows -> T { try q.sync(execute: body) }
 
+    /// 取消所有悬挂中的 request/wait/connect 等待器（用于断线或系统休眠清理）。
+    public func cancelPendingWaiters(error: Error = LinkError.disconnected) {
+        q.sync {
+            if let c = connecting {
+                connecting = nil
+                c.resume(throwing: error)
+            }
+            let w = waiters
+            waiters = []
+            w.forEach { $0.cont.resume(throwing: error) }
+        }
+    }
+
+    /// 系统即将休眠时清理扫描、悬挂等待器并断开活动连接，不触发意外掉线回调。
+    public func prepareForSleep() {
+        q.sync {
+            central.stopScan()
+            established = false
+            if let c = connecting {
+                connecting = nil
+                c.resume(throwing: LinkError.disconnected)
+            }
+            let w = waiters
+            waiters = []
+            w.forEach { $0.cont.resume(throwing: LinkError.disconnected) }
+            if let p = peripheral {
+                central.cancelPeripheralConnection(p)
+            }
+        }
+    }
+
     public func disconnect() {
-        q.sync { if let p = peripheral { central.cancelPeripheralConnection(p) } }
+        q.sync {
+            established = false
+            if let p = peripheral { central.cancelPeripheralConnection(p) }
+        }
     }
 
     private func log(_ s: String) {

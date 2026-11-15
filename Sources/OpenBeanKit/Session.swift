@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct Transfer {
+public struct Transfer: Sendable {
     public let userMarked: Bool
     public let fileId: UInt32
     public let audio: [UInt8]       // 解密后的裸 Opus 帧串
@@ -60,15 +60,52 @@ final class TransferState {
     var bytes: Int { chunks.count * OggOpus.frameSize }
 }
 
-public final class D3200Session {
+public final class D3200Session: @unchecked Sendable {
     public let link: Link
     public let crypto = SessionCrypto()
+    private let statusLock = NSLock()
+    private var _status = DeviceStatus()
+    public var onStatusChange: ((DeviceStatus) -> Void)?
+
+    public var status: DeviceStatus {
+        statusLock.lock()
+        defer { statusLock.unlock() }
+        return _status
+    }
 
     public init(link: Link) { self.link = link }
 
+    @discardableResult
+    public func applyDeviceInfo(_ info: DeviceInfo, at now: Date = Date()) -> DeviceStatus {
+        let updated: DeviceStatus = {
+            statusLock.lock()
+            defer { statusLock.unlock() }
+            _status.apply(info, at: now)
+            return _status
+        }()
+        onStatusChange?(updated)
+        return updated
+    }
+
+    @discardableResult
+    public func applyDeviceEvent(_ event: DeviceEvent, at now: Date = Date()) -> DeviceStatus {
+        let updated: DeviceStatus = {
+            statusLock.lock()
+            defer { statusLock.unlock() }
+            _status.apply(event, at: now)
+            return _status
+        }()
+        onStatusChange?(updated)
+        return updated
+    }
+
     public func deviceInfo() async throws -> DeviceInfo? {
         let p = try await link.request(Cmd.getDeviceInfo(), label: "设备信息") { $0.type == 0x01 && $0.id == 0x01 }
-        return DeviceInfo(frame: p.raw)
+        let info = DeviceInfo(frame: p.raw)
+        if let info {
+            applyDeviceInfo(info)
+        }
+        return info
     }
 
     public func syncTime() async throws {
@@ -248,7 +285,7 @@ public final class D3200Session {
 
 // MARK: - 设备事件与实时流（给常驻应用用）
 
-public enum DeviceEvent: Sendable {
+public enum DeviceEvent: Sendable, Equatable {
     /// 开始录音（含按录音豆按键）。`fileId` 是新录音文件
     case recordingStarted(fileId: UInt32)
     /// 停止录音（含按键）
@@ -299,9 +336,15 @@ public final class RealtimeStream: @unchecked Sendable {
 }
 
 extension D3200Session {
-    /// 订阅设备事件（回调在 BLE 队列上）
+    /// 订阅设备事件（回调在 BLE 队列上），同时自动更新 `status` 并触发 `onStatusChange`
     public func observeEvents(_ handler: @escaping (DeviceEvent) -> Void) {
-        link.sync { link.onEvent = { p in if let e = DeviceEvent(packet: p) { handler(e) } } }
+        link.sync {
+            link.onEvent = { [weak self] p in
+                guard let e = DeviceEvent(packet: p) else { return }
+                self?.applyDeviceEvent(e)
+                handler(e)
+            }
+        }
     }
 
     public func startRecording() async throws {

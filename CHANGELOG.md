@@ -1,5 +1,46 @@
 # 更新记录
 
+## 0.5.1 — 2026-11-16
+
+### 应用内 ASR 模型管理与下载中心、DoubaoWork 真机联调修复与 Paseo 适配器支持
+
+- **新增应用内 ASR 模型管理与下载中心（`OpenBeanKit` + `AnkerButtonVoice`）**：
+  - 将模型规格（`base` / `small-q5_1` / `small` / `medium`）与 `ASRModelManager` 抽离到 [ASRModelCatalog.swift](Sources/OpenBeanKit/ASRModelCatalog.swift)，新增 `ASRModelDownloadManager`：支持 `Hugging Face 官方源` 与 `HF 镜像源 (hf-mirror.com)`（保留 `BEANBRIDGE_MODEL_BASE_URL` 覆盖）、平滑速度与剩余时间估算、隐藏 `.part` 临时文件写入、后台分块流式 SHA-256 校验与原子替换（目录 `0o700`、模型 `0o600`），校验失败或取消时自动清理残留文件。
+  - 新增原生面板 [ASRModelManagerWindow.swift](Sources/AnkerButtonVoice/ASRModelManagerWindow.swift)（菜单栏 `ASR 模型管理与下载…` 或工作台 `ASR 模型与下载` 入口），支持下载、取消、删除、手动切换当前模型、改为自动优选、后台校验本地模型 SHA-256、打开 `Models` 目录与复制 CLI 命令；关闭窗口后下载继续在后台进行，工作台状态栏与菜单栏下拉菜单动态显示实时进度。
+  - 新增 6 项离线单测（[ASRModelCatalogTests.swift](Tests/OpenBeanKitTests/ASRModelCatalogTests.swift)），并已在本机新版应用内实测下载及校验 `ggml-small.bin`（465 MB）。
+- **DoubaoWork (`com.work.pc.doubao`) 真机联调与单窗口唤醒修复**：
+  - 在 [CurrentChat.swift](Sources/VoiceRouting/CurrentChat.swift)、[AppTargetAdapter.swift](Sources/VoiceRouting/AppTargetAdapter.swift) 与 [scripts/doubao-chat.py](scripts/doubao-chat.py) 中识别 `chrome://doubaowork-chat/chat` / `doubaowork://doubaowork-chat/chat` 为 `doubaowork-active`；修复冷启动或新建会话向 `open -b com.work.pc.doubao` 传入 `doubaowork://` 导致额外弹出 Chrome 外框 `DoubaoWork Browser.app` 的问题；放宽冷启动等待预算，并将临时诊断快照写入收敛至 `BEANBRIDGE_DOUBAO_DIAG=1`。
+  - 修复 `@MainActor` 下 `CurrentChat.isDoubaoPlaceholderOrEmpty` 隔离修饰与长度守卫（过滤豆包自带 25 字空框提示 `"发消息或创建任务... / 使用技能 @ 添加资料"`），同时保留真实用户草稿防覆盖拦截，并在 `safeURLPreview` 加入 `paseo://`；`DoubaoWork.app` 实机探测、单窗口拉起与投递已通过本机联调验收。
+- **新增 Paseo 目标适配器（`VoiceRouting` + `scripts`）**：
+  - 实现 [PaseoTargetAdapter.swift](Sources/VoiceRouting/PaseoTargetAdapter.swift) 并注册到 `AppTargetRegistry`（`codex` / `doubao` / `paseo` 可随时在菜单栏、浮窗、工作台切换），支持 `paseo://h/<serverId>/agent/<id>`、`paseo://app/h/<serverId>/agent/<id>`、`paseo://agent/<id>` 与 `https://app.paseo.sh/h/<serverId>/agent/<id>` 链接解析及防穿越校验。
+  - 在 [CurrentChat.swift](Sources/VoiceRouting/CurrentChat.swift) 实现 `inspectPaseoTarget` 与工作区解析：识别 `/h/<serverId>/workspace/<workspaceId>` 与 `/w/<workspaceId>`，在未产出标签树时激活 `AXManualAccessibility` 与 `AXEnhancedUserInterface` 并做 100ms 间隔双次一致性采样；优先校验 `workspace-tab-agent_*` / `workspace-tab-draft*`，当 macOS Chromium 未暴露 DOM ID 或 `AXSelected=1` 时回退到提取已选中无障碍标签及窗口标题（Paseo 同步写入 `kAXTitleAttribute` 的聚焦窗格活动标签名）并经 `resolve-workspace-tab` 向 Paseo 守护进程精确匹配唯一非归档对话（`"新建 Agent"` / `"New Agent"` / `"New tab"` 等草稿与空白标签触发自动建新会话），同名重复、多对话分屏、加载中或非对话标签均严格 fail-closed 不猜目标。
+  - 新增 [scripts/paseo-chat.py](scripts/paseo-chat.py) 与 [scripts/paseo-daemon-helper.mjs](scripts/paseo-daemon-helper.mjs)：支持 `validate`（`paseo inspect --json` 只读校验）、`resolve-workspace-tab`（工作区选中标签消歧与空白标签识别）、`create`（通过 Paseo 内置 Electron Node 运行时调用本地 daemon 幂等创建无初始 prompt 的空闲会话并写入 `0o600` 凭据），以及 `submit`（`paseo send --no-wait --json --behavior steer --prompt-file` 投递语音文字）。
+- **测试、全屏兼容与构建脚本更新**：
+  - 在 [CurrentChat.swift](Sources/VoiceRouting/CurrentChat.swift) 增加 `isAuxiliaryWindowMetadata` / `resolveSingleConversationWindow`，过滤 macOS 全屏最大化/状态栏顶部条（如高 `33px` 工具条与非 `AXStandardWindow` 浮层）干扰，确保 Paseo / 豆包 / Codex 全屏最大化时仍可正常锁定单一主会话窗口。
+  - 新增 [PaseoRoutingTests.swift](Tests/VoiceRoutingTests/PaseoRoutingTests.swift) 与 [scripts/test-paseo-chat.py](scripts/test-paseo-chat.py)，更新 [build-button-app.sh](build-button-app.sh) 与 [scripts/verify-release.sh](scripts/verify-release.sh)。
+
+## 0.5.0 — 2026-11-15
+
+### 核心演进（多应用路由、高精度 ASR 与随身工作台）
+
+- **可插拔多目标应用路由与豆包支持（`VoiceRouting`）**：
+  - 将原先绑定 Codex 的上下文路由重构为 `AppTargetAdapter` 协议与 `AppTargetRegistry`、`TargetAppPreferenceStore`（`support/target-app` `0o700`/`0o600` 原子持久化，支持 `BEANBRIDGE_TARGET_APP` 覆盖）。
+  - 保留并迁移 `CodexTargetAdapter`，新增 `DoubaoTargetAdapter` 与无侵入式脚本桥接 `scripts/doubao-chat.py`（支持 `doubao://chat/<id>`、`doubaowork://chat/<id>` 与 `https://www.doubao.com/chat/<id>` 解析、严格字符/防穿越校验与排他创建/投递回执），并打包进 `build-button-app.sh`。
+  - 前台窗口一致性锁定、条件式剪贴板恢复、空白页自动新建、录音中轻敲（`04.92` `userMarked` bit 0）改发独立新会话及 `PendingStore` 先落盘后幂等投递防重发机制现已在各适配器间通用复用。
+- **本地 ASR 准确率提升、热词与预览开销优化（`AnkerButtonVoice`）**：
+  - 新增 [ASRService.swift](Sources/AnkerButtonVoice/ASRService.swift)：实现 `ASRModelManager`（按 `BEANBRIDGE_MODEL` > `support/model-preference` > 本地高精度自动优选 `medium > small > small-q5_1 > base` > 默认 `ggml-base.bin` 解析）、`HotwordManager`（读写 `support/hotwords.txt` 生成去重 `--prompt`）、与 `AudioResampler`（内存中将 48kHz Opus 解码输出降采样为 16kHz PCM16 WAV）。
+  - 更新 `scripts/setup-model.sh` 支持 `--tier base|small|small-q5_1|medium` 与 `--set-default` 校验下载。
+  - 重构 `LivePreview`：取消每次实时预览启动 `ffmpeg` 子进程，改为内存态解码与滑动能量增量触发 `whisper-cli`。
+- **菜单栏常驻、取消录音与灵感收集箱工作台（`AnkerButtonVoice`）**：
+  - 引入 `NSStatusItem` 菜单栏常驻与可隐藏 `VoicePanel` 浮窗、默认目标选择器、BLE 重连/休眠/电量/录音实时状态展示、录音中“取消本条”功能。
+  - 新增 [WorkbenchPanel.swift](Sources/AnkerButtonVoice/WorkbenchPanel.swift)，整合离机增量同步、VAD 分段检索、试听回放、复制、一键发往目标、热词表编辑、模型切换与待发箱入口。
+- **BLE 后台重连与离机增量同步工作台底座（`OpenBeanKit`）**：
+  - 新增 [ReconnectCoordinator.swift](Sources/OpenBeanKit/ReconnectCoordinator.swift)：实现指数退避后台自动重连、`NSWorkspace` 睡眠挂起（保留 `.sleeping` 状态不误判重连）与唤醒恢复、电量/充电状态监听；为 `Transfer` 等补全 `Sendable` 兼容。
+  - 新增 [WorkbenchSync.swift](Sources/OpenBeanKit/WorkbenchSync.swift)：实现 `SyncManifestStore` 幂等断点清单、`OfflineSyncCoordinator` 离机增量拉取、`AudioVADslicer` 能量切片及 `WorkbenchArchive` 带毫秒时间戳全文索引检索，并保持实时 Opus 解密与 `04.92` bit 0 分片标记回归兼容。
+- **验证与文档边界**：
+  - 新增并更新 Swift 单元测试（全包 5 个测试套共 36 项全绿）及 Python 单元测试（`test-create-chat.py` + `test-doubao-chat.py` 共 9 项全绿）、发布自检脚本 [scripts/verify-release.sh](scripts/verify-release.sh)（含 `release` 全量构建、App 资源校验、本地 `jfk.wav --self-test` 及只读 `--probe-target`）。
+  - 豆包真机按键发送、D3200 全天休眠重连稳定性与海量离机录音积压同步尚待实体硬件实测。
+
 ## 0.4.0 — 2026-11-15
 
 - 录音中轻敲触发设备震动后，将本段改发独立新会话；重复轻敲不会重复建聊。
