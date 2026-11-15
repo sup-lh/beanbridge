@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="540" viewBox="0 0 1280 540" role="img" aria-label="macOS desktop surfaces tour in v0.5.1">
+<title>macOS desktop surfaces tour in v0.5.1</title>
+<style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
+<rect width="1280" height="540" rx="24" fill="#F8FAFC"/>
+<text x="40" y="48" font-size="28" fill="#111827" font-weight="600" text-anchor="start" >Native macOS Desktop Surfaces (AppKit)</text>
+<text x="40" y="78" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Menu bar daemon + Floating HUD, Workbench with VAD replay, and In-App ASR Model Manager.</text>
+<rect x="40" y="106" width="360" height="36" rx="8" fill="#1E293B"/>
+<text x="58" y="129" font-size="12" fill="#94A3B8" font-weight="500" text-anchor="start" >macOS Menu Bar</text>
+<rect x="206" y="112" width="182" height="24" rx="6" fill="#334155"/>
+<circle cx="223" cy="124" r="4.5" fill="#C6F38A"/>
+<text x="236" y="128" font-size="12" fill="#F8FAFC" font-weight="600" text-anchor="start" >Anker Bean · 92%</text>
+<rect x="40" y="154" width="360" height="342" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+<path d="M40 166Q40 154 52 154H388Q400 154 400 166V186H40Z" fill="#F3F4F6"/>
+<line x1="40" y1="186" x2="400" y2="186" stroke="#E2E8F0"/>
+<circle cx="58" cy="170" r="4.5" fill="#EF4444"/>
+<circle cx="72" cy="170" r="4.5" fill="#F59E0B"/>
+<circle cx="86" cy="170" r="4.5" fill="#10B981"/>
+<text x="220.0" y="174" font-size="12" fill="#334155" font-weight="600" text-anchor="middle" >Anker Voice HUD (Floating Panel)</text>
+<text x="60" y="212" font-size="16" fill="#111827" font-weight="600" text-anchor="start" >Recording · D3200 Ready</text>
+<text x="60" y="232" font-size="11.5" fill="#64748B" font-weight="400" text-anchor="start" >BLE: Connected · Small (465MB) · 92%</text>
+<rect x="60" y="246" width="136" height="24" rx="5" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="72" y="262" font-size="12" fill="#0F172A" font-weight="500" text-anchor="start" >Target: Paseo ▾</text>
+<rect x="204" y="246" width="176" height="24" rx="5" fill="#ECFDF5" stroke="#A7F3D0"/>
+<text x="214" y="262" font-size="11" fill="#065F46" font-weight="500" text-anchor="start" >Locked · Foreground Single</text>
+<rect x="60" y="282" width="320" height="140" rx="8" fill="#F8FAFC" stroke="#E2E8F0"/>
+<text x="74" y="306" font-size="12" fill="#12372D" font-weight="600" text-anchor="start" >Locked Chat: BeanBridge Workspace</text>
+<text x="74" y="332" font-size="11.5" fill="#64748B" font-weight="400" text-anchor="start" >Live ASR Preview (in-memory):</text>
+<text x="74" y="356" font-size="13" fill="#0F172A" font-weight="500" text-anchor="start" >&quot;Start optimizing the bilingual</text>
+<text x="74" y="376" font-size="13" fill="#0F172A" font-weight="500" text-anchor="start" >README with diagrams...&quot;</text>
+<text x="74" y="406" font-size="11" fill="#7C3AED" font-weight="400" text-anchor="start" >Tip: Tap device to fork a new chat</text>
+<rect x="60" y="442" width="56" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="88.0" y="460" font-size="11" fill="#1E293B" font-weight="600" text-anchor="middle" >Probe</text>
+<rect x="121" y="442" width="64" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="153.0" y="460" font-size="11" fill="#1E293B" font-weight="600" text-anchor="middle" >Pending</text>
+<rect x="190" y="442" width="82" height="28" rx="6" fill="#12372D" stroke="#CBD5E1"/>
+<text x="231.0" y="460" font-size="11" fill="#C6F38A" font-weight="600" text-anchor="middle" >Workbench</text>
+<rect x="277" y="442" width="38" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="296.0" y="460" font-size="11" fill="#1E293B" font-weight="600" text-anchor="middle" >AX</text>
+<rect x="320" y="442" width="60" height="28" rx="6" fill="#FEE2E2" stroke="#CBD5E1"/>
+<text x="350.0" y="460" font-size="11" fill="#991B1B" font-weight="600" text-anchor="middle" >Cancel</text>
+<rect x="420" y="106" width="440" height="390" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+<path d="M420 118Q420 106 432 106H848Q860 106 860 118V138H420Z" fill="#F3F4F6"/>
+<line x1="420" y1="138" x2="860" y2="138" stroke="#E2E8F0"/>
+<circle cx="438" cy="122" r="4.5" fill="#EF4444"/>
+<circle cx="452" cy="122" r="4.5" fill="#F59E0B"/>
+<circle cx="466" cy="122" r="4.5" fill="#10B981"/>
+<text x="640.0" y="126" font-size="12" fill="#334155" font-weight="600" text-anchor="middle" >BeanBridge Workbench · Inbox &amp; Replay</text>
+<rect x="438" y="150" width="166" height="24" rx="6" fill="#E2E8F0"/>
+<rect x="440" y="152" width="52" height="20" rx="5" fill="#FFFFFF"/>
+<text x="466" y="166" font-size="11" fill="#0F172A" font-weight="600" text-anchor="middle" >All</text>
+<text x="520" y="166" font-size="11" fill="#475569" font-weight="500" text-anchor="middle" >Inbox</text>
+<text x="574" y="166" font-size="11" fill="#475569" font-weight="500" text-anchor="middle" >Replay</text>
+<rect x="612" y="150" width="118" height="24" rx="6" fill="#F8FAFC" stroke="#CBD5E1"/>
+<text x="622" y="166" font-size="11" fill="#94A3B8" font-weight="400" text-anchor="start" >Search keywords...</text>
+<rect x="738" y="150" width="104" height="24" rx="6" fill="#12372D"/>
+<text x="790" y="166" font-size="11" fill="#C6F38A" font-weight="600" text-anchor="middle" >Sync Device</text>
+<text x="438" y="196" font-size="11" fill="#64748B" font-weight="400" text-anchor="start" >ASR: Small · Hotwords ready</text>
+<rect x="640" y="182" width="64" height="20" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="672" y="196" font-size="10.5" fill="#334155" font-weight="500" text-anchor="middle" >Pending</text>
+<rect x="708" y="182" width="64" height="20" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="740" y="196" font-size="10.5" fill="#334155" font-weight="500" text-anchor="middle" >Hotwords</text>
+<rect x="776" y="182" width="64" height="20" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="808" y="196" font-size="10.5" fill="#334155" font-weight="500" text-anchor="middle" >Models</text>
+<rect x="438" y="212" width="404" height="122" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+<rect x="438" y="212" width="404" height="24" rx="6" fill="#F8FAFC"/>
+<text x="448" y="228" font-size="10.5" fill="#64748B" font-weight="600" text-anchor="start" >Tag</text>
+<text x="494" y="228" font-size="10.5" fill="#64748B" font-weight="600" text-anchor="start" >Time</text>
+<text x="574" y="228" font-size="10.5" fill="#64748B" font-weight="600" text-anchor="start" >Range</text>
+<text x="654" y="228" font-size="10.5" fill="#64748B" font-weight="600" text-anchor="start" >Segment Excerpt</text>
+<rect x="440" y="238" width="400" height="28" rx="4" fill="#EFF6FF"/>
+<text x="448" y="256" font-size="11" fill="#1D4ED8" font-weight="600" text-anchor="start" >Inbox</text>
+<text x="494" y="256" font-size="11" fill="#334155" font-weight="400" text-anchor="start" >11-16 01:46</text>
+<text x="574" y="256" font-size="10.5" fill="#64748B" font-weight="400" text-anchor="start" class="mono">00:01-00:05</text>
+<text x="654" y="256" font-size="11" fill="#0F172A" font-weight="400" text-anchor="start" >Commit and push verified docs.</text>
+<text x="448" y="286" font-size="11" fill="#475569" font-weight="600" text-anchor="start" >Replay</text>
+<text x="494" y="286" font-size="11" fill="#334155" font-weight="400" text-anchor="start" >11-16 01:41</text>
+<text x="574" y="286" font-size="10.5" fill="#64748B" font-weight="400" text-anchor="start" class="mono">00:02-00:08</text>
+<text x="654" y="286" font-size="11" fill="#0F172A" font-weight="400" text-anchor="start" >Live Paseo workspace routing.</text>
+<text x="448" y="316" font-size="11" fill="#475569" font-weight="600" text-anchor="start" >Inbox</text>
+<text x="494" y="316" font-size="11" fill="#334155" font-weight="400" text-anchor="start" >11-16 01:28</text>
+<text x="574" y="316" font-size="10.5" fill="#64748B" font-weight="400" text-anchor="start" class="mono">00:00-00:14</text>
+<text x="654" y="316" font-size="11" fill="#0F172A" font-weight="400" text-anchor="start" >DoubaoWork single window fix.</text>
+<rect x="438" y="344" width="404" height="82" rx="6" fill="#F8FAFC" stroke="#E2E8F0"/>
+<text x="450" y="366" font-size="11" fill="#64748B" font-weight="400" text-anchor="start" >Editable Segment Transcript:</text>
+<text x="450" y="390" font-size="13" fill="#0F172A" font-weight="500" text-anchor="start" >Commit and push the verified docs.</text>
+<text x="450" y="412" font-size="11" fill="#64748B" font-weight="400" text-anchor="start" >Audio sliced by VAD · Archived under Workbench/audio</text>
+<rect x="438" y="444" width="58" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="467.0" y="462" font-size="10.5" fill="#1E293B" font-weight="600" text-anchor="middle" >Play</text>
+<rect x="502" y="444" width="58" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="531.0" y="462" font-size="10.5" fill="#1E293B" font-weight="600" text-anchor="middle" >Copy</text>
+<rect x="566" y="444" width="74" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="603.0" y="462" font-size="10.5" fill="#1E293B" font-weight="600" text-anchor="middle" >Move Tag</text>
+<rect x="646" y="444" width="128" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="710.0" y="462" font-size="10.5" fill="#1E293B" font-weight="600" text-anchor="middle" >Codex/Doubao/Paseo ▾</text>
+<rect x="780" y="444" width="62" height="28" rx="6" fill="#2563EB" stroke="#CBD5E1"/>
+<text x="811.0" y="462" font-size="10.5" fill="#FFFFFF" font-weight="600" text-anchor="middle" >Send</text>
+<rect x="880" y="106" width="360" height="390" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+<path d="M880 118Q880 106 892 106H1228Q1240 106 1240 118V138H880Z" fill="#F3F4F6"/>
+<line x1="880" y1="138" x2="1240" y2="138" stroke="#E2E8F0"/>
+<circle cx="898" cy="122" r="4.5" fill="#EF4444"/>
+<circle cx="912" cy="122" r="4.5" fill="#F59E0B"/>
+<circle cx="926" cy="122" r="4.5" fill="#10B981"/>
+<text x="1060.0" y="126" font-size="12" fill="#334155" font-weight="600" text-anchor="middle" >ASR Model Manager &amp; Download Center</text>
+<text x="900" y="158" font-size="12.5" fill="#0F172A" font-weight="600" text-anchor="start" >Active: Small (465MB) · Auto-selected</text>
+<rect x="900" y="170" width="160" height="22" rx="5" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="910" y="185" font-size="11" fill="#334155" font-weight="400" text-anchor="start" >Source: HF Official ▾</text>
+<rect x="1068" y="170" width="152" height="22" rx="5" fill="#ECFDF5" stroke="#A7F3D0"/>
+<text x="1144" y="185" font-size="11" fill="#065F46" font-weight="600" text-anchor="middle" >SHA-256 Verified</text>
+<rect x="900" y="204" width="320" height="50" rx="8" fill="#F0FDF4" stroke="#CBD5E1"/>
+<text x="914" y="224" font-size="12" fill="#0F172A" font-weight="600" text-anchor="start" >Small · Recommended (~465MB)</text>
+<text x="914" y="242" font-size="11" fill="#15803D" font-weight="500" text-anchor="start" >Active</text>
+<rect x="900" y="262" width="320" height="50" rx="8" fill="#EFF6FF" stroke="#CBD5E1"/>
+<text x="914" y="282" font-size="12" fill="#0F172A" font-weight="600" text-anchor="start" >Small-Q5_1 (~181MB)</text>
+<text x="914" y="300" font-size="11" fill="#1D4ED8" font-weight="500" text-anchor="start" >Downloading 68% · 14.2 MB/s</text>
+<rect x="1104" y="292" width="102" height="6" rx="3" fill="#DBEAFE"/>
+<rect x="1104" y="292" width="69" height="6" rx="3" fill="#2563EB"/>
+<rect x="900" y="320" width="320" height="50" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="914" y="340" font-size="12" fill="#0F172A" font-weight="600" text-anchor="start" >Medium · Flagship (~1.43GB)</text>
+<text x="914" y="358" font-size="11" fill="#475569" font-weight="500" text-anchor="start" >Download Model</text>
+<rect x="900" y="378" width="320" height="50" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="914" y="398" font-size="12" fill="#0F172A" font-weight="600" text-anchor="start" >Base · Fast (~141MB)</text>
+<text x="914" y="416" font-size="11" fill="#475569" font-weight="500" text-anchor="start" >Installed · Switch</text>
+<rect x="900" y="444" width="154" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="977" y="462" font-size="11" fill="#1E293B" font-weight="600" text-anchor="middle" >Verify All SHA-256</text>
+<rect x="1066" y="444" width="154" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+<text x="1143" y="462" font-size="11" fill="#1E293B" font-weight="600" text-anchor="middle" >Open Models/</text>
+</svg>

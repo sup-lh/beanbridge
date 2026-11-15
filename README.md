@@ -1,177 +1,378 @@
+<a id="top"></a>
+
 <p align="center">
   <img src="docs/assets/banner.svg" alt="BeanBridge — Press. Speak. Send." width="100%" />
 </p>
 
 <h1 align="center">豆桥 · BeanBridge</h1>
 
-<p align="center">给 Codex、豆包等桌面 AI 客户端接上一颗随身语音按钮与工作台。</p>
-<p align="center"><b>按一下说话 · 看浮窗预览 · 再按一下投递</b></p>
+<p align="center">把 soundcore Work / 安克 AI 录音豆（D3200）接入 Mac，变成 <b>Codex · 豆包 · Paseo</b> 的随身语音输入按键与灵感工作台。</p>
+
+<p align="center"><b>按一下说话 · 内存实时预览 · 轻敲改发新聊 · 再按安全投递</b></p>
+
 <p align="center">
+  <b>简体中文</b> · <a href="README.en.md">English</a>
+</p>
+
+<p align="center">
+  <code>macOS 14+</code> ·
+  <code>Swift 5.10</code> ·
+  <code>whisper.cpp</code> ·
+  <code>Targets: Codex | Doubao | Paseo</code> ·
+  <code>Tests: 49 Swift + 16 Python</code> ·
+  <code>Apache-2.0</code>
+</p>
+
+<p align="center">
+  <a href="#整体架构与数据流">架构图解</a> ·
+  <a href="#桌面端界面导览">界面导览</a> ·
+  <a href="#支持的目标应用与接线向导">客户端接线向导</a> ·
   <a href="#快速开始">快速开始</a> ·
-  <a href="docs/field-notes.md">完整实验记录</a> ·
-  <a href="docs/context-routing.md">自动选对话方案</a> ·
-  <a href="docs/product-ideas.md">产品设想</a> ·
-  <a href="docs/brand.md">视觉物料</a>
+  <a href="#按键交互与蓝牙状态机">交互与状态机</a> ·
+  <a href="#工作台与模型下载中心">工作台与模型</a> ·
+  <a href="#常见问题交互排查-faq">交互排查 FAQ</a> ·
+  <a href="#验证状态与已知边界">验证状态</a>
 </p>
 
 ---
 
-BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 Mac，在本机完成高精度语音识别，并把最终文字路由投递到指定目标应用（目前已支持 **Codex**、**豆包 Doubao** 与 **Paseo** 适配器，可通过 `AppTargetAdapter` 扩展更多桌面应用）。同时提供菜单栏常驻、BLE 断线自动重连与睡眠唤醒恢复、离机录音增量同步、VAD 分段与灵感收集箱工作台面板。
+**BeanBridge** 通过低功耗蓝牙（BLE）常驻连接安克 D3200 录音豆：在 macOS 本机完成实时 Opus 解密、纯内存降采样与 `whisper.cpp` 高精度转写，结合 macOS 辅助功能（Accessibility）与应用适配器，把最终文字安全投递到当前锁定的 AI 对话中；同时提供**菜单栏常驻守护**、**应用内 ASR 模型下载中心**、**BLE 断线自动重连 / 睡眠恢复**，以及集成了**离机增量同步、VAD 语音分段与检索回放**的桌面工作台。
 
-**实测边界说明**：Codex 前台锁定、关闭后冷启动建聊、录音中轻敲（`04.92` `userMarked`）改发新会话及 BlackHole 音频桥均已在真机 D3200 实体按键上端到端验证通过；**豆包工作版 `DoubaoWork.app`**（目标探测、单窗口唤醒与空框占位符发送）、**应用内 ASR 模型管理与下载中心**（已在本机实测下载并校验 `ggml-small.bin` 465 MB），以及 **Paseo 最大化工作区窗口目标锁定与真机实体按键端到端送达当前会话**均已完成真实桌面端验收；Paseo 草稿/空白页自动新建会话、BLE 自动重连/休眠恢复、离机增量同步与灵感收集箱工作台面板已通过全量 Swift/Python 单元测试（49 项 Swift + 16 项 Python）、`release` 构建与本地自检脚本验证，**尚未完成 Paseo 草稿页建聊/轻敲新会话及 D3200 全天睡眠/离线积压实机测试**。
+## 核心特性一览
 
-## 两种使用方式
+- **可插拔多应用路由（Codex / 豆包 / Paseo）**：通过 `AppTargetAdapter` 与 `AppTargetRegistry` 统一管理目标协议，可在菜单栏、浮窗或工作台随时切换默认目标应用，并支持扩展新客户端。
+- **首次按键锁定与 fail-closed 防错发**：开始录音时冻结当前前台单一对话窗口；录音途中切标签或切应用不会串发；遇多窗口、分屏冲突、重名标签、失焦或未授权，一律保留在本地 **Pending 待发箱（`0o600`）** 拒绝盲猜；随时支持录音中**「取消本条」**。
+- **高精度本地识别与可视下载中心**：支持 4 档 `whisper.cpp` GGML 模型（`base` / `small-q5_1` / `small` / `medium`），应用内可选 **Hugging Face 官方源 / HF 镜像源 (`hf-mirror.com`)** 后台下载、流式 SHA-256 校验，并支持 `hotwords.txt` 热词注入与零 `ffmpeg` 纯内存实时预览。
+- **蓝牙常驻弹性与离机工作台**：`NSStatusItem` 菜单栏常驻（关闭浮窗不断连）；`ReconnectCoordinator` 实现 `1s`～`30s` 指数退避与系统休眠 `.sleeping` 防抖；`WorkbenchPanel` 打通离机增量拉取、能量 VAD 自动切片、多词检索、分段试听与一键转发。
 
-| | 按键语音工作台 · 推荐 | 虚拟麦克风桥 |
-|---|---|---|
-| 开始 | 按一次录音豆 | 启动脚本，由程序开始录音 |
-| 说话 | 浮窗无 `ffmpeg` 内存降采样实时预览（支持“取消本条”） | 在应用内点麦克风输入 |
-| 结束 | 再按一次，本地高精度转写并自动排队投递（或轻敲改发新会话） | 终端按 Control-C |
-| 识别 | `whisper.cpp` 本地完成（支持 `base`/`small-q5_1`/`small`/`medium` 与 `hotwords.txt` 热词） | 由使用麦克风的应用处理 |
-| 发送目标 | 首次按键时读取并锁定的前台目标对话（Codex / 豆包等可切换） | 当前由你操作的输入框 |
-| 额外依赖 | `whisper.cpp` 与本地模型（默认 `ggml-base.bin` 约 141 MiB） | BlackHole 2ch |
+## 整体架构与数据流
 
-![当前按键语音的数据流](docs/assets/flow.svg)
+<p align="center">
+  <img src="docs/assets/flow.svg" alt="BeanBridge 端到端数据流：D3200 BLE -> 内存解密与局部降采样 -> Whisper ASR -> 多应用安全路由" width="100%" />
+</p>
 
-音频在本机转写，**最终文字会进入所选目标应用**（Codex / 豆包等），并按你使用的账号与模型配置处理。录音豆仍会保存自己的录音，除通过工作台面板增量同步到本地归档外，恢复手机连接后也可能同步到飞书。
-
-## 验证状态
-
-- [x] **真机实体按键实测**：D3200 蓝牙发现、握手、实时音频解码与 BlackHole 麦克风桥。
-- [x] **真机实体按键实测**：实体按键开始/结束、浮窗预览、Codex 前台会话锁定/切页防串、冷启动建聊、录音中轻敲（`04.92` `flags=01` bit 0）改发新会话并真实收到回复；Paseo 最大化工作区窗口当前会话识别、按键录音投递并真实送达当前对话。
-- [x] **桌面端与 UI 实测**：`DoubaoWork.app` 目标探测、单窗口冷启动/轻敲唤醒及空框占位符投递已本机验证；应用内「ASR 语音识别模型管理与下载中心」已完成 `ggml-small.bin` 实机下载、进度追踪与 SHA-256 校验切换。
-- [x] **单元测试与本地脚本验证**：`AppTargetAdapter` 多目标抽象、豆包适配器与 Paseo 适配器（`PaseoTargetAdapter` / `scripts/paseo-chat.py` + `scripts/paseo-daemon-helper.mjs`）、`TargetAppPreferenceStore`、`ASRModelCatalog` 多源下载/校验状态机与热词、无 `ffmpeg` 内存重采样 `LivePreview`、`NSStatusItem` 菜单栏与 `WorkbenchPanel` 工作台、以及 `ReconnectCoordinator` / `WorkbenchSync` 均通过编译与自动测试（49 项 Swift + 16 项 Python；Paseo 空白/草稿页自动建聊、轻敲新会话及全天睡眠稳定性待实测）。
-
-> **每段录音的目标在首次按键时锁定。** 浮窗显示目标标题，录音中切换对话不会改目标。读取失败时文字保存在本地待发箱，绝不使用旧的固定目标。第二次按键会自动提交最终识别文字，预览和最终结果可能有差异。
-
-## 快速开始
-
-### 1. 准备环境
-
-实测环境：Apple 芯片、macOS 26.6.2、Xcode 26.2、Codex CLI 0.167.0、whisper.cpp 1.9.5。Swift 包声明最低 macOS 14，但更早系统和 Intel Mac 尚未实测。
-
-需要 Xcode / Swift 开发工具、Python 3、已登录的 Codex，以及以下程序：
-
-```bash
-gh repo clone sup-lh/beanbridge
-cd beanbridge
-brew install whisper.cpp   # 可选同时安装 ffmpeg（当前仅用于特定离线容器导出回退，实时预览已无需 ffmpeg）
-./scripts/setup-model.sh --tier small-q5_1 --set-default   # 不加参数默认下载 ggml-base.bin
-```
-
-模型安装脚本（以及应用内置下载中心）会逐块核对 SHA-256（支持 `base` / `small-q5_1` / `small` / `medium`，或环境变量 `MODEL_TIER`）；若已有正确模型会直接复用。也可在菜单栏「ASR 模型管理与下载…」或工作台右上角「ASR 模型与下载」中直接选择 **Hugging Face 官方源** 或 **HF 镜像源 (hf-mirror.com)** 下载并查看实时进度条、速度与剩余时间（关闭窗口会在后台继续，完成后自动校验切换），偏好写入 `~/Library/Application Support/AnkerVoiceBridge/model-preference`；同一窗口或工作台也可编辑热词表 `~/Library/Application Support/AnkerVoiceBridge/hotwords.txt`（默认预置“安克豆”“BeanBridge”“Codex”“豆包”“Doubao”“飞书”等术语）。它不会安装 BlackHole，按键模式也不需要 BlackHole。
-
-### 2. 选择路由方式与目标应用
-
-默认使用 `current` 模式，默认目标为 `codex`（可在菜单栏、浮窗或工作台选择器切换为 `doubao` 豆包或 `paseo` Paseo，偏好存于 `~/Library/Application Support/AnkerVoiceBridge/target-app`，环境变量 `BEANBRIDGE_TARGET_APP` 可覆盖；豆包可选用 `BEANBRIDGE_DOUBAO_BUNDLE_ID`、Paseo 可选用 `BEANBRIDGE_PASEO_BUNDLE_ID` / `BEANBRIDGE_PASEO_PROVIDER` 覆盖），无需预先绑定。打开目标应用（Codex、豆包或 Paseo）的对话窗口，并保持它在前台。Codex / 豆包网页路由在第一次按键时通过 **⌘⌥L** 或窗口 URL 状态采集目标，Paseo 通过 Auxiliary Accessibility 读取 `AXWebArea` URL 与当前激活的工作区标签（`workspace-tab-agent_*`），核对一致后锁定目标。
-
-首次使用，在浮窗点击「辅助功能授权」，然后在「系统设置 → 隐私与安全性 → 辅助功能」中允许「安克豆按键语音」。点击「检测目标」后有 3 秒切回目标应用，检测仅显示目标，不发送消息。
-
-目标应用不在前台、存在多个窗口或分屏歧义、未取得新链接或缺少权限时，继续接收录音，最终文字进入「待发箱」。可以在待发箱粘贴明确的聊天链接后发送（支持 `codex://threads/<id>`、`doubao://chat/<id>`、`doubaowork://chat/<id>`、`https://www.doubao.com/chat/<id>`、`paseo://h/<serverId>/agent/<id>`、`paseo://agent/<id>`、`https://app.paseo.sh/h/<serverId>/agent/<id>` 等）；不会读取旧剪贴板猜目标。
-
-若要继续使用原来的固定目标模式：
-
-```bash
-python3 scripts/set-target.py --thread-id "替换为目标会话的 UUID"
-printf 'fixed\n' > "$HOME/Library/Application Support/AnkerVoiceBridge/routing-mode"
-```
-
-删除 `routing-mode` 文件或将内容改为 `current` 即恢复自动模式。固定目标保存在同目录的 `target-thread`；`set-target.py --check` 仅验证，`--json` 返回校验结果，均不改配置。
-
-### 3. 构建并连接
-
-```bash
-./build-button-app.sh
-open "dist/安克豆按键语音.app"
-```
-
-在 iPhone「设置 → 蓝牙」暂时关闭蓝牙，或以其他方式确保手机飞书没有占用录音豆连接。将录音豆放到 Mac 附近，确认它当前没有在录音。保留原有设备绑定即可。
-
-首次运行需要蓝牙权限。如果没有自动弹窗，可在「系统设置 → 隐私与安全性 → 蓝牙」添加 `安克豆按键语音.app`，授权后退出并重新打开。
-
-### 4. 按一下，说话，再按一下
-
-| 步骤 | 你做什么 | 浮窗表现 |
-|---|---|---|
-| 就绪 | 等待连接成功 | 准备就绪，按一下录音豆 |
-| 开始 | 将 Codex 对话置前，短按一次，等目标标题出现再切换页面 | 正在录音，显示锁定目标和识别预览 |
-| 结束 | 再短按一次 | 正在生成最终文字 |
-| 提交 | 无需再点发送 | 已放入 Codex 队列 |
-
-Codex 忙时消息可能等待当前回合结束。**“已放入队列”表示入队成功，不保证模型立即开始处理。** 最终应以目标对话实际出现消息为准。
-
-需要把本条发给新会话时，在录音中轻敲机身直到设备震动，确认浮窗显示“轻敲已确认”，再按键结束。重复轻敲不会重复建聊；空白页或关闭目标应用时仍只创建一条会话。轻敲不继承当前会话历史，每段录音重新决定目标。录音进行中若不想继续发送，可点击浮窗或菜单栏的「取消本条」，立即停用预览并丢弃本段内容（后续设备停止事件将静默忽略）。
-
-应用以菜单栏图标（`NSStatusItem`）常驻后台，关闭浮窗仅会隐藏窗口而不断开 BLE 监听；若需彻底关闭可从菜单栏退出。结束硬件测试前建议先用实体键停止录音，再退出应用或恢复手机蓝牙。
-
-可在菜单栏或浮窗打开「工作台（灵感收集箱与分段回放）」，执行离机录音增量同步、关键词/分类分段检索、分段试听播放、复制文本、一键转发给当前目标或新建独立会话，以及管理热词与 ASR 模型偏好。
+> [!IMPORTANT]
+> **不可变锁定铁律**：每段语音的目标在**首次按下硬件键**时就已经决定并展示在浮窗中。录音途中手动切换桌面对话不会改投；如果开启了工作区多栏或出现重名标题，系统宁可把文字存入 `Pending/` 待发箱等待人工确认，也绝不猜最近活跃对话。
 
 <details>
-<summary><b>只测试识别，不自动发送</b></summary>
+<summary><b>展开查看：多应用安全路由决策图（Path A～D 完整分支）</b></summary>
 
-关闭应用后运行：
-
-```bash
-touch "$HOME/Library/Application Support/AnkerVoiceBridge/dry-run"
-open "dist/安克豆按键语音.app"
-```
-
-恢复自动发送：关闭应用，删除上述 `dry-run` 标记，再打开应用。
+<p align="center">
+  <img src="docs/assets/multi-app-routing.svg" alt="BeanBridge 多应用安全路由与歧义消解架构图" width="100%" />
+</p>
 
 </details>
 
 <details>
-<summary><b>使用 BlackHole 虚拟麦克风</b></summary>
+<summary><b>展开查看：常驻守护、模型下载中心与离机工作台流水线图</b></summary>
 
-这条路径适合继续使用 Codex 自带的麦克风输入。先安装 [BlackHole 2ch](https://github.com/ExistentialAudio/BlackHole)，按安装器要求重启。仓库不附带其安装包。
+<p align="center">
+  <img src="docs/assets/workbench-pipeline.svg" alt="BLE 自动重连、ASR 下载中心与灵感工作台流水线图" width="100%" />
+</p>
+
+</details>
+
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
+
+## 桌面端界面导览
+
+BeanBridge 以纯原生 AppKit 构建，包含菜单栏常驻入口与三块协同窗口（关闭浮窗不退出蓝牙后台监听）：
+
+<p align="center">
+  <img src="docs/assets/ui-tour.svg" alt="BeanBridge 桌面端三界面示意图：菜单栏浮窗、工作台面板与 ASR 下载中心" width="100%" />
+</p>
+
+<details>
+<summary><b>点击展开：各窗口功能区与菜单栏快捷键全览</b></summary>
+
+| 界面 / 快捷键 | 核心操作与说明 |
+|---|---|
+| **菜单栏图标（`NSStatusItem`）** | 实时显示状态与电量（`🎙️ 安克豆 92%` / `🔴 安克豆·录音中` / `🔄 重连#2` / `🌙 安克豆·休眠`）、当前识别模型与后台下载进度 |
+| <kbd>⌘</kbd>+<kbd>V</kbd> **语音浮窗（`安克豆语音`）** | 切换默认目标应用、实时预览识别文本、查看当前锁定会话、触发「检测目标（3 秒切换）」「辅助功能授权」「取消本条」 |
+| <kbd>⌘</kbd>+<kbd>B</kbd> **安克豆工作台（`WorkbenchPanel`）** | 一键「增量同步离机录音」、按「全部 / 灵感收集箱 / 工作回放」过滤、空格分词搜索、VAD 片段试听回放、编辑并一键发往目标或新建会话 |
+| <kbd>⌘</kbd>+<kbd>P</kbd> **待发箱（`Pending`）** | 查看因未聚焦、多窗口、歧义或超时保留的语音文字；支持粘贴显式对话链接后补发，或直接新建独立会话发送 |
+| **ASR 模型管理与下载中心** | 从菜单栏或工作台进入；支持 `HF 官方源` / `hf-mirror.com` 切换、多层级实时速度与 ETA 进度、关闭窗口后台续传、本地批量 SHA-256 校验 |
+| **常用捷径** | <kbd>⌘</kbd>+<kbd>R</kbd> 立即重新连接录音豆 · <kbd>⌘</kbd>+<kbd>Q</kbd> 彻底退出程序 |
+
+</details>
+
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
+
+## 支持的目标应用与接线向导
+
+| `appID` | 支持客户端（Bundle ID） | 前台锁定机制 | 新建会话与投递机制 | 实测边界 |
+|---|---|---|---|---|
+| `codex` | **Codex** (`com.openai.codex`) | 触发 `⌘⌥L` 复制深层链接并做双次一致性校验 + `thread/read` 只读核验 | 独立项目目录 `Chats/<id>` 建聊，通过 `codex queue --thread` 入队 | **D3200 实体按键全链路已实测通过** |
+| `doubao` | **豆包 / DoubaoWork** (`com.work.pc.doubao` / `com.bot.pc.doubao` / `com.bytedance.doubao`) | 读取文档/窗口 URL，映射工作版 `chrome://doubaowork-chat/chat`，过滤自带 25 字空框占位提示并保护真实草稿 | `scripts/doubao-chat.py` 排他建聊回执 + 单窗口唤醒与焦点提交 | **真实 `DoubaoWork.app` 桌面端探测、单窗口唤醒与空框提交已实测通过** |
+| `paseo` | **Paseo** (`sh.paseo.desktop`) | 直读 `/agent/<id>` URL；工作区 `/workspace/<id>` 开启 `AXEnhancedUserInterface` 并结合 `kAXTitleAttribute` 与 `resolve-workspace-tab` 向 Daemon 消歧 | `scripts/paseo-chat.py` + `paseo-daemon-helper.mjs` 幂等建聊、`paseo send --behavior steer` 投递 | **最大化工作区按键发送至当前对话已实测通过**；草稿页自动建聊与轻敲新会话待测 |
+
+<details>
+<summary><b>选择你的客户端接线路径（点击展开 Codex / DoubaoWork / Paseo 细则）</b></summary>
+
+#### 1. 接入 Codex Desktop
+- 确保已登录桌面版 Codex（支持内置 `CodexCLI.app` 或 `PATH` 中的 `codex`；可用 `BEANBRIDGE_CODEX` 指定路径）。
+- 首次使用时保留默认 `⌘⌥L` 快捷键（若修改了快捷键字母，可用 `BEANBRIDGE_COPY_KEYCODE` 指定 macOS 虚拟键码，默认 `37` 即 `L`）。
+- 录音时把单个 Codex 对话窗口留在前台即可自动锁定；若 Codex 关闭或停在新建空白页，录音结束后会自动生成干净的独立会话并唤起桌面端。
+
+#### 2. 接入豆包 / DoubaoWork（`com.work.pc.doubao` 等）
+- 支持豆包普通版、工作版 `DoubaoWork.app` 及字节版 Bundle ID（可通过 `BEANBRIDGE_DOUBAO_BUNDLE_ID` 逗号分隔覆盖优先级）。
+- 已内置对 `DoubaoWork` 25 字空框占位提示（`"发消息或创建任务... / 使用技能 @ 添加资料"`）的识别过滤：视觉为空即可直接发送；若你手动在框里写了真实草稿，仍会安全拦截防覆盖。
+- 如需接入自定义外部提交脚本，可设置 `BEANBRIDGE_DOUBAO_BRIDGE_CMD`；若需关闭内置 Accessibility 提交，可设 `BEANBRIDGE_DOUBAO_AX_SUBMIT=0`。
+
+#### 3. 接入 Paseo（`sh.paseo.desktop`）
+- 支持独立会话页 URL（`paseo://h/<serverId>/agent/<id>` / `https://app.paseo.sh/h/<serverId>/agent/<id>`）以及工作区路由（`/h/<serverId>/workspace/<workspaceId>`）。
+- 最大化/全屏工作区环境下，BeanBridge 会自动过滤顶部状态栏等辅助浮层，并读取 `kAXTitleAttribute` 当前激活窗格标题，通过 `resolve-workspace-tab` 校验是否为工作区内唯一非归档会话。
+- **防盲猜拦截规则**：遇到「新建 Agent」/「New tab」等草稿页会在录音后自动新建独立对话；若当前工作区存在多个同名对话、加载中标题或分屏冲突，系统会拒绝盲猜并转入待发箱。
+- 可选环境变量：`BEANBRIDGE_PASEO_PROVIDER`、`BEANBRIDGE_PASEO_WORKSPACE_ID`、`BEANBRIDGE_PASEO_CWD`、`BEANBRIDGE_PASEO_CLI`。
+
+</details>
+
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
+
+## 快速开始
+
+### 第 1 步：准备环境与克隆仓库
+
+```bash
+git clone https://github.com/sup-lh/beanbridge.git
+cd beanbridge
+brew install whisper.cpp
+```
+
+> 主测环境为 Apple Silicon、macOS 26.6.2、Xcode 26.2 / Swift 5.10、`whisper.cpp` 1.9.5（最低声明支持 macOS 14+）。实时预览已在内存中完成 48kHz→16kHz 降采样，常规使用不再要求安装 `ffmpeg`。
+
+### 第 2 步：安装本地语音模型（二选一）
+
+- **方式 A（推荐，应用内可视化下载）**：直接跳过本步进入第 3 步打开应用，点击菜单栏 **「ASR 模型管理与下载…」** 或工作台 **「ASR 模型与下载」**，选择 **Hugging Face 官方源** 或 **HF 镜像源 (`hf-mirror.com`)** 下载即可。
+- **方式 B（终端命令预安装）**：
+
+```bash
+./scripts/setup-model.sh --tier small-q5_1 --set-default
+# 不加参数默认安装轻量 ggml-base.bin；可选层级：base | small-q5_1 | small | medium
+```
+
+<details>
+<summary><b>展开查看：4 档 Whisper GGML 模型规格与解析优先级</b></summary>
+
+| 层级 (`tier`) | 文件名 | 近似体积 | 适用场景 |
+|---|---|---|---|
+| `base` | `ggml-base.bin` | ~141 MiB | 启动与预览最快，作为基础兼容兜底模型 |
+| `small-q5_1` | `ggml-small-q5_1.bin` | ~181 MiB | 量化高精度中英混说，速度与准确率均衡 |
+| `small` | `ggml-small.bin` | ~465 MiB | **主力推荐**，中文与中英混说表现稳健 |
+| `medium` | `ggml-medium.bin` | ~1.43 GiB | 旗舰精度，适合密集专有名词，磁盘与耗时较高 |
+
+解析顺序：`BEANBRIDGE_MODEL` 环境变量 ＞ `support/model-preference` ＞ 自动优选本地最高档模型（`medium > small > small-q5_1 > base`）＞ 回退 `Models/ggml-base.bin`。
+
+</details>
+
+### 第 3 步：构建打包、授予蓝牙与辅助功能权限
+
+```bash
+./build-button-app.sh
+open "dist/安克豆按键语音.app"
+# 也可直接双击仓库根目录的「启动按键语音.command」完成构建并启动
+```
+
+1. **释放手机占用**：先暂时关闭 iPhone 蓝牙（或确保手机飞书未占连 D3200），把录音豆放在 Mac 附近且处于非录音状态。
+2. **授予蓝牙与辅助功能权限**：
+   - 允许**蓝牙**权限（可在「系统设置 → 隐私与安全性 → 蓝牙」查看）。
+   - 在浮窗点 **「辅助功能授权」**，到「系统设置 → 隐私与安全性 → 辅助功能」勾选 **安克豆按键语音**。
+
+> [!TIP]
+> **重新打包后检测无权限？** 本应用使用本机临时签名（`codesign --sign -`），每次运行 `./build-button-app.sh` 重签都会使旧授权失效。执行下面命令清除旧签名记录后重新勾选一次即可：
+> ```bash
+> tccutil reset Accessibility dev.codex.anker-button-voice
+> ```
+
+### 第 4 步：切换目标并按豆使用
+
+1. 在浮窗下拉框、菜单栏 **「默认目标应用」** 或工作台中选定 `Codex`、`豆包` 或 `Paseo`。
+2. 可先点浮窗 **「检测目标」**（3 秒内切回目标窗口，只读验证不会发消息）。
+3. **短按 D3200 开始说话 → 看浮窗实时预览 → 再短按一次结束并自动投递**；录音途中想改发全新独立对话，轻敲机身直到震动确认即可。
+
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
+
+## 按键交互与蓝牙状态机
+
+下面两张 Mermaid 图支持在 GitHub 页面直接拖拽、缩放与复制源码，展示硬件按键交互全流程以及 `ReconnectCoordinator` 的断线重连/休眠唤醒生命周期：
+
+```mermaid
+sequenceDiagram
+    actor User as 用户
+    participant D3200 as D3200 录音豆
+    participant App as BeanBridge 菜单栏与浮窗
+    participant Target as Codex / 豆包 / Paseo
+    participant Inbox as Pending 待发箱
+
+    User->>D3200: 短按实体键开始录音
+    D3200-->>App: BLE 开始帧 + 实时加密 Opus
+    App->>Target: 读取单一前台窗口 (AX / ⌘⌥L / Daemon)
+    alt 锁定唯一已有对话
+        Target-->>App: 返回会话 ID 与标题
+        App-->>User: 显示锁定目标 + 内存实时预览
+    else 停在空白/草稿页或未启动客户端
+        App-->>User: 锁定“结束后新建独立会话”
+    else 多窗口 / 分屏 / 重名 / 失焦
+        App-->>User: 标记安全兜底（转入待发箱）
+    end
+
+    opt 录音中变更路线
+        alt 轻敲机身至震动 (04.92 bit 0)
+            D3200-->>App: flags=01 分片标记
+            App-->>User: 确认“轻敲已确认”，放弃原目标改发新聊
+        else 点击浮窗或菜单栏“取消本条”
+            User->>App: 取消本条录音
+            App-->>App: 丢弃缓冲并静默忽略后续停止帧
+        end
+    end
+
+    User->>D3200: 再按一次结束录音
+    D3200-->>App: BLE 停止帧
+    App->>App: whisper.cpp 本地识别 + hotwords.txt 热词
+    alt 存在有效目标或新建计划
+        App->>Target: 排他建聊并投递 + 写 0o600 回执
+        Target-->>App: queued / submitted
+    else 歧义或超时结果不明
+        App->>Inbox: 落盘文本与 uncertain 状态待核对
+    end
+```
+
+<details>
+<summary><b>展开查看：BLE 连接与 macOS 休眠恢复状态机图（ReconnectCoordinator）</b></summary>
+
+```mermaid
+stateDiagram-v2
+    [*] --> Disconnected
+    Disconnected --> Scanning: 用户触发重连 / 启动监听
+    Scanning --> Connecting: 发现已绑定 D3200
+    Connecting --> Connected: BLE 握手成功 + 电量/状态订阅
+    Connected --> Reconnecting: 意外断线
+    Connecting --> Reconnecting: 连接超时 / 失败
+    Reconnecting --> Scanning: 指数退避计时器触发 1s 到 30s
+    Connected --> Sleeping: macOS 系统即将休眠
+    Reconnecting --> Sleeping: macOS 系统即将休眠
+    Scanning --> Sleeping: macOS 系统即将休眠
+    Sleeping --> Scanning: 系统唤醒自动恢复连接
+```
+
+</details>
+
+## 工作台与模型下载中心
+
+- **安克豆工作台（`WorkbenchPanel`）**：
+  - **离机增量同步**：根据 `Workbench/sync-manifest.json` 断点过滤已拉取文件，点击「增量同步离机录音」即可补齐设备离线录音。
+  - **VAD 切片与多词搜索**：`AudioVADslicer` 自动按语音能量切分有效段落并记录起止毫秒；支持按 `全部 / 灵感收集箱 / 工作回放` 过滤，以及空格分隔多关键词搜索。
+  - **回放、微调与一键转发**：双击表格或点「播放片段」回听单段音频，在详情区修改文本后可直接复制，或一键发往 `Codex` / `豆包` / `Paseo`（支持勾选「新建独立会话」）。
+- **自定义热词表（`HotwordManager`）**：保存在 `~/Library/Application Support/AnkerVoiceBridge/hotwords.txt`（默认预置「安克豆」「BeanBridge」「Codex」「豆包」「Doubao」「飞书」「Whisper」「Agent」「Swift」「Python」等术语），支持从菜单栏或工作台直接编辑，立刻改善专有名词与中英混说准确率。
+
+<details>
+<summary><b>展开查看：高级用法、目录结构与环境变量覆盖说明</b></summary>
+
+### 只测试识别不自动发送（`dry-run`）
+
+```bash
+touch "$HOME/Library/Application Support/AnkerVoiceBridge/dry-run"
+open "dist/安克豆按键语音.app"
+# 恢复自动发送：关闭应用后删除上述 dry-run 文件
+```
+
+### 旧版固定 Codex 目标绑定
+
+```bash
+python3 scripts/set-target.py --thread-id "替换为目标会话 UUID"
+printf 'fixed\n' > "$HOME/Library/Application Support/AnkerVoiceBridge/routing-mode"
+# 删除 routing-mode 或写回 current 即恢复前台自动锁定；加 --check 仅做只读校验
+```
+
+### BlackHole 虚拟麦克风桥（点击客户端自带麦克风）
 
 ```bash
 brew install blackhole-2ch
 swift build -c release --product anker-voice-bridge
 .build/release/anker-voice-bridge
+# 勿与按键语音应用同时运行；Control-C 退出后自动恢复此前系统默认输入（最长 1 小时）
 ```
 
-等待“实时音频已接通”，然后在 Codex 点击麦克风。程序自动开始录音，这时不要再按录音豆按钮。终端按 Control-C 结束；正常退出会恢复启动前的系统输入。如果运行期间你手动换了输入，它会保留你的选择。
+### 本机持久化目录与权限模型
 
-异常退出时请检查录音灯及系统输入。程序最长运行一小时；它不是全天录音服务。请勿与按键应用同时运行。
+`~/Library/Application Support/AnkerVoiceBridge/`（目录权限 `0o700`，敏感文件与模型权限 `0o600`）：
+- `target-app` / `model-preference` / `hotwords.txt`
+- `Models/` / `Pending/` / `Creation/` / `Submissions/`
+- `Workbench/`（`sync-manifest.json`、归档索引与分段音频）
+- `Chats/`（Codex 无项目独立会话目录）/ `PaseoVoice/`（Paseo 默认建聊目录）
+
+### 环境变量覆盖清单（从终端启动时生效）
+
+- **路由控制**：`BEANBRIDGE_TARGET_APP`（`codex` / `doubao` / `paseo`）、`BEANBRIDGE_ROUTING`（`current` / `fixed`）、`BEANBRIDGE_COPY_KEYCODE`（默认 `37`）、`BEANBRIDGE_SCRIPTS_DIR`
+- **Codex**：`BEANBRIDGE_CODEX`、`BEANBRIDGE_CODEX_BUNDLE_ID`
+- **Doubao**：`BEANBRIDGE_DOUBAO_BUNDLE_ID`、`BEANBRIDGE_DOUBAO_BRIDGE_CMD`、`BEANBRIDGE_DOUBAO_AX_SUBMIT`（设 `0` 禁用内置 AX 提交）、`BEANBRIDGE_DOUBAO_DIAG=1`
+- **Paseo**：`BEANBRIDGE_PASEO_BUNDLE_ID`、`BEANBRIDGE_PASEO_CLI`、`BEANBRIDGE_PASEO_APP`、`BEANBRIDGE_PASEO_HOST`、`BEANBRIDGE_PASEO_HOME`、`BEANBRIDGE_PASEO_PROVIDER`、`BEANBRIDGE_PASEO_CWD`、`BEANBRIDGE_PASEO_WORKSPACE_ID`、`BEANBRIDGE_PASEO_DIAG=1`
+- **ASR 与外部工具**：`BEANBRIDGE_MODEL`、`BEANBRIDGE_MODEL_BASE_URL`、`BEANBRIDGE_WHISPER`、`BEANBRIDGE_WHISPER_NO_GPU=1`、`BEANBRIDGE_FFMPEG`、`BEANBRIDGE_PYTHON`
 
 </details>
 
-## 自动路由与待发箱
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
 
-| 场景 | 当前行为 |
-|---|---|
-| 目标应用（Codex / 豆包）在前台、只有一个窗口且显示已有对话 | 首次按键读取并校验该对话，锁定到本段录音结束 |
-| 刚打开的新建空白页，没有聊天链接 | 录音结束后自动新建独立会话并发送，不弹确认框 |
-| 录音中轻敲机身直到震动 | 本段改为新建独立会话并发送；浮窗显示轻敲已确认 |
-| 录音中切换到其他对话 | 仍然投递到浮窗显示的锁定目标 |
-| 无权限、目标应用在后台、多窗口或未取得链接 | 保存文字；在待发箱粘贴明确链接后发送（带对应应用标签） |
-| 提交超时、程序中断或结果不明 | 保留记录供核对，不自动重试 |
-| 目标应用未运行或已关闭所有窗口 | 识别完成后创建独立会话，启动/打开目标应用并投递 |
+## 常见问题交互排查 (FAQ)
 
-空白页尚未建立可复制的对话 ID。按用户设置：前台与窗口检查通过，但复制链接超时后，会在录音结束时自动新建独立会话。快捷键失效也会走这个新建路径，不会误投旧会话；新会话不继承空白页里选的项目、模型或草稿。权限不足、焦点变化等其他错误仍进入待发箱。待发箱里尚无目标的文字也可直接选择“新建独立会话并发送”。
+<details>
+<summary><b>Q1：系统设置里明明开着辅助功能，为什么点「检测目标」还是提示无权限？</b></summary>
 
-待发记录位于 `~/Library/Application Support/AnkerVoiceBridge/Pending`，文件权限为 600、目录为 700，不上传仓库。包含最终文字、目标和投递状态；入队后的记录也保留在本机，可自行清理。`queued` 只说明 CLI 返回成功，最终以目标聊天实际出现消息为准。
+每次运行 `./build-button-app.sh` 都会用本机临时证书重新签名，macOS TCC 会把新构建视为新应用而使旧勾失效。在终端执行一次：
+```bash
+tccutil reset Accessibility dev.codex.anker-button-voice
+```
+然后重新打开 `dist/安克豆按键语音.app`，再到「系统设置 → 隐私与安全性 → 辅助功能」重新勾选即可。
 
-新会话不绑定项目，每条使用 `~/Library/Application Support/AnkerVoiceBridge/Chats/<消息 ID>` 作为独立工作目录。空录音不建聊，首次按键时决定创建计划；录音中手动打开其他聊天也不会改发到该聊天。Codex 仅在后台或最小化时不视为关闭。已退出应用不需要辅助功能来判定；判断“所有窗口已关闭”仍需要辅助功能权限。`fixed` 模式继续遵守固定目标。
+</details>
 
-创建回执保存在同目录下的 `Creation` 文件夹。先取得真实 ID 并持久化，再打开桌面和排队投递；超时或结果不明时不会自动再建一个会话。创建助手在取得持久会话后退出，模型执行交给桌面，不在独立助手中启动模型回合。
+<details>
+<summary><b>Q2：Paseo 最大化窗口有时提示「未取得目标」，或担心重名对话发错怎么办？</b></summary>
 
-实测与剩余边界见 [自动选对话实现说明](docs/context-routing.md)。
+- 先检查当前标签是否停在 **「新建 Agent」/「New tab」** 草稿页：草稿页本身尚无持久 ID，点「检测目标」返回「未取得目标」是正常预期；此时直接**按住 D3200 说话**，系统会在该工作区自动创建独立会话并送达。
+- 若当前工作区同时存在两个完全同名的非归档会话，或处于多 Agent 分屏态，BeanBridge 会刻意 fail-closed 拦截并保留文本到待发箱，避免误投；可顺手给对话改一个唯一标题，或查看本地诊断快照 `~/Library/Application Support/AnkerVoiceBridge/paseo-ax-diag.json`。
 
-## 限制与排错
+</details>
 
-- **识别准确度与模型开销**：默认回退 `ggml-base.bin` 较轻量但专有名词易误听；建议使用 `./scripts/setup-model.sh --tier small-q5_1 --set-default`（或 `small` / `medium`）并在 `hotwords.txt` 补充专业词汇。实时预览已取消每轮拉起 `ffmpeg` 进程并在内存中完成 48k→16k 重采样与静音能量门控，但大模型全天续航与长时间发热仍需更多实机压测。
-- **长度**：按键模式在结束后检查音频，超过 5 分钟不自动发送；这不是录满 5 分钟就自动停录。
-- **重连与睡眠恢复**：已实现 `ReconnectCoordinator` 指数退避后台重连与 `NSWorkspace` 系统休眠/唤醒状态恢复逻辑（`.sleeping` 状态不触发无效重连），并通过状态机单元测试，但真实 D3200 全天休眠续航场景尚未实机长测。
-- **豆包、Paseo 与工作台**：`DoubaoTargetAdapter` 已在本机完成 `DoubaoWork.app` 真实窗口探测、单窗口唤起与发送验证；`PaseoTargetAdapter` 已在本机完成最大化工作区当前会话识别与实体按键发送至当前对话的端到端验收；`OfflineSyncCoordinator`、`AudioVADslicer` 与 `WorkbenchArchive` 已通过 Swift/Python 单元测试；Paseo 草稿/空白页自动建聊、轻敲改发新会话及工作台海量离线录音积压尚待实机验收。
-- **声音数据**：仓库没有原始录音；程序正常处理完成会清理本机临时音频，崩溃时仍可能残留临时文件。设备录音不会自动删除，离机增量同步依赖 `Workbench/sync-manifest.json` 断点追踪去重。
-- **权限与签名**：应用是本机临时签名，重建会改变签名，可能需要重新授权蓝牙及辅助功能；没有 Apple 公证发布包。若辅助功能列表显示开启但检测仍无权限，可运行 `tccutil reset Accessibility dev.codex.anker-button-voice` 仅重置本应用，再用“+”添加当前 `dist/安克豆按键语音.app` 并开启。
-- **发送失败**：先持久化文字再提交；超时或中断的消息不会自动重发，需在目标聊天核对。不承诺跨外部客户端的严格一次投递保证。
+<details>
+<summary><b>Q3：`DoubaoWork.app` 为什么以前会弹出额外浏览器外框，或空白框被误认有草稿？</b></summary>
 
-更多故障现象和原因见 [踩坑记录](docs/field-notes.md)。
+`0.5.1` 已统一修复：通过 Bundle ID 单窗口唤醒主程序而不附加 `doubaowork://` URL 触发额外的 `DoubaoWork Browser.app`；同时 `CurrentChat.isDoubaoPlaceholderOrEmpty` 会自动识别豆包自带的 25 字空框提示文案（含「发消息或创建任务... / 使用技能 @ 添加资料」），而当你真正在输入框打了草稿时仍保留防覆盖保护。
 
-## 开发与验证
+</details>
+
+<details>
+<summary><b>Q4：中英混说或仓库名词（如 `README`、`Paseo`）容易被误听怎么办？</b></summary>
+
+1. 打开菜单栏「ASR 模型管理与下载…」，推荐安装并切换到 **`Small` (~465MB)** 或 **`Small-Q5_1` (~181MB)**。
+2. 点击「编辑专业术语热词表…」，把你高频说的英文单词、项目名、人名加进 `hotwords.txt`（每行一个词或空格分隔）。
+
+</details>
+
+<details>
+<summary><b>Q5：手机飞书抢连录音豆，或 Mac 休眠醒来还没连上怎么办？</b></summary>
+
+暂时关闭 iPhone 蓝牙确保 D3200 未被手机端占用；Mac 唤醒后 `ReconnectCoordinator` 会从 `.sleeping` 自动切回扫描重连（`1s`～`30s` 指数退避），也可以直接按菜单栏快捷键 <kbd>⌘</kbd>+<kbd>R</kbd> 触发立即重连。
+
+</details>
+
+<p align="right"><a href="#top">↑ 返回顶部</a></p>
+
+## 验证状态与已知边界
+
+| 模块 / 场景 | 验证方式 | 当前结论与边界 |
+|---|---|---|
+| D3200 BLE 发现、实时 Opus 解码与 BlackHole 桥 | 真机 D3200 硬件实测 | **已验证通过** |
+| Codex 前台锁定、切页防串、冷启动建聊、04.92 轻敲改发新会话 | 真机 D3200 按键端到端 | **已验证通过**（真实对话收到并回复） |
+| `DoubaoWork.app` 目标探测、单窗口唤醒与空框占位符发送 | 本机真实 `DoubaoWork.app` 联调 | **已验证通过** |
+| Paseo 最大化工作区锁定当前会话与 D3200 按键发送 | 真机 D3200 + 本机 `Paseo.app` 端到端 | **已验证通过**（多条语音文字实时送达当前 Paseo 对话）；空白/草稿页建聊与轻敲新会话待测 |
+| 应用内 ASR 模型下载中心（`ggml-small.bin` 465 MB） | 本机新版 `.app` UI + 离线单测 | **已验证通过**（下载、实时进度、SHA-256 校验与切换正常） |
+| BLE 自动重连 / 睡眠唤醒、离机增量同步与 VAD 归档 | Swift / Python 自动化测试 + Release 构建 | **49 项 Swift + 16 项 Python 测试全绿**，`verify-release.sh` 通过；**全天休眠续航与海量离线文件积压待硬件长测** |
+
+> [!NOTE]
+> 提交回执返回 `queued` 只表示文本已交付给目标客户端的队列或守护进程，最终展示以客户端内实际收到消息为准。原始音频与个人对话记录不会随仓库上传。
+
+## 开发、测试与仓库结构
 
 ```bash
 swift build -c release
@@ -180,20 +381,20 @@ swift test
 ./scripts/verify-release.sh
 ```
 
-程序会查找常见安装目录及 `PATH`。特殊位置或行为覆盖可使用 `BEANBRIDGE_FFMPEG`、`BEANBRIDGE_WHISPER`、`BEANBRIDGE_CODEX`、`BEANBRIDGE_MODEL`、`BEANBRIDGE_TARGET_APP`（如 `codex`、`doubao` 或 `paseo`）、`BEANBRIDGE_DOUBAO_BUNDLE_ID`、`BEANBRIDGE_PASEO_BUNDLE_ID`、`BEANBRIDGE_PASEO_CLI`、`BEANBRIDGE_PASEO_PROVIDER`、`BEANBRIDGE_PASEO_CWD`、`BEANBRIDGE_PASEO_WORKSPACE_ID`；通过环境变量配置时应从同一终端直接运行可执行文件，Finder 启动的应用不保证继承终端环境。路由可用 `BEANBRIDGE_ROUTING=current|fixed` 覆盖；若仅改了复制快捷键的字母，可用 `BEANBRIDGE_COPY_KEYCODE` 指定 macOS 虚拟键码（默认 37，即 L，修饰键仍为 Command + Option）。
-
 ```text
-Sources/AnkerButtonVoice/    按键事件、ASR 服务与热词、下载中心弹窗、无 ffmpeg 预览、菜单栏/浮窗与工作台面板
-Sources/AnkerVoiceBridge/    音频桥、系统输入切换与恢复
-Sources/OpenBeanKit/         改编自 OpenBean 的协议、ASR 模型目录与下载器、BLE 自动重连与离机增量同步/VAD归档
-Sources/VoiceRouting/        可插拔多目标适配器协议、Codex/豆包/Paseo 桥接、链接校验、持久化待发箱
-scripts/                    模型多层级安装、对话绑定与豆包/Paseo 桥接、发布校验、视觉物料生成
-Tests/                      OpenBeanKitTests 与 VoiceRoutingTests 单元测试（49 项）
-docs/                       实验记录、产品设想、路由方案、品牌物料
+Sources/AnkerButtonVoice/    菜单栏守护、浮窗 UI、ASR 服务与热词、下载中心弹窗、工作台面板
+Sources/AnkerVoiceBridge/    BlackHole 虚拟麦克风音频桥、系统输入切换与恢复
+Sources/AnkerEventProbe/     仅记录 BLE 控制包与 04.92 轻敲标记的只读硬件探针
+Sources/OpenBeanKit/         OpenBean 协议层、ASR 模型目录与下载器、BLE 自动重连、离机同步与 VAD 归档
+Sources/VoiceRouting/        AppTargetAdapter 多目标抽象、Codex/豆包/Paseo 路由、AX 检查、待发箱
+scripts/                    模型安装、Codex/Doubao/Paseo 桥接脚本、Daemon Helper、16 项单测与发布校验
+Tests/                      OpenBeanKitTests 与 VoiceRoutingTests（49 项 Swift 单元测试）
+docs/                       实验记录、自动选对话方案、视觉物料与产品路线
 ```
 
 ## 来源与许可
 
-设备协议及相关 Swift 实现来自 [OpenBean](https://github.com/imraywang/openbean)，基准提交 `13968d8ea27ca57fa254bf01c43c13c388f1a696`。本项目补充了 Codex 队列连接、独立浮窗、音频桥、状态检查、文档及视觉物料。变更范围见 [第三方来源](docs/third-party.md)。
+- 设备 BLE 协议及部分底层 Swift 实现基于 [OpenBean](https://github.com/imraywang/openbean)（基准提交 `13968d8ea27ca57fa254bf01c43c13c388f1a696`），改动范围见 [第三方来源说明](docs/third-party.md)，上游声明保留在 [NOTICE-OpenBean](NOTICE-OpenBean)。
+- 仓库代码、文档与原创视觉图形采用 [Apache-2.0](LICENSE) 开源许可；外部安装的 `whisper.cpp`、BlackHole 与语音模型遵循各自原始许可。本项目与 Anker、飞书、OpenAI、字节跳动（豆包）及 Paseo 无官方关联。
 
-仓库代码、文档及原创图形采用 [Apache-2.0](LICENSE)；上游声明保留在 [NOTICE-OpenBean](NOTICE-OpenBean)。外部安装的 BlackHole、whisper.cpp 和语音模型遵循各自许可。本项目与 Anker、飞书及 OpenAI 无官方关联。
+<p align="right"><a href="#top">↑ 返回顶部</a></p>

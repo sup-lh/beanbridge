@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-label="Menu bar daemon, ASR model center &amp; offline workbench pipeline">
+<title>Menu bar daemon, ASR model center &amp; offline workbench pipeline</title>
+<style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
+<rect width="1280" height="480" rx="24" fill="#FFFFFF"/>
+<text x="40" y="48" font-size="28" fill="#111827" font-weight="600" text-anchor="start" >Always-On Daemon, Model Center &amp; Offline Workbench</text>
+<text x="40" y="80" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Three core subsystems keeping BLE resilient, ASR accurate, and offline D3200 recordings searchable.</text>
+<rect x="40" y="110" width="380" height="304" rx="12" fill="#F0FDFA" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="62" y="140" font-size="12" fill="#0F766E" font-weight="600" text-anchor="start" class="mono">01 · MENU BAR &amp; BLE</text>
+<text x="62" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >ReconnectCoordinator</text>
+<line x1="62" y1="188" x2="398" y2="188" stroke="#E5E7EB"/>
+<rect x="62" y="204" width="8" height="8" rx="2" fill="#0F766E"/>
+<text x="78" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >NSStatusItem Daemon</text>
+<text x="78" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Runs with floating HUD hidden</text>
+<rect x="62" y="243" width="8" height="8" rx="2" fill="#0F766E"/>
+<text x="78" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Exponential Backoff</text>
+<text x="78" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >1s -&gt; 30s auto-reconnect retries</text>
+<rect x="62" y="282" width="8" height="8" rx="2" fill="#0F766E"/>
+<text x="78" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Sleep/Wake Awareness</text>
+<text x="78" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >.sleeping state avoids thrashing</text>
+<rect x="62" y="321" width="8" height="8" rx="2" fill="#0F766E"/>
+<text x="78" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Live Indicators</text>
+<text x="78" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Battery %, recording &amp; countdown</text>
+<rect x="62" y="360" width="8" height="8" rx="2" fill="#0F766E"/>
+<text x="78" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Shortcuts</text>
+<text x="78" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Cmd+V HUD · B Workbench · R Sync</text>
+<rect x="450" y="110" width="380" height="304" rx="12" fill="#EFF6FF" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="472" y="140" font-size="12" fill="#1D4ED8" font-weight="600" text-anchor="start" class="mono">02 · LOCAL ASR &amp; MODELS</text>
+<text x="472" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >ASRModelDownloadManager</text>
+<line x1="472" y1="188" x2="808" y2="188" stroke="#E5E7EB"/>
+<rect x="472" y="204" width="8" height="8" rx="2" fill="#1D4ED8"/>
+<text x="488" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >4 Verified Tiers</text>
+<text x="488" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Base · Small-Q5_1 · Small · Medium</text>
+<rect x="472" y="243" width="8" height="8" rx="2" fill="#1D4ED8"/>
+<text x="488" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Dual Mirrors</text>
+<text x="488" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Hugging Face Official / hf-mirror</text>
+<rect x="472" y="282" width="8" height="8" rx="2" fill="#1D4ED8"/>
+<text x="488" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Safe Streaming</text>
+<text x="488" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Hidden .part + SHA-256 atomic swap</text>
+<rect x="472" y="321" width="8" height="8" rx="2" fill="#1D4ED8"/>
+<text x="488" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Custom Hotwords</text>
+<text x="488" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >hotwords.txt editable in-app</text>
+<rect x="472" y="360" width="8" height="8" rx="2" fill="#1D4ED8"/>
+<text x="488" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >In-Memory Preview</text>
+<text x="488" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >48kHz -&gt; 16kHz zero-ffmpeg gate</text>
+<rect x="860" y="110" width="380" height="304" rx="12" fill="#F6FAF0" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="882" y="140" font-size="12" fill="#12372D" font-weight="600" text-anchor="start" class="mono">03 · INSPIRATION WORKBENCH</text>
+<text x="882" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >WorkbenchSync + VAD</text>
+<line x1="882" y1="188" x2="1218" y2="188" stroke="#E5E7EB"/>
+<rect x="882" y="204" width="8" height="8" rx="2" fill="#12372D"/>
+<text x="898" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Incremental Sync</text>
+<text x="898" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >sync-manifest.json skips synced IDs</text>
+<rect x="882" y="243" width="8" height="8" rx="2" fill="#12372D"/>
+<text x="898" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Energy VAD Slicer</text>
+<text x="898" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Auto-segments speech timestamps</text>
+<rect x="882" y="282" width="8" height="8" rx="2" fill="#12372D"/>
+<text x="898" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Search &amp; Filter</text>
+<text x="898" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Multi-keyword + Inbox/Replay tabs</text>
+<rect x="882" y="321" width="8" height="8" rx="2" fill="#12372D"/>
+<text x="898" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Audition &amp; Edit</text>
+<text x="898" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Playback audio &amp; refine text</text>
+<rect x="882" y="360" width="8" height="8" rx="2" fill="#12372D"/>
+<text x="898" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >One-Click Forward</text>
+<text x="898" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Send to Codex, Doubao, or Paseo</text>
+<rect x="40" y="428" width="1200" height="34" rx="8" fill="#F3F4F6"/>
+<text x="640" y="449" font-size="12.5" fill="#374151" font-weight="500" text-anchor="middle" class="mono">State directory: ~/Library/Application Support/AnkerVoiceBridge (0o700 directories, 0o600 models, pending queue &amp; receipts)</text>
+</svg>

@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="630" viewBox="0 0 1280 630" role="img" aria-label="Proposed context-aware routing — not implemented">
-<title>Proposed context-aware routing — not implemented</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="630" viewBox="0 0 1280 630" role="img" aria-label="Proposed context-aware routing — historical v0.1 note">
+<title>Proposed context-aware routing — historical v0.1 note</title>
 <style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
 <rect width="1280" height="630" rx="24" fill="#FFFFFF"/>
 <defs><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5L0 7Z" fill="#2563EB"/></marker></defs>
 <text x="40" y="48" font-size="28" fill="#111827" font-weight="600" text-anchor="start" >Context-aware routing</text>
 <rect x="1037" y="24" width="203" height="32" rx="16" fill="#FFF7ED"/>
-<text x="1138" y="45" font-size="11" fill="#C2410C" font-weight="600" text-anchor="middle" class="mono">PROPOSAL / NOT SHIPPED</text>
-<text x="40" y="80" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Freeze the destination on the first press. Never infer the target from recency.</text>
+<text x="1138" y="45" font-size="11" fill="#C2410C" font-weight="600" text-anchor="middle" class="mono">ARCHIVED v0.1 PROPOSAL</text>
+<text x="40" y="80" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Historical design note (superseded by implemented multi-app-routing.svg).</text>
 <rect x="455" y="118" width="370" height="70" rx="8" fill="#EFF6FF" stroke="#BFDBFE"/>
 <text x="640" y="148" font-size="21" fill="#111827" font-weight="600" text-anchor="middle" >First press</text>
 <text x="640" y="174" font-size="14" fill="#6B7280" font-weight="400" text-anchor="middle" >Capture app state + routing context</text>
@@ -21,23 +21,23 @@
 <text x="62" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Show the destination in the panel.</text>
 <text x="62" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Send only to the captured target.</text>
 <text x="62" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Changing tabs does not redirect audio.</text>
-<text x="220" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Copy-link verified manually; automation pending</text>
+<text x="220" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Now shipped across Codex, Doubao &amp; Paseo</text>
 <rect x="460" y="260" width="360" height="236" rx="8" fill="#EFF6FF" stroke="#D1D5DB" stroke-width="1.5"/>
 <text x="482" y="292" font-size="14" fill="#6B7280" font-weight="500" text-anchor="start" class="mono">B</text>
-<text x="482" y="330" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >Codex is not running</text>
+<text x="482" y="330" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >Client is blank or closed</text>
 <text x="482" y="365" font-size="18" fill="#2563EB" font-weight="500" text-anchor="start" >Launch, then create</text>
-<text x="482" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Use a configured workspace.</text>
-<text x="482" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Wait for creation acknowledgement.</text>
-<text x="482" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Open and submit to the returned ID.</text>
-<text x="640" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Creation APIs exist; UI handoff untested</text>
+<text x="482" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Create an isolated new session.</text>
+<text x="482" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Wait for creation receipt.</text>
+<text x="482" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Open and submit cleanly.</text>
+<text x="640" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Shipped with 0o600 idempotent receipts</text>
 <rect x="880" y="260" width="360" height="236" rx="8" fill="#FFF7ED" stroke="#D1D5DB" stroke-width="1.5"/>
 <text x="902" y="292" font-size="14" fill="#6B7280" font-weight="500" text-anchor="start" class="mono">C</text>
 <text x="902" y="330" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >No clear destination</text>
-<text x="902" y="365" font-size="18" fill="#2563EB" font-weight="500" text-anchor="start" >Show a destination picker</text>
-<text x="902" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Keep the transcript pending.</text>
-<text x="902" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Choose an existing or new thread.</text>
-<text x="902" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Do not guess the last active thread.</text>
-<text x="1060" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Safe fallback when state is ambiguous</text>
+<text x="902" y="365" font-size="18" fill="#2563EB" font-weight="500" text-anchor="start" >Fail closed into Pending</text>
+<text x="902" y="403" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Preserve transcript safely on disk.</text>
+<text x="902" y="429" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Choose existing or create new later.</text>
+<text x="902" y="455" font-size="14" fill="#6B7280" font-weight="400" text-anchor="start" >Never guess recent threads.</text>
+<text x="1060" y="526" font-size="12" fill="#6B7280" font-weight="400" text-anchor="middle" >Active fail-closed safety rule</text>
 <rect x="40" y="559" width="1200" height="38" rx="8" fill="#F3F4F6"/>
-<text x="640" y="584" font-size="14" fill="#4B5563" font-weight="500" text-anchor="middle" >Current build: one explicitly configured thread. Automatic focus routing is not implemented.</text>
+<text x="640" y="584" font-size="14" fill="#4B5563" font-weight="500" text-anchor="middle" >Historical proposal preserved for reference. See docs/assets/multi-app-routing.svg for v0.5.1 shipped routing.</text>
 </svg>
