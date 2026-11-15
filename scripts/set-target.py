@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import threading
 import uuid
+import time
 
 SUPPORT = Path.home() / "Library/Application Support/AnkerVoiceBridge"
 DESKTOP_CODEX = Path("/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex")
@@ -41,8 +42,12 @@ def validate_thread(executable, thread_id):
         process.stdin.flush()
 
     def expect(request_id):
+        deadline = time.monotonic() + 20
         while True:
-            response = responses.get(timeout=20)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise queue.Empty
+            response = responses.get(timeout=remaining)
             if response.get("id") == request_id:
                 if "error" in response:
                     raise RuntimeError(response["error"].get("message", "app-server error"))
@@ -71,6 +76,7 @@ def validate_thread(executable, thread_id):
 def main():
     parser = argparse.ArgumentParser(description="Set the exact Codex conversation for voice messages.")
     parser.add_argument("--thread-id", default=os.environ.get("CODEX_THREAD_ID"))
+    parser.add_argument("--json", action="store_true", help="Validate and return JSON without changing configuration.")
     parser.add_argument("--check", action="store_true", help="Validate only; do not change the target.")
     args = parser.parse_args()
     if not args.thread_id:
@@ -86,6 +92,9 @@ def main():
         title = validate_thread(executable, thread_id)
     except (OSError, RuntimeError, queue.Empty) as error:
         parser.exit(1, f"无法验证会话，未修改目标：{error}\n")
+    if args.json:
+        print(json.dumps({"id": thread_id, "title": title}, ensure_ascii=False))
+        return
     if args.check:
         print(f"会话可访问：{title}；目标文件未修改。")
         return

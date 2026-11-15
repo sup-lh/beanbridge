@@ -17,7 +17,7 @@
 
 BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 Mac，在本机完成语音识别，并把最终文字发送到指定的 Codex 对话。你可以离开键盘口述需求，再用录音豆的第二次按键结束这一条消息。
 
-**这是已在一台 Mac、一颗 04.92 固件设备上验证的实验原型。** 固定对话的完整发送链路已成功；自动跟随前台对话、自动启动并创建新对话、后台重连仍属于设计阶段。
+**这是已在一台 Mac、一颗 04.92 固件设备上验证的实验原型。** 固定对话的完整发送链路已成功；新版已实现首次按键读取并锁定前台对话，自动读取与“录音后切换对话、仍投递原目标”的实体按键入队链路在本机通过测试。自动启动并创建新对话、后台重连仍属于设计阶段。
 
 ## 两种使用方式
 
@@ -27,7 +27,7 @@ BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 
 | 说话 | 浮窗显示本地识别预览 | 在 Codex 点麦克风输入 |
 | 结束 | 再按一次，最终文字自动排队发送 | 终端按 Control-C |
 | 识别 | whisper.cpp，在 Mac 本地完成 | 由使用麦克风的应用处理 |
-| 发送目标 | 预先绑定的一个 Codex 对话 | 当前由你操作的输入框 |
+| 发送目标 | 首次按键时读取并锁定的前台 Codex 对话 | 当前由你操作的输入框 |
 | 额外依赖 | 本地 Whisper 模型，约 141 MiB | BlackHole 2ch |
 
 ![当前按键语音的数据流](docs/assets/flow.svg)
@@ -43,7 +43,7 @@ BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 
 - [x] BlackHole 麦克风方式接入 Codex 语音输入。
 - [x] 麦克风桥启动时切换输入，正常退出时恢复原输入。
 
-> **当前目标是固定的。** 切换 Codex 窗口或对话不会更改发送目标。第二次按键会自动提交最终识别文字，预览和最终结果可能有差异。
+> **每段录音的目标在首次按键时锁定。** 浮窗显示目标标题，录音中切换对话不会改目标。读取失败时文字保存在本地待发箱，绝不使用旧的固定目标。第二次按键会自动提交最终识别文字，预览和最终结果可能有差异。
 
 ## 快速开始
 
@@ -62,27 +62,28 @@ brew install ffmpeg whisper.cpp
 
 模型安装脚本核对 SHA-256；若已有正确模型会直接复用。它不会安装 BlackHole，按键模式也不需要 BlackHole。
 
-### 2. 绑定你要发送的对话
+### 2. 选择路由方式
 
-在目标 Codex 对话里让代理执行：
+默认使用 `current` 模式，无需预先绑定。打开目标 Codex 对话，并保持它在前台。程序会在第一次按键时触发官方 **⌘⌥L** 复制聊天链接，两次独立复制一致且窗口未变后，通过只读 `thread/read` 校验并锁定目标。
 
-```bash
-python3 scripts/set-target.py
-```
+首次使用，在浮窗点击「辅助功能授权」，然后在「系统设置 → 隐私与安全性 → 辅助功能」中允许「安克豆按键语音」。点击「检测目标」后有 3 秒切回 Codex，检测仅显示目标，不发送消息。
 
-脚本使用该会话提供的 `CODEX_THREAD_ID`，通过只读 `thread/read` 验证后才保存。也可以在目标聊天窗口按 **⌘⌥L**，从复制的 `codex://threads/<UUID>` 中取得 ID。普通终端不一定有环境变量，可以显式指定：
+Codex 不在前台、存在多个窗口、未取得新链接或缺少权限时，继续接收录音，最终文字进入「待发箱」。可以在待发箱粘贴明确的聊天链接后发送；不会读取旧剪贴板猜目标。
+
+若要继续使用原来的固定目标模式：
 
 ```bash
 python3 scripts/set-target.py --thread-id "替换为目标会话的 UUID"
+printf 'fixed\n' > "$HOME/Library/Application Support/AnkerVoiceBridge/routing-mode"
 ```
 
-`--check` 仅验证，不改配置。目标保存在 `~/Library/Application Support/AnkerVoiceBridge/target-thread`，不在仓库中。更换目标后需重启按键应用。
+删除 `routing-mode` 文件或将内容改为 `current` 即恢复自动模式。固定目标保存在同目录的 `target-thread`；`set-target.py --check` 仅验证，`--json` 返回校验结果，均不改配置。
 
 ### 3. 构建并连接
 
 ```bash
 ./build-button-app.sh
-open "安克豆按键语音.app"
+open "dist/安克豆按键语音.app"
 ```
 
 在 iPhone「设置 → 蓝牙」暂时关闭蓝牙，或以其他方式确保手机飞书没有占用录音豆连接。将录音豆放到 Mac 附近，确认它当前没有在录音。保留原有设备绑定即可。
@@ -94,7 +95,7 @@ open "安克豆按键语音.app"
 | 步骤 | 你做什么 | 浮窗表现 |
 |---|---|---|
 | 就绪 | 等待连接成功 | 准备就绪，按一下录音豆 |
-| 开始 | 短按一次，等约一秒再说话 | 正在录音，随后出现识别预览 |
+| 开始 | 将 Codex 对话置前，短按一次，等目标标题出现再切换页面 | 正在录音，显示锁定目标和识别预览 |
 | 结束 | 再短按一次 | 正在生成最终文字 |
 | 提交 | 无需再点发送 | 已放入 Codex 队列 |
 
@@ -109,7 +110,7 @@ Codex 忙时消息可能等待当前回合结束。**“已放入队列”表示
 
 ```bash
 touch "$HOME/Library/Application Support/AnkerVoiceBridge/dry-run"
-open "安克豆按键语音.app"
+open "dist/安克豆按键语音.app"
 ```
 
 恢复自动发送：关闭应用，删除上述 `dry-run` 标记，再打开应用。
@@ -133,17 +134,19 @@ swift build -c release --product anker-voice-bridge
 
 </details>
 
-## 你提出的下一版：跟随当前对话
+## 自动路由与待发箱
 
-![尚未实现的上下文路由方案](docs/assets/routing-proposal.svg)
+| 场景 | 当前行为 |
+|---|---|
+| Codex 在前台、只有一个窗口且显示已有对话 | 首次按键读取并校验该对话，锁定到本段录音结束 |
+| 录音中切换到其他对话 | 仍然投递到浮窗显示的锁定目标 |
+| 无权限、Codex 在后台、多窗口或未取得链接 | 保存文字；在待发箱粘贴明确链接后发送 |
+| 提交超时、程序中断或结果不明 | 保留记录供核对，不自动重试 |
+| Codex 未运行 | 保留文字，用户启动 Codex 并选择对话；不自动创建会话 |
 
-| 场景 | 计划中的行为 | 当前结论 |
-|---|---|---|
-| Codex 显示明确的对话 | 首次按键时锁定该对话，第二次按键提交 | **官方复制链接命令已通过 A/B 对话手动测试**；后台触发与焦点一致性待验证 |
-| Codex 未运行 | 启动应用，在配置的工作目录创建新对话并发送 | 启动与建会话有接口，完整桌面交付链路还需验证 |
-| Codex 在运行但目标不明确 | 弹出选择器，允许选择或新建 | 可实现；尚未加入当前版本 |
+待发记录位于 `~/Library/Application Support/AnkerVoiceBridge/Pending`，文件权限为 600、目录为 700，不上传仓库。包含最终文字、目标和投递状态；入队后的记录也保留在本机，可自行清理。`queued` 只说明 CLI 返回成功，最终以目标聊天实际出现消息为准。
 
-设计会在首次按键时固定目标，避免说话期间切换窗口把内容发错。具体接口证据、状态机和验收条件见 [自动选对话可行性](docs/context-routing.md)。
+实测与剩余边界见 [自动选对话实现说明](docs/context-routing.md)。
 
 ## 限制与排错
 
@@ -152,8 +155,8 @@ swift build -c release --product anker-voice-bridge
 - **重连**：应用初次扫描约 5 秒，断线后需重新打开；后台重连、开机启动尚未实现。
 - **轻量程度**：空闲时保持 BLE 连接；说话时预览反复启动识别进程，尚未做 CPU、续航和全天压力测试。
 - **声音数据**：仓库没有原始录音；程序正常处理完成会清理本机临时音频，崩溃时仍可能残留临时文件。设备录音不会自动删除。
-- **权限与签名**：应用是本机临时签名，重新构建可能需要重新授权蓝牙；没有 Apple 公证发布包。
-- **发送失败**：失败或超时不盲目重试，避免重复消息；尚无持久待发箱和严格的一次投递保证。
+- **权限与签名**：应用是本机临时签名，重建会改变签名，可能需要重新授权蓝牙及辅助功能；没有 Apple 公证发布包。若辅助功能列表显示开启但检测仍无权限，可运行 `tccutil reset Accessibility dev.codex.anker-button-voice` 仅重置本应用，再用“+”添加当前 `dist/安克豆按键语音.app` 并开启。
+- **发送失败**：先持久化文字再提交；超时或中断的消息不会自动重发，需在目标聊天核对。CLI 没有本项目可用的幂等投递键，因此不承诺严格的一次投递保证。
 
 更多故障现象和原因见 [踩坑记录](docs/field-notes.md)。
 
@@ -165,12 +168,13 @@ swift test
 python3 scripts/set-target.py --check
 ```
 
-程序会查找常见安装目录及 `PATH`。特殊位置可使用 `BEANBRIDGE_FFMPEG`、`BEANBRIDGE_WHISPER`、`BEANBRIDGE_CODEX`、`BEANBRIDGE_MODEL`；通过环境变量配置时应从同一终端直接运行可执行文件，Finder 启动的应用不保证继承终端环境。
+程序会查找常见安装目录及 `PATH`。特殊位置可使用 `BEANBRIDGE_FFMPEG`、`BEANBRIDGE_WHISPER`、`BEANBRIDGE_CODEX`、`BEANBRIDGE_MODEL`；通过环境变量配置时应从同一终端直接运行可执行文件，Finder 启动的应用不保证继承终端环境。路由可用 `BEANBRIDGE_ROUTING=current|fixed` 覆盖；若仅改了复制快捷键的字母，可用 `BEANBRIDGE_COPY_KEYCODE` 指定 macOS 虚拟键码（默认 37，即 L，修饰键仍为 Command + Option）。
 
 ```text
 Sources/AnkerButtonVoice/    按键事件、预览、本地识别、队列发送
 Sources/AnkerVoiceBridge/    音频桥、系统输入切换与恢复
 Sources/OpenBeanKit/         改编自 OpenBean 的协议实现
+Sources/VoiceRouting/        前台目标检测、链接校验、持久化投递状态
 scripts/                    模型安装、对话绑定、视觉物料生成
 docs/                       实验记录、产品设想、路由方案、品牌物料
 ```

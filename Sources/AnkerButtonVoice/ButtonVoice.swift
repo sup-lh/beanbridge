@@ -2,14 +2,15 @@ import AppKit
 import AVFoundation
 import Foundation
 import OpenBeanKit
+import VoiceRouting
 
-private let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
     .appendingPathComponent("AnkerVoiceBridge", isDirectory: true)
 private let env = ProcessInfo.processInfo.environment
 private let ffmpeg = ToolLocator.resolve(name: "ffmpeg", override: env["BEANBRIDGE_FFMPEG"],
                                         preferred: ["/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg"], searchPath: env["PATH"]) ?? ""
 private let whisper = ToolLocator.resolve(name: "whisper-cli", override: env["BEANBRIDGE_WHISPER"], searchPath: env["PATH"]) ?? ""
-private let codex = ToolLocator.resolve(name: "codex", override: env["BEANBRIDGE_CODEX"],
+let codex = ToolLocator.resolve(name: "codex", override: env["BEANBRIDGE_CODEX"],
     preferred: ["/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"], searchPath: env["PATH"]) ?? ""
 private let model = env["BEANBRIDGE_MODEL"] ?? support.appendingPathComponent("Models/ggml-base.bin").path
 
@@ -18,7 +19,7 @@ private enum ButtonVoiceError: Error, CustomStringConvertible {
     var description: String { if case let .message(value) = self { return value }; return "未知错误" }
 }
 
-private func runTool(_ executable: String, _ arguments: [String], timeout: TimeInterval = 60) throws -> String {
+func runTool(_ executable: String, _ arguments: [String], timeout: TimeInterval = 60) throws -> String {
     let process = Process()
     let output = Pipe()
     process.executableURL = URL(fileURLWithPath: executable)
@@ -65,17 +66,21 @@ private func transcribeFrames(_ frames: [UInt8]) throws -> String {
     return try localTranscribe(wav)
 }
 
-private final class VoicePanel: NSObject, NSWindowDelegate {
+final class VoicePanel: NSObject, NSWindowDelegate {
     let panel: NSPanel
     private let headline: NSTextField
     private let detail: NSTextField
+    private let targetLabel: NSTextField
+    var onPending: (() -> Void)?
+    var onProbe: (() -> Void)?
 
     override init() {
-        panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 410, height: 150),
-                        styleMask: [.titled, .closable, .utilityWindow],
+        panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 460, height: 230),
+                        styleMask: [.titled, .closable, .utilityWindow, .nonactivatingPanel],
                         backing: .buffered, defer: false)
         headline = NSTextField(labelWithString: "正在连接录音豆…")
-        detail = NSTextField(wrappingLabelWithString: "目标：本次指定的 Codex 对话")
+        detail = NSTextField(wrappingLabelWithString: "首次按键时锁定前台对话。")
+        targetLabel = NSTextField(labelWithString: "目标：尚未开始录音")
         super.init()
         panel.title = "安克豆语音"
         panel.isFloatingPanel = true
@@ -83,14 +88,31 @@ private final class VoicePanel: NSObject, NSWindowDelegate {
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.delegate = self
         headline.font = .systemFont(ofSize: 16, weight: .semibold)
-        headline.frame = NSRect(x: 20, y: 91, width: 370, height: 25)
+        headline.frame = NSRect(x: 20, y: 168, width: 420, height: 25)
         detail.font = .systemFont(ofSize: 13)
         detail.maximumNumberOfLines = 3
-        detail.frame = NSRect(x: 20, y: 22, width: 370, height: 62)
+        detail.frame = NSRect(x: 20, y: 65, width: 420, height: 62)
+        targetLabel.frame = NSRect(x: 20, y: 135, width: 420, height: 23)
+        targetLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        targetLabel.lineBreakMode = .byTruncatingMiddle
+        panel.contentView?.addSubview(targetLabel)
+        for (index, entry) in [("检测目标", #selector(probe)), ("待发箱", #selector(pending)), ("辅助功能授权", #selector(authorize))].enumerated() {
+            let button = NSButton(title: entry.0, target: self, action: entry.1)
+            button.frame = NSRect(x: 20 + index * 140, y: 15, width: 130, height: 32)
+            panel.contentView?.addSubview(button)
+        }
         panel.contentView?.addSubview(headline)
         panel.contentView?.addSubview(detail)
         panel.center()
-        panel.makeKeyAndOrderFront(nil)
+        panel.orderFrontRegardless()
+    }
+
+    @objc private func probe() { onProbe?() }
+    @objc private func pending() { onPending?() }
+    @objc private func authorize() { Task { @MainActor in CurrentChat.requestAccess() } }
+
+    func setTarget(_ text: String) {
+        DispatchQueue.main.async { self.targetLabel.stringValue = "目标：" + text }
     }
 
     func show(_ title: String, _ text: String) {
@@ -182,16 +204,17 @@ private final class LivePreview: @unchecked Sendable {
 
 private final class ButtonCoordinator: @unchecked Sendable {
     private let panel: VoicePanel
-    private let threadID: String
+    private let router: VoiceRouter
+    private var processing = false
     private let dryRun: Bool
     private let events = DispatchQueue(label: "anker.button.events")
     private let submissions = DispatchQueue(label: "anker.button.submissions")
     private var link: Link?
     private var session: D3200Session?
-    private var active: (stream: RealtimeStream, energy: Energy, preview: LivePreview)?
+    private var active: (stream: RealtimeStream, energy: Energy, preview: LivePreview, route: Task<RouteResult, Never>, token: UUID)?
 
-    init(panel: VoicePanel, threadID: String, dryRun: Bool) {
-        self.panel = panel; self.threadID = threadID; self.dryRun = dryRun
+    init(panel: VoicePanel, router: VoiceRouter, dryRun: Bool) {
+        self.panel = panel; self.router = router; self.dryRun = dryRun
     }
 
     func connect() async {
@@ -232,7 +255,7 @@ private final class ButtonCoordinator: @unchecked Sendable {
             session.observeEvents { [weak self] event in
                 self?.events.async { [weak self] in self?.handle(event) }
             }
-            panel.show("准备就绪，按一下录音豆", "固定目标：本次指定的 Codex 对话。再按一次结束并\(dryRun ? "仅测试识别" : "排队发送")。")
+            panel.show("准备就绪，按一下录音豆", "首次按键锁定目标，再按一次结束并\(dryRun ? "仅测试识别" : "排队发送")。目标不明时保存到待发箱。")
         } catch {
             panel.show("连接失败", String(describing: error))
         }
@@ -242,6 +265,13 @@ private final class ButtonCoordinator: @unchecked Sendable {
         switch event {
         case let .recordingStarted(fileID):
             guard active == nil, let session else { return }
+            guard !processing else {
+                panel.show("上一条仍在处理", "本段不会发送；请再按一次停止设备录音，等处理完成后重试。")
+                return
+            }
+            let token = UUID()
+            let route = Task { await router.resolve() }
+            panel.setTarget("正在读取…")
             do {
                 let decoder = try OpusDecoder()
                 let energy = Energy()
@@ -250,7 +280,14 @@ private final class ButtonCoordinator: @unchecked Sendable {
                     if let decoded = try? decoder.decode(frame) { energy.add(decoded) }
                     preview.append(sequence: sequence, frame: frame)
                 }
-                active = (stream, energy, preview)
+                active = (stream, energy, preview, route, token)
+                Task {
+                    let result = await route.value
+                    self.events.async {
+                        guard self.active?.token == token else { return }
+                        self.panel.setTarget(result.target?.title ?? "待选择（不会自动发送）")
+                    }
+                }
                 preview.start()
                 panel.show("正在录音", "稍等一秒后说话；再按一次录音豆结束。")
             } catch {
@@ -270,15 +307,24 @@ private final class ButtonCoordinator: @unchecked Sendable {
                 return
             }
             panel.show("正在生成最终文字…", "\(dryRun ? "本轮只测试识别。" : "完成后放入指定对话的队列。")")
-            submissions.async { [weak self] in self?.transcribeAndSubmit(transfer) }
+            processing = true
+            let audio = transfer.audio
+            Task {
+                let destination = await current.route.value
+                submissions.async { [weak self] in
+                    guard let self else { return }
+                    self.transcribeAndSubmit(audio, destination: destination)
+                    self.events.async { self.processing = false }
+                }
+            }
         case .charging, .battery:
             break
         }
     }
 
-    private func transcribeAndSubmit(_ transfer: Transfer) {
+    private func transcribeAndSubmit(_ audio: [UInt8], destination: RouteResult) {
         do {
-            let text = try transcribeFrames(transfer.audio)
+            let text = try transcribeFrames(audio)
             guard !text.isEmpty, !text.contains("[BLANK_AUDIO]") else {
                 panel.show("没有识别到内容", "本次没有发送；录音仍保存在设备上。")
                 return
@@ -287,11 +333,9 @@ private final class ButtonCoordinator: @unchecked Sendable {
                 panel.show("识别完成（测试模式）", text)
                 return
             }
-            panel.show("正在放入会话队列…", text)
-            _ = try runTool(codex, ["queue", "--thread", threadID, "--message", text], timeout: 30)
-            panel.show("已放入 Codex 队列", text)
+            try router.deliver(text: text, destination: destination, panel: panel)
         } catch {
-            panel.show("本次没有确认发送", "\(error)。录音仍保存在设备上。")
+            panel.show("本次没有确认发送", "\(error)。请查看待发箱；录音仍保存在设备上。")
         }
     }
 }
@@ -316,17 +360,37 @@ private final class ButtonCoordinator: @unchecked Sendable {
             return
         }
         let app = NSApplication.shared
-        app.setActivationPolicy(.regular)
-        let panel = VoicePanel()
-        Task.detached {
-            let threadFile = support.appendingPathComponent("target-thread")
-            guard let thread = try? String(contentsOf: threadFile, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines),
-                  UUID(uuidString: thread) != nil else {
-                panel.show("没有指定 Codex 对话", "请先设置目标会话，避免把语音发送到错误位置。")
-                return
+        app.setActivationPolicy(.accessory)
+        let router = VoiceRouter()
+        if CommandLine.arguments.contains("--probe-target") {
+            Task { @MainActor in
+                if CommandLine.arguments.contains("--request-access") { CurrentChat.requestAccess() }
+                let result = await router.resolve(forceCurrent: true)
+                let payload = ProbeResult(target: result.target, error: result.reason)
+                if let data = try? JSONEncoder().encode(payload) {
+                    if let index = CommandLine.arguments.firstIndex(of: "--probe-output"), index + 1 < CommandLine.arguments.count {
+                        try? data.write(to: URL(fileURLWithPath: CommandLine.arguments[index + 1]), options: .atomic)
+                    } else { print(String(decoding: data, as: UTF8.self)) }
+                }
+                exit(result.target == nil ? 1 : 0)
             }
+            app.run()
+            return
+        }
+        let panel = VoicePanel()
+        panel.onPending = { router.showPending(panel: panel) }
+        panel.onProbe = {
+            panel.show("三秒后检测目标", "请将目标 Codex 对话置于前台。检测不会发送消息。")
+            Task {
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                let result = await router.resolve(forceCurrent: true)
+                panel.setTarget(result.target?.title ?? "未取得")
+                panel.show(result.target == nil ? "未取得目标" : "目标检测成功", result.reason ?? "已读取并验证当前对话，未发送消息。")
+            }
+        }
+        Task.detached {
             let dryRun = CommandLine.arguments.contains("--dry-run") || FileManager.default.fileExists(atPath: support.appendingPathComponent("dry-run").path)
-            let coordinator = ButtonCoordinator(panel: panel, threadID: thread, dryRun: dryRun)
+            let coordinator = ButtonCoordinator(panel: panel, router: router, dryRun: dryRun)
             activeCoordinator = coordinator
             await coordinator.connect()
         }

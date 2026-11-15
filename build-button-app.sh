@@ -2,9 +2,11 @@
 set -eu
 cd "$(dirname "$0")"
 swift build -c release --product anker-button-voice
-mkdir -p "安克豆按键语音.app/Contents/MacOS"
-mkdir -p "安克豆按键语音.app/Contents/Resources"
-cp Support/ButtonInfo.plist "安克豆按键语音.app/Contents/Info.plist"
-cp .build/release/anker-button-voice "安克豆按键语音.app/Contents/MacOS/anker-button-voice"
-cp docs/assets/BeanBridge.icns "安克豆按键语音.app/Contents/Resources/BeanBridge.icns"
-codesign --force --deep --sign - "安克豆按键语音.app"
+app_dir="${1:-dist/安克豆按键语音.app}"
+mkdir -p "$app_dir/Contents/MacOS"
+mkdir -p "$app_dir/Contents/Resources"
+cp Support/ButtonInfo.plist "$app_dir/Contents/Info.plist"
+cp .build/release/anker-button-voice "$app_dir/Contents/MacOS/anker-button-voice"
+cp scripts/set-target.py "$app_dir/Contents/Resources/set-target.py"
+cp docs/assets/BeanBridge.icns "$app_dir/Contents/Resources/BeanBridge.icns"
+codesign --force --deep --sign - "$app_dir"

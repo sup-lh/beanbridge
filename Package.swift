@@ -10,6 +10,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "OpenBeanKit"),
+        .target(name: "VoiceRouting"),
         .executableTarget(
             name: "AnkerVoiceBridge",
             dependencies: ["OpenBeanKit"],
@@ -20,12 +21,13 @@ let package = Package(
         ),
         .executableTarget(
             name: "AnkerButtonVoice",
-            dependencies: ["OpenBeanKit"],
+            dependencies: ["OpenBeanKit", "VoiceRouting"],
             linkerSettings: [.unsafeFlags([
                 "-Xlinker", "-sectcreate", "-Xlinker", "__TEXT",
                 "-Xlinker", "__info_plist", "-Xlinker", "Support/ButtonInfo.plist"
             ])]
         ),
-        .testTarget(name: "OpenBeanKitTests", dependencies: ["OpenBeanKit"])
+        .testTarget(name: "OpenBeanKitTests", dependencies: ["OpenBeanKit"]),
+        .testTarget(name: "VoiceRoutingTests", dependencies: ["VoiceRouting"])
     ]
 )
