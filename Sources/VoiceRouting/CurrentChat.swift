@@ -1,6 +1,13 @@
 import AppKit
 import ApplicationServices
 
+public enum CurrentChatError: Error, CustomStringConvertible {
+    case noChatLink
+    public var description: String {
+        "未取得聊天链接。新建空白页尚无对话 ID；录音结束后会自动新建独立会话。已有对话请确认 ⌘⌥L 可用。"
+    }
+}
+
 /// All UI and pasteboard access stays on the main actor. Does not activate or navigate Codex.
 @MainActor public enum CurrentChat {
     private static var capturing = false
@@ -99,7 +106,7 @@ import ApplicationServices
                     return id
                 }
             }
-            throw RoutingError("未取得新的聊天链接，请确认正在显示已有对话，且 ⌘⌥L 未被改键。")
+            throw CurrentChatError.noChatLink
         }
         let first = try await copy()
         try await Task.sleep(nanoseconds: 100_000_000)

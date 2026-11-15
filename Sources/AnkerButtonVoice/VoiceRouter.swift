@@ -56,49 +56,19 @@ final class VoiceRouter: @unchecked Sendable {
             }
             let target = try await Task.detached { try self.validate(id) }.value
             return RouteResult(target: target, reason: nil)
+        } catch CurrentChatError.noChatLink {
+            return RouteResult(target: nil, reason: "未取得聊天链接，录音结束后新建独立会话", createNew: !forceCurrent)
         } catch {
             return RouteResult(target: nil, reason: String(describing: error))
         }
     }
 
     func deliver(text: String, destination: RouteResult, panel: VoicePanel) throws {
-        var message = PendingMessage(text: text, target: destination.target, note: destination.reason ?? "等待投递")
+        let message = PendingMessage(text: text, target: destination.target, note: destination.reason ?? "等待投递")
         // A failed save prevents submission: recovery must exist before any external side effect.
         try store.save(message)
         if destination.createNew {
-            message = try store.beginCreation(message.id)
-            panel.setTarget("独立新会话")
-            panel.show("正在创建新会话…", "最终文字已保存，创建成功后打开 Codex 并发送。")
-            let receipt = support.appendingPathComponent("Creation/" + message.id.uuidString + ".json")
-            let directory = support.appendingPathComponent("Chats/" + message.id.uuidString, isDirectory: true)
-            do {
-                let output = try runTool("/usr/bin/python3", [helper("create-chat.py").path,
-                    "--codex", codex, "--directory", directory.path, "--receipt", receipt.path], timeout: 70)
-                let target = try JSONDecoder().decode(VoiceTarget.self, from: Data(output.utf8))
-                guard UUID(uuidString: target.id) != nil else { throw RoutingError("创建回执没有有效的会话 ID。") }
-                message.target = target; message.state = .pending; message.note = "新会话已创建，等待打开与投递"
-                try store.save(message)
-                // A deep link launches the app if absent and loads this exact persisted thread.
-                _ = try runTool("/usr/bin/open", ["codex://threads/" + target.id], timeout: 10)
-                try submit(message, target: target, panel: panel)
-            } catch {
-                // Acknowledged creations are recoverable even if the helper dies before stdout.
-                if message.target == nil,
-                   let data = try? Data(contentsOf: receipt),
-                   let record = try? JSONDecoder().decode(CreationReceipt.self, from: data),
-                   let target = record.target {
-                    message.target = target; message.state = .pending
-                }
-                if message.state == .creating || message.state == .pending {
-                    // Do not overwrite submit()'s uncertain/queued state with this older snapshot.
-                    if let saved = try? store.messages().first(where: { $0.id == message.id }),
-                       saved.state == .creating || saved.state == .pending {
-                        message.note = "新会话流程未完成：\(error)。请在待发箱核对。"
-                        try? store.save(message)
-                    }
-                }
-                throw error
-            }
+            try createAndSubmit(message, panel: panel)
             return
         }
         guard let target = destination.target else {
@@ -107,6 +77,43 @@ final class VoiceRouter: @unchecked Sendable {
             return
         }
         try submit(message, target: target, panel: panel)
+    }
+
+    private func createAndSubmit(_ original: PendingMessage, panel: VoicePanel) throws {
+        var message = original
+        message = try store.beginCreation(message.id)
+        panel.setTarget("独立新会话")
+        panel.show("正在创建新会话…", "最终文字已保存，创建成功后打开 Codex 并发送。")
+        let receipt = support.appendingPathComponent("Creation/" + message.id.uuidString + ".json")
+        let directory = support.appendingPathComponent("Chats/" + message.id.uuidString, isDirectory: true)
+        do {
+            let output = try runTool("/usr/bin/python3", [helper("create-chat.py").path,
+                "--codex", codex, "--directory", directory.path, "--receipt", receipt.path], timeout: 70)
+            let target = try JSONDecoder().decode(VoiceTarget.self, from: Data(output.utf8))
+            guard UUID(uuidString: target.id) != nil else { throw RoutingError("创建回执没有有效的会话 ID。") }
+            message.target = target; message.state = .pending; message.note = "新会话已创建，等待打开与投递"
+            try store.save(message)
+            // A deep link launches the app if absent and loads this exact persisted thread.
+            _ = try runTool("/usr/bin/open", ["codex://threads/" + target.id], timeout: 10)
+            try submit(message, target: target, panel: panel)
+        } catch {
+            // Acknowledged creations are recoverable even if the helper dies before stdout.
+            if message.target == nil,
+               let data = try? Data(contentsOf: receipt),
+               let record = try? JSONDecoder().decode(CreationReceipt.self, from: data),
+               let target = record.target {
+                message.target = target; message.state = .pending
+            }
+            if message.state == .creating || message.state == .pending {
+                // Do not overwrite submit()'s uncertain/queued state with this older snapshot.
+                if let saved = try? store.messages().first(where: { $0.id == message.id }),
+                   saved.state == .creating || saved.state == .pending {
+                    message.note = "新会话流程未完成：\(error)。请在待发箱核对。"
+                    try? store.save(message)
+                }
+            }
+            throw error
+        }
     }
 
     private func submit(_ message: PendingMessage, target: VoiceTarget, panel: VoicePanel) throws {
@@ -166,7 +173,15 @@ final class VoiceRouter: @unchecked Sendable {
                 alert.addButton(withTitle: "发送到此链接")
                 alert.addButton(withTitle: "取消")
                 alert.addButton(withTitle: "复制文字")
+                if message.target == nil { alert.addButton(withTitle: "新建独立会话并发送") }
                 let response = alert.runModal()
+                if response.rawValue == NSApplication.ModalResponse.alertFirstButtonReturn.rawValue + 3 {
+                    self.work.async {
+                        do { try self.createAndSubmit(message, panel: panel) }
+                        catch { panel.show("文字仍在待发箱", String(describing: error)) }
+                    }
+                    return
+                }
                 if response == .alertThirdButtonReturn { self.copy(message.text); return }
                 guard response == .alertFirstButtonReturn else { return }
                 let id = try ChatLink.threadID(input.stringValue)
