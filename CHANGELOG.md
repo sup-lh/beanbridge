@@ -17,7 +17,8 @@
   - 新增 [scripts/paseo-chat.py](scripts/paseo-chat.py) 与 [scripts/paseo-daemon-helper.mjs](scripts/paseo-daemon-helper.mjs)：支持 `validate`（`paseo inspect --json` 只读校验）、`resolve-workspace-tab`（工作区选中标签消歧与空白标签识别）、`create`（通过 Paseo 内置 Electron Node 运行时调用本地 daemon 幂等创建无初始 prompt 的空闲会话并写入 `0o600` 凭据），以及 `submit`（`paseo send --no-wait --json --behavior steer --prompt-file` 投递语音文字）。
 - **测试、全屏兼容与构建脚本更新**：
   - 在 [CurrentChat.swift](Sources/VoiceRouting/CurrentChat.swift) 增加 `isAuxiliaryWindowMetadata` / `resolveSingleConversationWindow`，过滤 macOS 全屏最大化/状态栏顶部条（如高 `33px` 工具条与非 `AXStandardWindow` 浮层）干扰，确保 Paseo / 豆包 / Codex 全屏最大化时仍可正常锁定单一主会话窗口。
-  - 新增 [PaseoRoutingTests.swift](Tests/VoiceRoutingTests/PaseoRoutingTests.swift) 与 [scripts/test-paseo-chat.py](scripts/test-paseo-chat.py)，更新 [build-button-app.sh](build-button-app.sh) 与 [scripts/verify-release.sh](scripts/verify-release.sh)。
+  - 新增 [PaseoRoutingTests.swift](Tests/VoiceRoutingTests/PaseoRoutingTests.swift) 与 [scripts/test-paseo-chat.py](scripts/test-paseo-chat.py)（全仓共 49 项 Swift + 16 项 Python 单元测试通过），更新 [build-button-app.sh](build-button-app.sh) 与 [scripts/verify-release.sh](scripts/verify-release.sh)。
+  - **Paseo 真机工作区端到端验收通过**：在最大化 `Paseo.app` 工作区窗口下，实测通过 `kAXTitleAttribute` + `resolve-workspace-tab` 精确锁定当前非归档 Agent 会话，并用实体按键录音将语音文字真实送达并触发本对话响应；空白/草稿标签自动建聊及轻敲改发新会话仍待后续实测。
 
 ## 0.5.0 — 2026-11-15
 

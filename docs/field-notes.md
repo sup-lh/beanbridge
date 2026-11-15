@@ -96,17 +96,18 @@
   6. 录音中轻敲震动改发新会话（固件 04.92 分片 `flags=01`）真机验收通过。
   7. `DoubaoWork.app`（`com.work.pc.doubao`）真机联调通过：确认 `chrome://doubaowork-chat/chat` 目标探测、25 字空框占位符过滤下正常发送，以及退出/轻敲新建只打开单个主窗口。
   8. 应用内「ASR 语音识别模型管理与下载中心」真机下载验收通过：在本机 `dist/安克豆按键语音.app` 中成功下载 `ggml-small.bin`（465 MB）、完成后台 SHA-256 校验与切换。
+  9. `Paseo.app`（`sh.paseo.desktop`）最大化工作区窗口真机端到端验收通过：在工作区 `/workspace/<id>` 路由下通过 `kAXTitleAttribute` 回退与 `resolve-workspace-tab` 精确匹配当前唯一非归档会话，实体按键录音后已将多条语音文字真实送达当前 Paseo 对话并收到回执；草稿/空白页自动新建与轻敲改发新会话待后续实测。
 - **单元测试 / 静态编译与脚本离线验证通过（严禁记为真机硬件长测通过）**：
   1. **全量 Swift 测试全绿**：`swift test` 全量共 49 项 XCTest 全部通过（0 失败）：ASRModelCatalogTests 6 项、LiveProbePolicyTests 4 项、ToolLocatorTests 1 项、RoutingTests 5 项、MultiAppRoutingTests 12 项、PaseoRoutingTests 5 项、ReconnectAndWorkbenchTests 16 项（含 `.sleeping` 断线保护、04.92 bit 0 与 VAD 时间戳搜索回归）。
-  2. **Python 脚本单元测试全绿**：`scripts/test-create-chat.py`、`scripts/test-doubao-chat.py` 与 `scripts/test-paseo-chat.py` 共 15 项测试全部通过。
+  2. **Python 脚本单元测试全绿**：`scripts/test-create-chat.py`（3 项）、`scripts/test-doubao-chat.py`（7 项）与 `scripts/test-paseo-chat.py`（6 项）共 16 项测试全部通过。
   3. **Release 构建与打包校验全部 PASS**：`swift build -c release` 零错误通过（仅余 `Sources/OpenBeanKit/Link.swift:155` CoreBluetooth `CBPeripheral` 非 Sendable 捕获预存警告）；`scripts/verify-release.sh` 执行 `./build-button-app.sh` 资源校验、`jfk.wav --self-test` 与只读 `--probe-target` 全程 PASS；`dist/安克豆按键语音.app/Contents/Resources` 已完整包含 `doubao-chat.py`、`create-chat.py`、`paseo-chat.py`、`paseo-daemon-helper.mjs`、`set-target.py`、`BeanBridge.icns`。
-  4. **可插拔多目标协议与 Paseo 适配**：`AppTargetAdapter`、`DoubaoTargetAdapter`、`PaseoTargetAdapter`、`AppTargetRegistry`、`TargetAppPreferenceStore`。`Paseo.app` 真实客户端实体按键端到端尚待实测。
+  4. **可插拔多目标协议与 Paseo 扩展路径**：`AppTargetAdapter`、`DoubaoTargetAdapter`、`PaseoTargetAdapter`、`AppTargetRegistry`、`TargetAppPreferenceStore`。其中 `Paseo.app` 空白/草稿页（`"新建 Agent"` 等）自动新建会话及录音中轻敲改发新会话尚待真机实体按键实测。
   5. **BLE 自动重连与睡眠唤醒恢复**（`ReconnectCoordinator`）：实现了指数退避（1s~30s）、NSWorkspace 睡眠唤醒事件监听及连接状态机，代码已编译且 16 项单元测试通过，但**尚未在 D3200 实体设备上经历真实休眠恢复验证**。
   6. **离机增量同步与清单管理**（`WorkbenchSync`）：`SyncManifestStore` 原子落盘、未同步录音增量过滤逻辑已实现并测试，但**尚未在真实设备多离线文件积压场景下进行实测**。
   7. **ASR 模型目录、下载中心与热词表**：`ASRModelCatalog`、`ASRModelManagerWindow` 与 `ASRService` 支持多源下载、实时进度/剩余时间、后台流式 SHA-256 校验、`0o600` 原子替换、`support/hotwords.txt` 专词提示；`LivePreview` 无 ffmpeg 纯内存 48kHz->16kHz 下采样预览优化已实现。
   8. **菜单栏常驻与灵感收集箱**：`NSStatusItem` 菜单栏常驻（展开时动态刷新下载进度）、浮窗取消本条录音，以及 `WorkbenchPanel` 灵感收集箱（带 VAD 时间戳切片与分段检索回放）均已完成实现并通过本地编译与回归自检。
 - 构建：两个 Swift release 产品可构建；上游 BLE 封装存在一处 Swift 并发兼容警告，未靠放宽断言或超时掩盖。
-- 自动测试：覆盖全量 49 项 Swift 测试与 15 项 Python 测试，包括模型下载校验/失败清理（离线 `URLProtocol` 桩）、录音空闲状态、唯一新增文件选择、按键事件解析、多目标适配与 Paseo 窗口锁定/防穿越、防重复创建与并发投递、断线睡眠状态转换及 VAD 切片检索等。
+- 自动测试：覆盖全量 49 项 Swift 测试与 16 项 Python 测试，包括模型下载校验/失败清理（离线 `URLProtocol` 桩）、录音空闲状态、唯一新增文件选择、按键事件解析、多目标适配与 Paseo 窗口锁定/防穿越、防重复创建与并发投递、断线睡眠状态转换及 VAD 切片检索等。
 - 这些测试不覆盖全天稳定性、异常断线恢复、多设备切换、ASR 质量或所有桌面客户端版本。
 
 ## 可以复用的工作方法

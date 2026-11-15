@@ -221,3 +221,8 @@ Codex 会话内可调用的 `create_thread`、导航等工具不等于第三方�
 - **工作版窗口状态映射**：`DoubaoWork.app` 在主对话或任务界面暴露 `chrome://doubaowork-chat/chat` 或 `doubaowork://doubaowork-chat`，适配层将其映射为 `.chatID("doubaowork-active")`，并直接通过应用内 Accessibility 焦点激活与粘贴回车提交文字（可设 `BEANBRIDGE_DOUBAO_DIAG=1` 按需开启诊断快照）。
 - **25 字空框提示误拦截修复**：实机复现显示，`DoubaoWork.app` 空输入框会将提示文案 `"发消息或创建任务... / 使用技能 @ 添加资料"`（去空格后 25 字）放入 `AXValue` 且不提供 `AXPlaceholderValue`。`CurrentChat.isDoubaoPlaceholderOrEmpty`（标记 `nonisolated`）对该内置空框提示文案做精确前缀+关键字+长度上限（`<= 32`）过滤，确保视觉空框可正常投递，而包含真实用户草稿的任意内容仍继续触发防覆盖保护。
 - **冷启动/新建避免弹出双窗口**：实机测试中发现向 `/usr/bin/open -b com.work.pc.doubao` 附加 `doubaowork://...` URL 会让豆包工作版额外拉起一个带 Chrome 外框的 `DoubaoWork Browser.app`（`--saman-launched-by-url`）。修复 [scripts/doubao-chat.py](../../scripts/doubao-chat.py) 与 `DoubaoTargetAdapter.openSession` 后，仅通过 Bundle ID 拉起主应用与辅助功能聚焦唯一主窗口，经用户本机多次退出冷启动与轻敲新建验证，双窗口问题已消除。
+
+### 6.3 本轮验证结果（2026-11-16）
+
+- **Paseo 最大化工作区实机端到端验收**：在本机最大化 `Paseo.app` 工作区（`/workspace/<id>`）窗口下，实测确认 `kAXTitleAttribute` 回退 + `resolve-workspace-tab` 准确锁定当前唯一非归档会话，实体按键录音后成功投递语音文字并真实触发当前 Paseo 会话响应；空白/草稿页（如 `"新建 Agent"`）自动建新会话与轻敲改发新会话待后续实测。
+- **全量回归**：`swift test` 共 49 项 XCTest 全部通过；`unittest` 覆盖 `test-create-chat.py`（3 项）、`test-doubao-chat.py`（7 项）、`test-paseo-chat.py`（6 项）共 16 项全部通过。

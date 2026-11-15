@@ -18,7 +18,7 @@
 
 BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 Mac，在本机完成高精度语音识别，并把最终文字路由投递到指定目标应用（目前已支持 **Codex**、**豆包 Doubao** 与 **Paseo** 适配器，可通过 `AppTargetAdapter` 扩展更多桌面应用）。同时提供菜单栏常驻、BLE 断线自动重连与睡眠唤醒恢复、离机录音增量同步、VAD 分段与灵感收集箱工作台面板。
 
-**实测边界说明**：Codex 前台锁定、关闭后冷启动建聊、录音中轻敲（`04.92` `userMarked`）改发新会话及 BlackHole 音频桥均已在真机 D3200 实体按键上端到端验证通过；本轮新增的 **豆包工作版 `DoubaoWork.app` 目标探测、单窗口唤醒与空框占位符发送** 及 **应用内 ASR 模型管理与下载中心（已在本机实测下载并校验 `ggml-small.bin` 465 MB）** 已通过真实桌面端验收；**Paseo 桌面端/守护进程适配**、BLE 自动重连/休眠恢复、离机增量同步与灵感收集箱工作台面板已通过全量 Swift/Python 单元测试（49 项 Swift + 15 项 Python）、`release` 构建与本地自检脚本验证，**尚未完成 Paseo 真机按键端到端发送及 D3200 全天睡眠/离线积压实机测试**。
+**实测边界说明**：Codex 前台锁定、关闭后冷启动建聊、录音中轻敲（`04.92` `userMarked`）改发新会话及 BlackHole 音频桥均已在真机 D3200 实体按键上端到端验证通过；**豆包工作版 `DoubaoWork.app`**（目标探测、单窗口唤醒与空框占位符发送）、**应用内 ASR 模型管理与下载中心**（已在本机实测下载并校验 `ggml-small.bin` 465 MB），以及 **Paseo 最大化工作区窗口目标锁定与真机实体按键端到端送达当前会话**均已完成真实桌面端验收；Paseo 草稿/空白页自动新建会话、BLE 自动重连/休眠恢复、离机增量同步与灵感收集箱工作台面板已通过全量 Swift/Python 单元测试（49 项 Swift + 16 项 Python）、`release` 构建与本地自检脚本验证，**尚未完成 Paseo 草稿页建聊/轻敲新会话及 D3200 全天睡眠/离线积压实机测试**。
 
 ## 两种使用方式
 
@@ -38,9 +38,9 @@ BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 
 ## 验证状态
 
 - [x] **真机实体按键实测**：D3200 蓝牙发现、握手、实时音频解码与 BlackHole 麦克风桥。
-- [x] **真机实体按键实测**：实体按键开始/结束、浮窗预览、Codex 前台会话锁定/切页防串、冷启动建聊、录音中轻敲（`04.92` `flags=01` bit 0）改发新会话并真实收到回复。
+- [x] **真机实体按键实测**：实体按键开始/结束、浮窗预览、Codex 前台会话锁定/切页防串、冷启动建聊、录音中轻敲（`04.92` `flags=01` bit 0）改发新会话并真实收到回复；Paseo 最大化工作区窗口当前会话识别、按键录音投递并真实送达当前对话。
 - [x] **桌面端与 UI 实测**：`DoubaoWork.app` 目标探测、单窗口冷启动/轻敲唤醒及空框占位符投递已本机验证；应用内「ASR 语音识别模型管理与下载中心」已完成 `ggml-small.bin` 实机下载、进度追踪与 SHA-256 校验切换。
-- [x] **单元测试与本地脚本验证**：`AppTargetAdapter` 多目标抽象、豆包适配器与 Paseo 适配器（`PaseoTargetAdapter` / `scripts/paseo-chat.py` + `scripts/paseo-daemon-helper.mjs`）、`TargetAppPreferenceStore`、`ASRModelCatalog` 多源下载/校验状态机与热词、无 `ffmpeg` 内存重采样 `LivePreview`、`NSStatusItem` 菜单栏与 `WorkbenchPanel` 工作台、以及 `ReconnectCoordinator` / `WorkbenchSync` 均通过编译与自动测试（Paseo 真机端到端及全天睡眠稳定性待实测）。
+- [x] **单元测试与本地脚本验证**：`AppTargetAdapter` 多目标抽象、豆包适配器与 Paseo 适配器（`PaseoTargetAdapter` / `scripts/paseo-chat.py` + `scripts/paseo-daemon-helper.mjs`）、`TargetAppPreferenceStore`、`ASRModelCatalog` 多源下载/校验状态机与热词、无 `ffmpeg` 内存重采样 `LivePreview`、`NSStatusItem` 菜单栏与 `WorkbenchPanel` 工作台、以及 `ReconnectCoordinator` / `WorkbenchSync` 均通过编译与自动测试（49 项 Swift + 16 项 Python；Paseo 空白/草稿页自动建聊、轻敲新会话及全天睡眠稳定性待实测）。
 
 > **每段录音的目标在首次按键时锁定。** 浮窗显示目标标题，录音中切换对话不会改目标。读取失败时文字保存在本地待发箱，绝不使用旧的固定目标。第二次按键会自动提交最终识别文字，预览和最终结果可能有差异。
 
@@ -164,7 +164,7 @@ swift build -c release --product anker-voice-bridge
 - **识别准确度与模型开销**：默认回退 `ggml-base.bin` 较轻量但专有名词易误听；建议使用 `./scripts/setup-model.sh --tier small-q5_1 --set-default`（或 `small` / `medium`）并在 `hotwords.txt` 补充专业词汇。实时预览已取消每轮拉起 `ffmpeg` 进程并在内存中完成 48k→16k 重采样与静音能量门控，但大模型全天续航与长时间发热仍需更多实机压测。
 - **长度**：按键模式在结束后检查音频，超过 5 分钟不自动发送；这不是录满 5 分钟就自动停录。
 - **重连与睡眠恢复**：已实现 `ReconnectCoordinator` 指数退避后台重连与 `NSWorkspace` 系统休眠/唤醒状态恢复逻辑（`.sleeping` 状态不触发无效重连），并通过状态机单元测试，但真实 D3200 全天休眠续航场景尚未实机长测。
-- **豆包、Paseo 与工作台**：`DoubaoTargetAdapter` 已在本机完成 `DoubaoWork.app` 真实窗口探测、单窗口唤起与发送验证；`PaseoTargetAdapter`、`scripts/paseo-chat.py`、`scripts/paseo-daemon-helper.mjs`、`OfflineSyncCoordinator`、`AudioVADslicer` 与 `WorkbenchArchive` 已完成核心实现并通过 Swift/Python 单元测试；`Paseo` 桌面端实体按键全链路及工作台海量离线录音积压尚待实机验收。
+- **豆包、Paseo 与工作台**：`DoubaoTargetAdapter` 已在本机完成 `DoubaoWork.app` 真实窗口探测、单窗口唤起与发送验证；`PaseoTargetAdapter` 已在本机完成最大化工作区当前会话识别与实体按键发送至当前对话的端到端验收；`OfflineSyncCoordinator`、`AudioVADslicer` 与 `WorkbenchArchive` 已通过 Swift/Python 单元测试；Paseo 草稿/空白页自动建聊、轻敲改发新会话及工作台海量离线录音积压尚待实机验收。
 - **声音数据**：仓库没有原始录音；程序正常处理完成会清理本机临时音频，崩溃时仍可能残留临时文件。设备录音不会自动删除，离机增量同步依赖 `Workbench/sync-manifest.json` 断点追踪去重。
 - **权限与签名**：应用是本机临时签名，重建会改变签名，可能需要重新授权蓝牙及辅助功能；没有 Apple 公证发布包。若辅助功能列表显示开启但检测仍无权限，可运行 `tccutil reset Accessibility dev.codex.anker-button-voice` 仅重置本应用，再用“+”添加当前 `dist/安克豆按键语音.app` 并开启。
 - **发送失败**：先持久化文字再提交；超时或中断的消息不会自动重发，需在目标聊天核对。不承诺跨外部客户端的严格一次投递保证。
