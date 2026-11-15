@@ -36,6 +36,15 @@ import ApplicationServices
             throw RoutingError("读取目标时窗口发生变化，本次文字将保留到待发箱。")
         }
     }
+    /// A background or minimized window is not a closed app. Unknown AX state fails closed.
+    public static func needsNewChat(bundleID: String = "com.openai.codex") -> Bool {
+        let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
+        guard !apps.isEmpty else { return true }
+        guard apps.count == 1, isTrusted else { return false }
+        let ax = AXUIElementCreateApplication(apps[0].processIdentifier)
+        guard let windows = value(ax, kAXWindowsAttribute) as? [AXUIElement] else { return false }
+        return windows.isEmpty
+    }
     public static var isTrusted: Bool { AXIsProcessTrusted() }
     public static func requestAccess() {
         _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary)

@@ -5,7 +5,12 @@ import VoiceRouting
 struct RouteResult: Sendable {
     let target: VoiceTarget?
     let reason: String?
+    var createNew: Bool = false
 }
+private struct CreationReceipt: Decodable {
+    let target: VoiceTarget?
+}
+
 struct ProbeResult: Encodable {
     let target: VoiceTarget?
     let error: String?
@@ -15,11 +20,15 @@ final class VoiceRouter: @unchecked Sendable {
     let store = PendingStore(directory: support.appendingPathComponent("Pending", isDirectory: true))
     private let work = DispatchQueue(label: "beanbridge.routing.delivery")
 
-    private func validate(_ id: String) throws -> VoiceTarget {
-        let bundled = Bundle.main.resourceURL?.appendingPathComponent("set-target.py")
+    private func helper(_ name: String) -> URL {
+        let bundled = Bundle.main.resourceURL?.appendingPathComponent(name)
         let source = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("scripts/set-target.py")
-        let helper = bundled.flatMap { FileManager.default.fileExists(atPath: $0.path) ? $0 : nil } ?? source
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("scripts/" + name)
+        return bundled.flatMap { FileManager.default.fileExists(atPath: $0.path) ? $0 : nil } ?? source
+    }
+
+    private func validate(_ id: String) throws -> VoiceTarget {
+        let helper = helper("set-target.py")
         let result = try runTool("/usr/bin/python3", [helper.path, "--thread-id", id, "--json"], timeout: 50)
         let target = try JSONDecoder().decode(VoiceTarget.self, from: Data(result.utf8))
         guard target.id == id else { throw RoutingError("会话校验返回了不同的 ID。") }
@@ -37,6 +46,10 @@ final class VoiceRouter: @unchecked Sendable {
                 id = uuid.uuidString.lowercased()
             } else {
                 guard forceCurrent || mode == "current" else { throw RoutingError("routing-mode 只支持 current 或 fixed。") }
+                let needsNew = await CurrentChat.needsNewChat()
+                if !forceCurrent && needsNew {
+                    return RouteResult(target: nil, reason: "录音结束后创建独立新会话", createNew: true)
+                }
                 let keyText = env["BEANBRIDGE_COPY_KEYCODE"] ?? "37"
                 guard let key = UInt16(keyText), key <= 127 else { throw RoutingError("复制链接的键码配置无效。") }
                 id = try await CurrentChat.capture(keyCode: key)
@@ -49,9 +62,45 @@ final class VoiceRouter: @unchecked Sendable {
     }
 
     func deliver(text: String, destination: RouteResult, panel: VoicePanel) throws {
-        let message = PendingMessage(text: text, target: destination.target, note: destination.reason ?? "等待投递")
+        var message = PendingMessage(text: text, target: destination.target, note: destination.reason ?? "等待投递")
         // A failed save prevents submission: recovery must exist before any external side effect.
         try store.save(message)
+        if destination.createNew {
+            message = try store.beginCreation(message.id)
+            panel.setTarget("独立新会话")
+            panel.show("正在创建新会话…", "最终文字已保存，创建成功后打开 Codex 并发送。")
+            let receipt = support.appendingPathComponent("Creation/" + message.id.uuidString + ".json")
+            let directory = support.appendingPathComponent("Chats/" + message.id.uuidString, isDirectory: true)
+            do {
+                let output = try runTool("/usr/bin/python3", [helper("create-chat.py").path,
+                    "--codex", codex, "--directory", directory.path, "--receipt", receipt.path], timeout: 70)
+                let target = try JSONDecoder().decode(VoiceTarget.self, from: Data(output.utf8))
+                guard UUID(uuidString: target.id) != nil else { throw RoutingError("创建回执没有有效的会话 ID。") }
+                message.target = target; message.state = .pending; message.note = "新会话已创建，等待打开与投递"
+                try store.save(message)
+                // A deep link launches the app if absent and loads this exact persisted thread.
+                _ = try runTool("/usr/bin/open", ["codex://threads/" + target.id], timeout: 10)
+                try submit(message, target: target, panel: panel)
+            } catch {
+                // Acknowledged creations are recoverable even if the helper dies before stdout.
+                if message.target == nil,
+                   let data = try? Data(contentsOf: receipt),
+                   let record = try? JSONDecoder().decode(CreationReceipt.self, from: data),
+                   let target = record.target {
+                    message.target = target; message.state = .pending
+                }
+                if message.state == .creating || message.state == .pending {
+                    // Do not overwrite submit()'s uncertain/queued state with this older snapshot.
+                    if let saved = try? store.messages().first(where: { $0.id == message.id }),
+                       saved.state == .creating || saved.state == .pending {
+                        message.note = "新会话流程未完成：\(error)。请在待发箱核对。"
+                        try? store.save(message)
+                    }
+                }
+                throw error
+            }
+            return
+        }
         guard let target = destination.target else {
             panel.setTarget("待选择")
             panel.show("文字已保存到待发箱", destination.reason ?? "点击待发箱，为这条文字指定聊天链接。")

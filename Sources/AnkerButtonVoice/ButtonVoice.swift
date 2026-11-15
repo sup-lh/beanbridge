@@ -285,7 +285,7 @@ private final class ButtonCoordinator: @unchecked Sendable {
                     let result = await route.value
                     self.events.async {
                         guard self.active?.token == token else { return }
-                        self.panel.setTarget(result.target?.title ?? "待选择（不会自动发送）")
+                        self.panel.setTarget(result.createNew ? "录音结束后新建独立对话" : (result.target?.title ?? "待选择（不会自动发送）"))
                     }
                 }
                 preview.start()

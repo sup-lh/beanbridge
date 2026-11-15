@@ -27,7 +27,7 @@ public enum ChatLink {
 }
 
 public struct PendingMessage: Codable, Sendable {
-    public enum State: String, Codable, Sendable { case pending, submitting, queued, uncertain }
+    public enum State: String, Codable, Sendable { case pending, creating, submitting, queued, uncertain }
     public let id: UUID
     public let createdAt: Date
     public let text: String
@@ -64,6 +64,18 @@ public final class PendingStore: @unchecked Sendable {
             .filter { $0.pathExtension == "json" }
             .map { try JSONDecoder().decode(PendingMessage.self, from: Data(contentsOf: $0)) }
             .sorted { $0.createdAt < $1.createdAt }
+    }
+    public func beginCreation(_ id: UUID) throws -> PendingMessage {
+        lock.lock(); defer { lock.unlock() }
+        let path = directory.appendingPathComponent(id.uuidString + ".json")
+        var message = try JSONDecoder().decode(PendingMessage.self, from: Data(contentsOf: path))
+        guard message.state == .pending, message.target == nil else {
+            throw RoutingError("此消息已经指定目标或尝试创建，不会重复建聊。")
+        }
+        message.state = .creating
+        message.note = "正在创建独立会话；若中断，请核对 Creation 目录的创建回执。"
+        try saveUnlocked(message)
+        return message
     }
     public func beginSubmission(_ id: UUID, target: VoiceTarget) throws -> PendingMessage {
         lock.lock(); defer { lock.unlock() }

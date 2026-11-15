@@ -17,7 +17,7 @@
 
 BeanBridge 将 soundcore Work / 安克 AI 录音豆 D3200 通过蓝牙连接到 Mac，在本机完成语音识别，并把最终文字发送到指定的 Codex 对话。你可以离开键盘口述需求，再用录音豆的第二次按键结束这一条消息。
 
-**这是已在一台 Mac、一颗 04.92 固件设备上验证的实验原型。** 固定对话的完整发送链路已成功；新版已实现首次按键读取并锁定前台对话，自动读取与“录音后切换对话、仍投递原目标”的实体按键入队链路在本机通过测试。自动启动并创建新对话、后台重连仍属于设计阶段。
+**这是已在一台 Mac、一颗 04.92 固件设备上验证的实验原型。** 固定对话的完整发送链路已成功；新版已实现首次按键读取并锁定前台对话，自动读取与“录音后切换对话、仍投递原目标”的实体按键入队链路在本机通过测试。录音开始时 Codex 未运行或已无窗口，会在识别后创建独立新会话、打开桌面并投递；后台重连仍属于设计阶段。
 
 ## 两种使用方式
 
@@ -142,9 +142,13 @@ swift build -c release --product anker-voice-bridge
 | 录音中切换到其他对话 | 仍然投递到浮窗显示的锁定目标 |
 | 无权限、Codex 在后台、多窗口或未取得链接 | 保存文字；在待发箱粘贴明确链接后发送 |
 | 提交超时、程序中断或结果不明 | 保留记录供核对，不自动重试 |
-| Codex 未运行 | 保留文字，用户启动 Codex 并选择对话；不自动创建会话 |
+| Codex 未运行或已关闭所有窗口 | 识别完成后创建独立会话，启动/打开 Codex 并投递 |
 
 待发记录位于 `~/Library/Application Support/AnkerVoiceBridge/Pending`，文件权限为 600、目录为 700，不上传仓库。包含最终文字、目标和投递状态；入队后的记录也保留在本机，可自行清理。`queued` 只说明 CLI 返回成功，最终以目标聊天实际出现消息为准。
+
+新会话不绑定项目，每条使用 `~/Library/Application Support/AnkerVoiceBridge/Chats/<消息 ID>` 作为独立工作目录。空录音不建聊，首次按键时决定创建计划；录音中手动打开其他聊天也不会改发到该聊天。Codex 仅在后台或最小化时不视为关闭。已退出应用不需要辅助功能来判定；判断“所有窗口已关闭”仍需要辅助功能权限。`fixed` 模式继续遵守固定目标。
+
+创建回执保存在同目录下的 `Creation` 文件夹。先取得真实 ID 并持久化，再打开桌面和排队投递；超时或结果不明时不会自动再建一个会话。创建助手在取得持久会话后退出，模型执行交给桌面，不在独立助手中启动模型回合。
 
 实测与剩余边界见 [自动选对话实现说明](docs/context-routing.md)。
 
@@ -166,6 +170,7 @@ swift build -c release --product anker-voice-bridge
 swift build -c release
 swift test
 python3 scripts/set-target.py --check
+python3 scripts/test-create-chat.py
 ```
 
 程序会查找常见安装目录及 `PATH`。特殊位置可使用 `BEANBRIDGE_FFMPEG`、`BEANBRIDGE_WHISPER`、`BEANBRIDGE_CODEX`、`BEANBRIDGE_MODEL`；通过环境变量配置时应从同一终端直接运行可执行文件，Finder 启动的应用不保证继承终端环境。路由可用 `BEANBRIDGE_ROUTING=current|fixed` 覆盖；若仅改了复制快捷键的字母，可用 `BEANBRIDGE_COPY_KEYCODE` 指定 macOS 虚拟键码（默认 37，即 L，修饰键仍为 Command + Option）。

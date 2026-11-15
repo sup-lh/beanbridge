@@ -50,6 +50,25 @@ final class RoutingTests: XCTestCase {
         XCTAssertEqual((permissions[.posixPermissions] as? NSNumber)?.intValue, 0o600)
     }
 
+    func testCreationIsClaimedOnceAndCrashNeverRepeatsIt() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = PendingStore(directory: directory)
+        let message = PendingMessage(text: "new chat", target: nil, note: "")
+        try store.save(message)
+        let claimed = try store.beginCreation(message.id)
+        XCTAssertEqual(claimed.state, .creating)
+        let restarted = PendingStore(directory: directory)
+        XCTAssertThrowsError(try restarted.beginCreation(message.id))
+        XCTAssertThrowsError(try restarted.beginSubmission(message.id, target: VoiceTarget(id: a, title: "A")))
+        var acknowledged = claimed
+        acknowledged.target = VoiceTarget(id: a, title: "A")
+        acknowledged.state = .pending
+        try store.save(acknowledged)
+        XCTAssertThrowsError(try restarted.beginCreation(message.id))
+        XCTAssertEqual(try restarted.beginSubmission(message.id, target: acknowledged.target!).target, acknowledged.target)
+    }
+
     func testConcurrentClaimsHaveOneWinner() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
