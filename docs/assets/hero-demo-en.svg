@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="510" viewBox="0 0 1280 510" role="img" aria-label="BeanBridge 12s live workflow demo: Press to lock -&gt; Live in-memory ASR -&gt; Press to route safely">
+<title>BeanBridge 12s live workflow demo: Press to lock -&gt; Live in-memory ASR -&gt; Press to route safely</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} 
+      @keyframes pulseRing {
+        0%, 100% { r: 64px; opacity: 0; }
+        4% { r: 66px; opacity: 0.9; }
+        16% { r: 96px; opacity: 0; }
+        58% { r: 64px; opacity: 0; }
+        62% { r: 66px; opacity: 0.95; }
+        74% { r: 98px; opacity: 0; }
+      }
+      @keyframes recDot {
+        0%, 5% { fill: #C6F38A; }
+        6%, 60% { fill: #EF4444; }
+        61%, 100% { fill: #C6F38A; }
+      }
+      @keyframes waveA {
+        0%, 6%, 62%, 100% { transform: scaleY(0.22); opacity: 0.35; }
+        15%, 35%, 52% { transform: scaleY(1); opacity: 1; }
+        25%, 44% { transform: scaleY(0.45); opacity: 0.85; }
+      }
+      @keyframes waveB {
+        0%, 6%, 62%, 100% { transform: scaleY(0.25); opacity: 0.35; }
+        12%, 30%, 48% { transform: scaleY(0.5); opacity: 0.85; }
+        20%, 40%, 56% { transform: scaleY(1); opacity: 1; }
+      }
+      @keyframes line1Reveal {
+        0%, 12% { opacity: 0; transform: translateY(4px); }
+        18%, 92% { opacity: 1; transform: translateY(0); }
+        97%, 100% { opacity: 0; }
+      }
+      @keyframes line2Reveal {
+        0%, 28% { opacity: 0; transform: translateY(4px); }
+        35%, 92% { opacity: 1; transform: translateY(0); }
+        97%, 100% { opacity: 0; }
+      }
+      @keyframes driftGuard {
+        0%, 34% { opacity: 0; }
+        40%, 58% { opacity: 1; }
+        64%, 100% { opacity: 0; }
+      }
+      @keyframes packetFly {
+        0%, 61% { opacity: 0; transform: translateX(0px); }
+        64% { opacity: 1; transform: translateX(6px); }
+        72% { opacity: 1; transform: translateX(52px); }
+        75%, 100% { opacity: 0; transform: translateX(64px); }
+      }
+      @keyframes chatBubble {
+        0%, 68% { opacity: 0; transform: translateY(8px); }
+        74%, 94% { opacity: 1; transform: translateY(0); }
+        98%, 100% { opacity: 0; }
+      }
+      @keyframes aiReply {
+        0%, 77% { opacity: 0; transform: translateY(8px); }
+        83%, 94% { opacity: 1; transform: translateY(0); }
+        98%, 100% { opacity: 0; }
+      }
+      @keyframes step1Hi {
+        0%, 24% { stroke: #C6F38A; stroke-width: 1.8; }
+        25%, 100% { stroke: #25493D; stroke-width: 1; }
+      }
+      @keyframes step2Hi {
+        0%, 24% { stroke: #25493D; stroke-width: 1; }
+        25%, 61% { stroke: #C6F38A; stroke-width: 1.8; }
+        62%, 100% { stroke: #25493D; stroke-width: 1; }
+      }
+      @keyframes step3Hi {
+        0%, 61% { stroke: #25493D; stroke-width: 1; }
+        62%, 95% { stroke: #C6F38A; stroke-width: 1.8; }
+        96%, 100% { stroke: #25493D; stroke-width: 1; }
+      }
+      .ring { animation: pulseRing 12s infinite ease-out; }
+      .recdot { animation: recDot 12s infinite; }
+      .wa { transform-box: fill-box; transform-origin: center; animation: waveA 12s infinite ease-in-out; }
+      .wb { transform-box: fill-box; transform-origin: center; animation: waveB 12s infinite ease-in-out; }
+      .l1 { animation: line1Reveal 12s infinite ease-out; }
+      .l2 { animation: line2Reveal 12s infinite ease-out; }
+      .guard { animation: driftGuard 12s infinite ease-in-out; }
+      .pkt { animation: packetFly 12s infinite ease-in-out; }
+      .msg { animation: chatBubble 12s infinite ease-out; }
+      .reply { animation: aiReply 12s infinite ease-out; }
+      .s1 { animation: step1Hi 12s infinite; }
+      .s2 { animation: step2Hi 12s infinite; }
+      .s3 { animation: step3Hi 12s infinite; }
+      @media (prefers-reduced-motion: reduce) {
+        .ring, .wa, .wb, .l1, .l2, .guard, .pkt, .msg, .reply, .s1, .s2, .s3 { animation: none !important; opacity: 1 !important; }
+        .pkt { opacity: 0 !important; }
+      }
+    </style>
+<rect x="0.75" y="0.75" width="1278.5" height="508.5" rx="24" fill="#0A1914" stroke="#244A3D" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.45"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<rect class="s1" x="36" y="24" width="388" height="44" rx="12" fill="#11261F" stroke="#25493D"/>
+<text x="54" y="51" font-size="13" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono">01 · First Press</text>
+<text x="406" y="51" font-size="12.5" fill="#B6D3C3" font-weight="500" text-anchor="end" >Freeze foreground chat</text>
+<rect class="s2" x="446" y="24" width="388" height="44" rx="12" fill="#11261F" stroke="#25493D"/>
+<text x="464" y="51" font-size="13" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono">02 · Live RAM Preview</text>
+<text x="816" y="51" font-size="12.5" fill="#B6D3C3" font-weight="500" text-anchor="end" >48k -&gt; 16k · Tab-switch proof</text>
+<rect class="s3" x="856" y="24" width="388" height="44" rx="12" fill="#11261F" stroke="#25493D"/>
+<text x="874" y="51" font-size="13" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono">03 · Press to Deliver</text>
+<text x="1226" y="51" font-size="12.5" fill="#B6D3C3" font-weight="500" text-anchor="end" >0o600 receipt · Verified send</text>
+<rect x="36" y="88" width="264" height="390" rx="18" fill="#10231D" stroke="#214337" filter="url(#cardShadow)"/>
+<text x="168" y="122" font-size="12" fill="#8FB2A0" font-weight="700" text-anchor="middle" class="mono" letter-spacing="1.2">ANKER D3200 · BLE</text>
+<text x="168" y="144" font-size="12" fill="#678A78" font-weight="500" text-anchor="middle" >FW 04.92 · Battery 92%</text>
+<circle class="ring" cx="168" cy="248" r="66" fill="none" stroke="#C6F38A" stroke-width="2.5"/>
+<circle cx="168" cy="248" r="66" fill="url(#metalRim)"/>
+<circle cx="168" cy="248" r="57" fill="url(#beanGrad)" stroke="#3B6E5B" stroke-width="1.2"/>
+<g transform="translate(126 206) scale(0.32812)">
+<path d="M141 39C102 25 58 49 43 85C27 124 41 169 74 194C100 214 133 215 155 195C177 175 159 151 169 132C178 115 205 114 210 91C215 67 181 51 141 39Z" fill="#C6F38A"/>
+<path d="M139 56C100 74 96 105 116 130C133 153 128 178 104 190" fill="none" stroke="#12372D" stroke-width="15" stroke-linecap="round"/>
+<path d="M174 156V175M194 143V186M214 157V173" fill="none" stroke="#C6F38A" stroke-width="10" stroke-linecap="round"/>
+</g>
+<circle class="recdot" cx="210" cy="288" r="5.5" fill="#C6F38A"/>
+<rect class="wa" x="104" y="351.0" width="6" height="18" rx="3" fill="#C6F38A"/>
+<rect class="wb" x="120" y="344.0" width="6" height="32" rx="3" fill="#C6F38A"/>
+<rect class="wa" x="136" y="337.0" width="6" height="46" rx="3" fill="#C6F38A"/>
+<rect class="wb" x="152" y="346.0" width="6" height="28" rx="3" fill="#C6F38A"/>
+<rect class="wa" x="168" y="335.0" width="6" height="50" rx="3" fill="#C6F38A"/>
+<rect class="wb" x="184" y="342.0" width="6" height="36" rx="3" fill="#C6F38A"/>
+<rect class="wa" x="200" y="350.0" width="6" height="20" rx="3" fill="#C6F38A"/>
+<rect class="wb" x="216" y="340.0" width="6" height="40" rx="3" fill="#C6F38A"/>
+<rect class="wa" x="232" y="348.0" width="6" height="24" rx="3" fill="#C6F38A"/>
+<rect x="56" y="422" width="224" height="32" rx="10" fill="#17332A" stroke="#2D5949" stroke-width="1"/>
+<text x="168.0" y="442.14" font-size="11.5" fill="#CBE8D6" font-weight="600" text-anchor="middle" >Tap body (04.92) -&gt; Fork new chat</text>
+<path d="M304 282H338" stroke="#3E6E58" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="321" y="272" font-size="10.5" fill="#C6F38A" font-weight="700" text-anchor="middle" class="mono">BLE</text>
+<rect x="342" y="88" width="416" height="36" rx="10" fill="#162E27" stroke="#25493D"/>
+<text x="360" y="111" font-size="11.5" fill="#83A594" font-weight="500" text-anchor="start" >macOS Menu Bar</text>
+<rect x="576" y="94" width="172" height="24" rx="6" fill="#0E201B" stroke="#2E594A"/>
+<circle class="recdot" cx="592" cy="106" r="4.5" fill="#C6F38A"/>
+<text x="605" y="110" font-size="11" fill="#F6FAF0" font-weight="600" text-anchor="start" >Bean · 92% · Small</text>
+<rect x="342" y="136" width="416" height="342" rx="16" fill="#122620" stroke="#2B5446" filter="url(#cardShadow)"/>
+<path d="M342 152Q342 136 358 136H742Q758 136 758 152V168H342Z" fill="#18322A"/>
+<circle cx="362" cy="152" r="4.5" fill="#EF4444"/>
+<circle cx="376" cy="152" r="4.5" fill="#F59E0B"/>
+<circle cx="390" cy="152" r="4.5" fill="#10B981"/>
+<text x="550" y="156" font-size="12" fill="#D2E6DA" font-weight="600" text-anchor="middle" >BeanBridge Voice · Floating HUD</text>
+<text x="364" y="198" font-size="15" fill="#F6FAF0" font-weight="700" text-anchor="start" >Listening · In-Memory 16kHz Preview</text>
+<rect x="364" y="212" width="134" height="24" rx="6" fill="#1B372E" stroke="#315D4E" stroke-width="1"/>
+<text x="431.0" y="228.14" font-size="11.5" fill="#E3F2E8" font-weight="600" text-anchor="middle" >Target: Paseo v</text>
+<rect x="506" y="212" width="230" height="24" rx="6" fill="#1B3E2B" stroke="#3E7052"/>
+<rect x="519" y="223" width="10" height="7.5" rx="1.8" fill="none" stroke="#C6F38A" stroke-width="1.6"/>
+<path d="M521 223V220.5A3 3 0 0 1 527 220.5V223" fill="none" stroke="#C6F38A" stroke-width="1.6"/>
+<text x="628" y="228" font-size="11.5" fill="#C6F38A" font-weight="700" text-anchor="middle" >Foreground Single Locked</text>
+<rect x="364" y="250" width="372" height="156" rx="12" fill="#0C1B16" stroke="#214337"/>
+<text x="382" y="276" font-size="12" fill="#C6F38A" font-weight="600" text-anchor="start" >Locked: Paseo · BeanBridge Workspace</text>
+<text x="382" y="314" font-size="15" fill="#F6FAF0" font-weight="500" text-anchor="start" class="l1">“Extract AppTargetAdapter into a clean module,</text>
+<text x="382" y="342" font-size="15" fill="#F6FAF0" font-weight="500" text-anchor="start" class="l2">  and run all 65 routing safety tests.”</text>
+<g class="guard">
+<rect x="382" y="366" width="336" height="26" rx="7" fill="#203A2B" stroke="#3E6E52"/>
+<path d="M398 373L403.5 375.2V379.5C403.5 382.8 401 384.8 398 385.8C395 384.8 392.5 382.8 392.5 379.5V375.2Z" fill="none" stroke="#A7F3D0" stroke-width="1.6" stroke-linejoin="round"/>
+<text x="558" y="383" font-size="11" fill="#A7F3D0" font-weight="600" text-anchor="middle" >Tab switch ignored · Target stays locked</text>
+</g>
+<rect x="364" y="424" width="70" height="30" rx="7" fill="#1A352C" stroke="#2B5345" stroke-width="1"/>
+<text x="399.0" y="442.96" font-size="11" fill="#CFE3D7" font-weight="600" text-anchor="middle" >Probe</text>
+<rect x="437" y="424" width="74" height="30" rx="7" fill="#1A352C" stroke="#2B5345" stroke-width="1"/>
+<text x="474.0" y="442.96" font-size="11" fill="#CFE3D7" font-weight="600" text-anchor="middle" >Pending</text>
+<rect x="514" y="424" width="86" height="30" rx="7" fill="#C6F38A"/>
+<text x="557.0" y="442.96" font-size="11" fill="#0B241C" font-weight="600" text-anchor="middle" >Workbench</text>
+<rect x="603" y="424" width="70" height="30" rx="7" fill="#1A352C" stroke="#2B5345" stroke-width="1"/>
+<text x="638.0" y="442.96" font-size="11" fill="#CFE3D7" font-weight="600" text-anchor="middle" >AX Auth</text>
+<rect x="676" y="424" width="60" height="30" rx="7" fill="#3A1D20" stroke="#7F2D33" stroke-width="1"/>
+<text x="706.0" y="442.96" font-size="11" fill="#FCA5A5" font-weight="600" text-anchor="middle" >Cancel</text>
+<path d="M762 282H818" stroke="#3E6E58" stroke-width="2" stroke-dasharray="4 4"/>
+<circle class="pkt" cx="764" cy="282" r="6" fill="#C6F38A"/>
+<rect x="822" y="88" width="422" height="390" rx="16" fill="#10221C" stroke="#264C3F" filter="url(#cardShadow)"/>
+<path d="M822 104Q822 88 838 88H1228Q1244 88 1244 104V122H822Z" fill="#173028"/>
+<circle cx="842" cy="105" r="4.5" fill="#EF4444"/>
+<circle cx="856" cy="105" r="4.5" fill="#F59E0B"/>
+<circle cx="870" cy="105" r="4.5" fill="#10B981"/>
+<text x="1033" y="109" font-size="12" fill="#D2E6DA" font-weight="600" text-anchor="middle" >Paseo · BeanBridge Workspace</text>
+<rect x="840" y="134" width="198" height="26" rx="7" fill="#1D4234" stroke="#3E7052" stroke-width="1"/>
+<circle cx="854" cy="147.0" r="3.5" fill="#C6F38A"/>
+<text x="945.0" y="150.96" font-size="11" fill="#C6F38A" font-weight="700" text-anchor="middle" >BeanBridge Workspace</text>
+<rect x="1046" y="134" width="178" height="26" rx="7" fill="#142A23" stroke="#214237" stroke-width="1"/>
+<text x="1135.0" y="150.96" font-size="11" fill="#739584" font-weight="500" text-anchor="middle" >Other Scratch Tab</text>
+<rect x="842" y="176" width="382" height="58" rx="12" fill="#152C25" stroke="#22453A"/>
+<text x="858" y="198" font-size="11" fill="#7FA391" font-weight="600" text-anchor="start" class="mono">Agent · Ready</text>
+<text x="858" y="219" font-size="13" fill="#B8D3C4" font-weight="400" text-anchor="start" >Workspace ready for your next refactoring prompt.</text>
+<g class="msg">
+<rect x="866" y="250" width="358" height="86" rx="14" fill="#1B4333" stroke="#4D8564" stroke-width="1.3"/>
+<circle cx="884" cy="270" r="4" fill="#C6F38A"/>
+<text x="896" y="274" font-size="11" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono">BeanBridge Voice · Queued (0o600)</text>
+<text x="884" y="298" font-size="13.5" fill="#F6FAF0" font-weight="500" text-anchor="start" >Extract AppTargetAdapter into a clean module</text>
+<text x="884" y="319" font-size="13.5" fill="#F6FAF0" font-weight="500" text-anchor="start" >and run all 65 routing safety tests.</text>
+</g>
+<g class="reply">
+<rect x="842" y="352" width="382" height="104" rx="14" fill="#0D1C17" stroke="#2A5445"/>
+<circle cx="860" cy="375" r="4.5" fill="#C6F38A"/>
+<text x="872" y="379" font-size="11.5" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono">Paseo Agent · Streaming</text>
+<text x="858" y="405" font-size="13" fill="#E2EFE7" font-weight="500" text-anchor="start" >Got it! Locked onto BeanBridge Workspace—</text>
+<text x="858" y="427" font-size="13" fill="#A9C8B7" font-weight="400" text-anchor="start" >running 49 Swift + 16 Python routing tests now…</text>
+</g>
+</svg>

@@ -1,66 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-label="Menu bar daemon, ASR model center &amp; offline workbench pipeline">
-<title>Menu bar daemon, ASR model center &amp; offline workbench pipeline</title>
-<style>text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif} .mono{font-family:Menlo,Consolas,monospace}</style>
-<rect width="1280" height="480" rx="24" fill="#FFFFFF"/>
-<text x="40" y="48" font-size="28" fill="#111827" font-weight="600" text-anchor="start" >Always-On Daemon, Model Center &amp; Offline Workbench</text>
-<text x="40" y="80" font-size="16" fill="#6B7280" font-weight="400" text-anchor="start" >Three core subsystems keeping BLE resilient, ASR accurate, and offline D3200 recordings searchable.</text>
-<rect x="40" y="110" width="380" height="304" rx="12" fill="#F0FDFA" stroke="#D1D5DB" stroke-width="1.5"/>
-<text x="62" y="140" font-size="12" fill="#0F766E" font-weight="600" text-anchor="start" class="mono">01 · MENU BAR &amp; BLE</text>
-<text x="62" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >ReconnectCoordinator</text>
-<line x1="62" y1="188" x2="398" y2="188" stroke="#E5E7EB"/>
-<rect x="62" y="204" width="8" height="8" rx="2" fill="#0F766E"/>
-<text x="78" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >NSStatusItem Daemon</text>
-<text x="78" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Runs with floating HUD hidden</text>
-<rect x="62" y="243" width="8" height="8" rx="2" fill="#0F766E"/>
-<text x="78" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Exponential Backoff</text>
-<text x="78" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >1s -&gt; 30s auto-reconnect retries</text>
-<rect x="62" y="282" width="8" height="8" rx="2" fill="#0F766E"/>
-<text x="78" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Sleep/Wake Awareness</text>
-<text x="78" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >.sleeping state avoids thrashing</text>
-<rect x="62" y="321" width="8" height="8" rx="2" fill="#0F766E"/>
-<text x="78" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Live Indicators</text>
-<text x="78" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Battery %, recording &amp; countdown</text>
-<rect x="62" y="360" width="8" height="8" rx="2" fill="#0F766E"/>
-<text x="78" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Shortcuts</text>
-<text x="78" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Cmd+V HUD · B Workbench · R Sync</text>
-<rect x="450" y="110" width="380" height="304" rx="12" fill="#EFF6FF" stroke="#D1D5DB" stroke-width="1.5"/>
-<text x="472" y="140" font-size="12" fill="#1D4ED8" font-weight="600" text-anchor="start" class="mono">02 · LOCAL ASR &amp; MODELS</text>
-<text x="472" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >ASRModelDownloadManager</text>
-<line x1="472" y1="188" x2="808" y2="188" stroke="#E5E7EB"/>
-<rect x="472" y="204" width="8" height="8" rx="2" fill="#1D4ED8"/>
-<text x="488" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >4 Verified Tiers</text>
-<text x="488" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Base · Small-Q5_1 · Small · Medium</text>
-<rect x="472" y="243" width="8" height="8" rx="2" fill="#1D4ED8"/>
-<text x="488" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Dual Mirrors</text>
-<text x="488" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Hugging Face Official / hf-mirror</text>
-<rect x="472" y="282" width="8" height="8" rx="2" fill="#1D4ED8"/>
-<text x="488" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Safe Streaming</text>
-<text x="488" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Hidden .part + SHA-256 atomic swap</text>
-<rect x="472" y="321" width="8" height="8" rx="2" fill="#1D4ED8"/>
-<text x="488" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Custom Hotwords</text>
-<text x="488" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >hotwords.txt editable in-app</text>
-<rect x="472" y="360" width="8" height="8" rx="2" fill="#1D4ED8"/>
-<text x="488" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >In-Memory Preview</text>
-<text x="488" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >48kHz -&gt; 16kHz zero-ffmpeg gate</text>
-<rect x="860" y="110" width="380" height="304" rx="12" fill="#F6FAF0" stroke="#D1D5DB" stroke-width="1.5"/>
-<text x="882" y="140" font-size="12" fill="#12372D" font-weight="600" text-anchor="start" class="mono">03 · INSPIRATION WORKBENCH</text>
-<text x="882" y="172" font-size="21" fill="#111827" font-weight="600" text-anchor="start" >WorkbenchSync + VAD</text>
-<line x1="882" y1="188" x2="1218" y2="188" stroke="#E5E7EB"/>
-<rect x="882" y="204" width="8" height="8" rx="2" fill="#12372D"/>
-<text x="898" y="213" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Incremental Sync</text>
-<text x="898" y="230" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >sync-manifest.json skips synced IDs</text>
-<rect x="882" y="243" width="8" height="8" rx="2" fill="#12372D"/>
-<text x="898" y="252" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Energy VAD Slicer</text>
-<text x="898" y="269" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Auto-segments speech timestamps</text>
-<rect x="882" y="282" width="8" height="8" rx="2" fill="#12372D"/>
-<text x="898" y="291" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Search &amp; Filter</text>
-<text x="898" y="308" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Multi-keyword + Inbox/Replay tabs</text>
-<rect x="882" y="321" width="8" height="8" rx="2" fill="#12372D"/>
-<text x="898" y="330" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >Audition &amp; Edit</text>
-<text x="898" y="347" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Playback audio &amp; refine text</text>
-<rect x="882" y="360" width="8" height="8" rx="2" fill="#12372D"/>
-<text x="898" y="369" font-size="14" fill="#111827" font-weight="600" text-anchor="start" >One-Click Forward</text>
-<text x="898" y="386" font-size="12.5" fill="#6B7280" font-weight="400" text-anchor="start" >Send to Codex, Doubao, or Paseo</text>
-<rect x="40" y="428" width="1200" height="34" rx="8" fill="#F3F4F6"/>
-<text x="640" y="449" font-size="12.5" fill="#374151" font-weight="500" text-anchor="middle" class="mono">State directory: ~/Library/Application Support/AnkerVoiceBridge (0o700 directories, 0o600 models, pending queue &amp; receipts)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="616" viewBox="0 0 1280 616" role="img" aria-label="BeanBridge 核心能力矩阵">
+<title>BeanBridge 核心能力矩阵</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} </style>
+<rect x="0.75" y="0.75" width="1278.5" height="614.5" rx="24" fill="#F6FAF3" stroke="#D5E4CF" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.08"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<text x="44" y="52" font-size="26" fill="#0F2921" font-weight="700" text-anchor="start" letter-spacing="-0.5">一个菜单栏守护进程，打通实时按键与离机工作台</text>
+<text x="44" y="80" font-size="15" fill="#466356" font-weight="400" text-anchor="start" >纯 Swift 原生构建（零 Electron 开销），兼顾毫秒级内存预览、多端可插拔路由与全本地隐私落盘。</text>
+<rect x="44" y="104" width="744" height="232" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="68" y="136" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">01 · PLUGGABLE MULTI-APP ROUTING</text>
+<text x="68" y="166" font-size="20" fill="#0F2921" font-weight="700" text-anchor="start" >可插拔三端适配器（AppTargetAdapter）</text>
+<text x="68" y="191" font-size="13.5" fill="#466356" font-weight="400" text-anchor="start" >菜单栏、浮窗或工作台一键切换默认目标；统一复用首按锁定、空白建聊与幂等回执。</text>
+<rect x="68" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="82" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >Codex</text>
+<text x="82" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">com.openai.codex</text>
+<text x="82" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >Cmd+Opt+L 双采样 + 入队</text>
+<rect x="82" y="283" width="136" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="96" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="156.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >真机全链路已实测</text>
+<rect x="304" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="318" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >豆包 / DoubaoWork</text>
+<text x="318" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">com.work.pc.doubao</text>
+<text x="318" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >AX URL + 25字空框占位过滤</text>
+<rect x="318" y="283" width="136" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="332" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="392.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >桌面端实机已实测</text>
+<rect x="540" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="554" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >Paseo</text>
+<text x="554" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">sh.paseo.desktop</text>
+<text x="554" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >kAXTitle + Daemon 唯一消歧</text>
+<rect x="554" y="283" width="136" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="568" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="628.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >工作区按键已实测</text>
+<rect x="808" y="104" width="428" height="232" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="832" y="136" font-size="11.5" fill="#0F766E" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">02 · IN-MEMORY ASR &amp; HOTWORDS</text>
+<text x="832" y="166" font-size="20" fill="#0F2921" font-weight="700" text-anchor="start" >零 FFmpeg 纯内存实时转写</text>
+<text x="832" y="191" font-size="13.5" fill="#466356" font-weight="400" text-anchor="start" >Opus 48kHz 在 Swift 内存中直接重采样至 16kHz PCM。</text>
+<rect x="832" y="208" width="380" height="54" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="848" y="231" font-size="12" fill="#0F2921" font-weight="600" text-anchor="start" class="mono">48kHz Opus (BLE)</text>
+<text x="1002" y="231" font-size="12" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">-&gt;</text>
+<text x="1024" y="231" font-size="12" fill="#0F766E" font-weight="700" text-anchor="start" class="mono">16kHz PCM (RAM)</text>
+<text x="848" y="250" font-size="11" fill="#6E887B" font-weight="400" text-anchor="start" >Sliding energy gate triggers whisper-cli without subprocess bloat</text>
+<text x="832" y="294" font-size="12" fill="#6E887B" font-weight="600" text-anchor="start" class="mono">hotwords.txt:</text>
+<rect x="930" y="277" width="90" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="975.0" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">BeanBridge</text>
+<rect x="1026" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1053.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Codex</text>
+<rect x="1087" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1114.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Paseo</text>
+<rect x="1148" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1175.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Swift</text>
+<rect x="44" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="68" y="388" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">03 · IN-APP MODEL CENTER</text>
+<text x="68" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >可视化模型中心与双源校验</text>
+<text x="68" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >内置 HF 官方源与 hf-mirror 镜像，后台续传 + SHA-256。</text>
+<rect x="68" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="82" y="479" font-size="12.5" fill="#0F2921" font-weight="700" text-anchor="start" class="mono">ggml-small.bin · 465 MB</text>
+<rect x="286" y="465" width="106" height="20" rx="5" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<text x="339.0" y="478.6" font-size="10" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">SHA-256 PASS</text>
+<rect x="82" y="492" width="308" height="6" rx="3" fill="#E2EDE0"/>
+<rect x="82" y="492" width="308" height="6" rx="3" fill="#12372D"/>
+<text x="68" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >4 档可选：Base · Small-Q5_1 · Small (推荐) · Medium</text>
+<text x="68" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">Atomic .part swap · 0o600 model permissions</text>
+<rect x="448" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="472" y="388" font-size="11.5" fill="#0F766E" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">04 · OFFLINE SYNC &amp; VAD WORKBENCH</text>
+<text x="472" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >离机增量同步与能量 VAD 切片</text>
+<text x="472" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >外出盲录回来一键增量拉取，按语音能量切出时间轴。</text>
+<rect x="472" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<rect x="484" y="468" width="98" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="533.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:01-00:06</text>
+<rect x="590" y="468" width="116" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="648.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:08-00:15</text>
+<rect x="714" y="468" width="82" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="755.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:18-00:22</text>
+<text x="472" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >支持多词分词检索 · 单段试听回放 · 修改后一键转发</text>
+<text x="472" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">Workbench/sync-manifest.json checkpoint</text>
+<rect x="852" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="876" y="388" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">05 · MENU BAR &amp; SLEEP-AWARE BLE</text>
+<text x="876" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >菜单栏常驻与睡眠唤醒恢复</text>
+<text x="876" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >关掉浮窗不断连；系统休眠自动挂起，唤醒后退避重连。</text>
+<rect x="876" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<rect x="888" y="471" width="126" height="24" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="902" cy="483.0" r="3.5" fill="#12372D"/>
+<text x="957.0" y="486.96" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" >安克豆 · 92%</text>
+<rect x="1022" y="471" width="88" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="1066.0" y="486.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" class="mono">.sleeping</text>
+<rect x="1118" y="471" width="82" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="1159.0" y="486.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" class="mono">1s -&gt; 30s</text>
+<text x="876" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >捷径：Cmd+V 浮窗 · Cmd+B 工作台 · Cmd+P 待发箱</text>
+<text x="876" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">LSUIElement=true · App Support 0o700</text>
 </svg>

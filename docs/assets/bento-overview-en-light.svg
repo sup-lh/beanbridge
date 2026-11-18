@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="616" viewBox="0 0 1280 616" role="img" aria-label="BeanBridge Architecture &amp; Workbench Bento">
+<title>BeanBridge Architecture &amp; Workbench Bento</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} </style>
+<rect x="0.75" y="0.75" width="1278.5" height="614.5" rx="24" fill="#F6FAF3" stroke="#D5E4CF" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.08"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<text x="44" y="52" font-size="26" fill="#0F2921" font-weight="700" text-anchor="start" letter-spacing="-0.5">One Native AppKit Daemon. Live Routing + Offline Workbench.</text>
+<text x="44" y="80" font-size="15" fill="#466356" font-weight="400" text-anchor="start" >Pure native Swift &amp; AppKit—pairing zero-FFmpeg Whisper previews with pluggable multi-app safety routing.</text>
+<rect x="44" y="104" width="744" height="232" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="68" y="136" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">01 · PLUGGABLE MULTI-APP ROUTING</text>
+<text x="68" y="166" font-size="20" fill="#0F2921" font-weight="700" text-anchor="start" >Pluggable Multi-Client Routing (AppTargetAdapter)</text>
+<text x="68" y="191" font-size="13.5" fill="#466356" font-weight="400" text-anchor="start" >Switch default target anytime from Menu Bar, HUD, or Workbench with unified safety receipts.</text>
+<rect x="68" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="82" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >Codex</text>
+<text x="82" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">com.openai.codex</text>
+<text x="82" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >Cmd+Opt+L dual-check + queue</text>
+<rect x="82" y="283" width="148" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="96" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="162.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >D3200 E2E Verified</text>
+<rect x="304" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="318" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >Doubao / Work</text>
+<text x="318" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">com.work.pc.doubao</text>
+<text x="318" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >AX URL + 25-char hint filter</text>
+<rect x="318" y="283" width="142" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="332" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="395.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >Live App Verified</text>
+<rect x="540" y="208" width="224" height="106" rx="12" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="554" y="232" font-size="14.5" fill="#0F2921" font-weight="700" text-anchor="start" >Paseo</text>
+<text x="554" y="250" font-size="11" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">sh.paseo.desktop</text>
+<text x="554" y="272" font-size="11.5" fill="#466356" font-weight="500" text-anchor="start" >kAXTitle + Daemon tab match</text>
+<rect x="554" y="283" width="148" height="21" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="568" cy="293.5" r="3.5" fill="#12372D"/>
+<text x="634.0" y="297.28" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >Workspace Verified</text>
+<rect x="808" y="104" width="428" height="232" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="832" y="136" font-size="11.5" fill="#0F766E" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">02 · IN-MEMORY ASR &amp; HOTWORDS</text>
+<text x="832" y="166" font-size="20" fill="#0F2921" font-weight="700" text-anchor="start" >Zero-FFmpeg In-Memory Whisper</text>
+<text x="832" y="191" font-size="13.5" fill="#466356" font-weight="400" text-anchor="start" >48kHz Opus resampled to 16kHz PCM directly in Swift RAM.</text>
+<rect x="832" y="208" width="380" height="54" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="848" y="231" font-size="12" fill="#0F2921" font-weight="600" text-anchor="start" class="mono">48kHz Opus (BLE)</text>
+<text x="1002" y="231" font-size="12" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">-&gt;</text>
+<text x="1024" y="231" font-size="12" fill="#0F766E" font-weight="700" text-anchor="start" class="mono">16kHz PCM (RAM)</text>
+<text x="848" y="250" font-size="11" fill="#6E887B" font-weight="400" text-anchor="start" >Sliding energy gate triggers whisper-cli without subprocess bloat</text>
+<text x="832" y="294" font-size="12" fill="#6E887B" font-weight="600" text-anchor="start" class="mono">hotwords.txt:</text>
+<rect x="930" y="277" width="90" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="975.0" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">BeanBridge</text>
+<rect x="1026" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1053.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Codex</text>
+<rect x="1087" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1114.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Paseo</text>
+<rect x="1148" y="277" width="55" height="24" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="1175.5" y="292.96" font-size="11" fill="#0F766E" font-weight="600" text-anchor="middle" class="mono">Swift</text>
+<rect x="44" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="68" y="388" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">03 · IN-APP MODEL CENTER</text>
+<text x="68" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >In-App Model Download Center</text>
+<text x="68" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >HF Official &amp; hf-mirror with background resume &amp; SHA-256.</text>
+<rect x="68" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="82" y="479" font-size="12.5" fill="#0F2921" font-weight="700" text-anchor="start" class="mono">ggml-small.bin · 465 MB</text>
+<rect x="286" y="465" width="106" height="20" rx="5" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<text x="339.0" y="478.6" font-size="10" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">SHA-256 PASS</text>
+<rect x="82" y="492" width="308" height="6" rx="3" fill="#E2EDE0"/>
+<rect x="82" y="492" width="308" height="6" rx="3" fill="#12372D"/>
+<text x="68" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >4 Tiers: Base · Small-Q5_1 · Small (Rec.) · Medium</text>
+<text x="68" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">Atomic .part swap · 0o600 model permissions</text>
+<rect x="448" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="472" y="388" font-size="11.5" fill="#0F766E" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">04 · OFFLINE SYNC &amp; VAD WORKBENCH</text>
+<text x="472" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Offline Sync &amp; Energy VAD Slicer</text>
+<text x="472" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >Incremental manifest sync + timestamped VAD speech slices.</text>
+<rect x="472" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<rect x="484" y="468" width="98" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="533.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:01-00:06</text>
+<rect x="590" y="468" width="116" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="648.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:08-00:15</text>
+<rect x="714" y="468" width="82" height="30" rx="6" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="755.0" y="487" font-size="10.5" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">00:18-00:22</text>
+<text x="472" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >Multi-keyword search · Segment replay · 1-click forward</text>
+<text x="472" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">Workbench/sync-manifest.json checkpoint</text>
+<rect x="852" y="356" width="384" height="228" rx="18" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<text x="876" y="388" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">05 · MENU BAR &amp; SLEEP-AWARE BLE</text>
+<text x="876" y="418" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Menu Bar Daemon &amp; Sleep Guard</text>
+<text x="876" y="442" font-size="13" fill="#466356" font-weight="400" text-anchor="start" >Runs in NSStatusItem with 1s-30s backoff &amp; sleep guard.</text>
+<rect x="876" y="458" width="336" height="50" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<rect x="888" y="471" width="126" height="24" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="902" cy="483.0" r="3.5" fill="#12372D"/>
+<text x="957.0" y="486.96" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" >Bean · 92%</text>
+<rect x="1022" y="471" width="88" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="1066.0" y="486.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" class="mono">.sleeping</text>
+<rect x="1118" y="471" width="82" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="1159.0" y="486.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" class="mono">1s -&gt; 30s</text>
+<text x="876" y="536" font-size="12.5" fill="#466356" font-weight="500" text-anchor="start" >Keys: Cmd+V HUD · Cmd+B Workbench · Cmd+P Pending</text>
+<text x="876" y="560" font-size="11.5" fill="#6E887B" font-weight="500" text-anchor="start" class="mono">LSUIElement=true · App Support 0o700</text>
+</svg>

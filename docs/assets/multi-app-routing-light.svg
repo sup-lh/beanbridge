@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-label="Multi-App Safety Routing &amp; Disambiguation (Paths A–D)">
+<title>Multi-App Safety Routing &amp; Disambiguation (Paths A–D)</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} </style>
+<rect x="0.75" y="0.75" width="1278.5" height="558.5" rx="24" fill="#F6FAF3" stroke="#D5E4CF" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.08"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<defs><marker id="rarr-light" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><path d="M0 0L10 3.5L0 7Z" fill="#12372D"/></marker></defs>
+<text x="44" y="50" font-size="26" fill="#0F2921" font-weight="700" text-anchor="start" letter-spacing="-0.5">Multi-App Safety Routing &amp; Disambiguation</text>
+<rect x="1044" y="28" width="192" height="30" rx="15.0" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<text x="1140.0" y="47.14" font-size="11.5" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">SHIPPED IN v0.5.1</text>
+<text x="44" y="78" font-size="15" fill="#466356" font-weight="400" text-anchor="start" >Target freezes on first button press. Split panes, duplicate titles, or focus jumps fail closed.</text>
+<rect x="310" y="104" width="660" height="72" rx="14" fill="#EEF6E8" stroke="#A8D582" stroke-width="1.5"/>
+<text x="640" y="134" font-size="19" fill="#0F2921" font-weight="700" text-anchor="middle" >First Button Press  —  Inspect Active AppTargetAdapter</text>
+<text x="640" y="159" font-size="12.5" fill="#466356" font-weight="600" text-anchor="middle" >Codex (Cmd+Opt+L UUID)   ·   Doubao / DoubaoWork (AX URL)   ·   Paseo (AX Title + Daemon)</text>
+<path d="M640 176V204M184 204H1096" fill="none" stroke="#12372D" stroke-width="1.8"/>
+<path d="M184 204V234" fill="none" stroke="#12372D" stroke-width="1.8" marker-end="url(#rarr-light)"/>
+<path d="M488 204V234" fill="none" stroke="#12372D" stroke-width="1.8" marker-end="url(#rarr-light)"/>
+<path d="M792 204V234" fill="none" stroke="#12372D" stroke-width="1.8" marker-end="url(#rarr-light)"/>
+<path d="M1096 204V234" fill="none" stroke="#12372D" stroke-width="1.8" marker-end="url(#rarr-light)"/>
+<rect x="44" y="242" width="280" height="240" rx="14" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<rect x="64" y="260" width="74" height="22" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<text x="101.0" y="274.96" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">PATH A</text>
+<text x="64" y="308" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Unique Target Locked</text>
+<text x="64" y="333" font-size="14" fill="#12372D" font-weight="600" text-anchor="start" >Pin exact session ID</text>
+<line x1="64" y1="348" x2="304" y2="348" stroke="#E2EDE0"/>
+<circle cx="70" cy="372" r="2.8" fill="#12372D"/>
+<text x="82" y="376" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Codex: double-copy UUID check</text>
+<circle cx="70" cy="398" r="2.8" fill="#12372D"/>
+<text x="82" y="402" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Doubao: filter 25-char hint</text>
+<circle cx="70" cy="424" r="2.8" fill="#12372D"/>
+<text x="82" y="428" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Paseo: unique non-archived title</text>
+<circle cx="70" cy="450" r="2.8" fill="#12372D"/>
+<text x="82" y="454" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Tab switches never redirect</text>
+<rect x="348" y="242" width="280" height="240" rx="14" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<rect x="368" y="260" width="74" height="22" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<text x="405.0" y="274.96" font-size="11" fill="#0F766E" font-weight="700" text-anchor="middle" class="mono">PATH B</text>
+<text x="368" y="308" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Blank Tab or Closed</text>
+<text x="368" y="333" font-size="14" fill="#0F766E" font-weight="600" text-anchor="start" >Auto-create clean chat</text>
+<line x1="368" y1="348" x2="608" y2="348" stroke="#E2EDE0"/>
+<circle cx="374" cy="372" r="2.8" fill="#0F766E"/>
+<text x="386" y="376" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Codex: isolated Chats/&lt;id&gt;</text>
+<circle cx="374" cy="398" r="2.8" fill="#0F766E"/>
+<text x="386" y="402" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Doubao: single-window launch</text>
+<circle cx="374" cy="424" r="2.8" fill="#0F766E"/>
+<text x="386" y="428" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Paseo: idempotent daemon create</text>
+<circle cx="374" cy="450" r="2.8" fill="#0F766E"/>
+<text x="386" y="454" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Existing drafts never inherited</text>
+<rect x="652" y="242" width="280" height="240" rx="14" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<rect x="672" y="260" width="74" height="22" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<text x="709.0" y="274.96" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">PATH C</text>
+<text x="672" y="308" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Mid-Recording Tap</text>
+<text x="672" y="333" font-size="14" fill="#12372D" font-weight="600" text-anchor="start" >Fork standalone chat</text>
+<line x1="672" y1="348" x2="912" y2="348" stroke="#E2EDE0"/>
+<circle cx="678" cy="372" r="2.8" fill="#12372D"/>
+<text x="690" y="376" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >04.92 bit 0 vibration marker</text>
+<circle cx="678" cy="398" r="2.8" fill="#12372D"/>
+<text x="690" y="402" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >HUD confirms tap immediately</text>
+<circle cx="678" cy="424" r="2.8" fill="#12372D"/>
+<text x="690" y="428" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Original target cleanly detached</text>
+<circle cx="678" cy="450" r="2.8" fill="#12372D"/>
+<text x="690" y="454" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Cancel button aborts anytime</text>
+<rect x="956" y="242" width="280" height="240" rx="14" fill="#FFFFFF" stroke="#CFE0C8" filter="url(#cardShadow)"/>
+<rect x="976" y="260" width="74" height="22" rx="6" fill="#FEF5E7" stroke="#F5CBA7" stroke-width="1"/>
+<text x="1013.0" y="274.96" font-size="11" fill="#B45309" font-weight="700" text-anchor="middle" class="mono">PATH D</text>
+<text x="976" y="308" font-size="19" fill="#0F2921" font-weight="700" text-anchor="start" >Ambiguous or Error</text>
+<text x="976" y="333" font-size="14" fill="#B45309" font-weight="600" text-anchor="start" >Fail closed into Pending</text>
+<line x1="976" y1="348" x2="1216" y2="348" stroke="#E2EDE0"/>
+<circle cx="982" cy="372" r="2.8" fill="#B45309"/>
+<text x="994" y="376" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Multi-window or split conflict</text>
+<circle cx="982" cy="398" r="2.8" fill="#B45309"/>
+<text x="994" y="402" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Duplicate titles or loading tabs</text>
+<circle cx="982" cy="424" r="2.8" fill="#B45309"/>
+<text x="994" y="428" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Missing AX or focus shifted</text>
+<circle cx="982" cy="450" r="2.8" fill="#B45309"/>
+<text x="994" y="454" font-size="13" fill="#466356" font-weight="500" text-anchor="start" >Saved on disk (0o600) to review</text>
+<rect x="44" y="500" width="1192" height="38" rx="10" fill="#12372D"/>
+<text x="640" y="524" font-size="13" fill="#F6FAF0" font-weight="600" text-anchor="middle" >Creation/ &amp; Submissions/ receipts enforce idempotent claiming (0o600): timeouts enter &#x27;uncertain&#x27; instead of double-sending.</text>
+</svg>

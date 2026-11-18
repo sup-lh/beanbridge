@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-label="BeanBridge Native macOS AppKit Surfaces Showcase">
+<title>BeanBridge Native macOS AppKit Surfaces Showcase</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} </style>
+<rect x="0.75" y="0.75" width="1278.5" height="558.5" rx="24" fill="#F6FAF3" stroke="#D5E4CF" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.08"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<text x="44" y="50" font-size="26" fill="#0F2921" font-weight="700" text-anchor="start" letter-spacing="-0.5">Native macOS AppKit Surfaces</text>
+<text x="44" y="78" font-size="14.5" fill="#466356" font-weight="500" text-anchor="start" >[1] Menu Bar + Floating HUD (Cmd+V)   ·   [2] Offline Sync &amp; VAD Workbench (Cmd+B)   ·   [3] In-App ASR Model Manager</text>
+<rect x="44" y="102" width="356" height="38" rx="10" fill="#132922" stroke="#285042"/>
+<text x="62" y="125" font-size="11.5" fill="#95B8A6" font-weight="500" text-anchor="start" >macOS Status Bar</text>
+<rect x="208" y="109" width="180" height="24" rx="6" fill="#0B1915" stroke="#356653"/>
+<circle cx="224" cy="121" r="4.5" fill="#C6F38A"/>
+<text x="237" y="125" font-size="11.5" fill="#F6FAF0" font-weight="600" text-anchor="start" >安克豆 · 92% · Small</text>
+<rect x="44" y="152" width="356" height="372" rx="14" fill="#FFFFFF" stroke="#CFE0C8" stroke-width="1.3" filter="url(#cardShadow)"/>
+<path d="M44 166Q44 152 58 152H386Q400 152 400 166V186H44Z" fill="#F1F6EE"/>
+<line x1="44" y1="186" x2="400" y2="186" stroke="#E2EDE0"/>
+<circle cx="62" cy="169" r="4.5" fill="#EF4444"/>
+<circle cx="76" cy="169" r="4.5" fill="#F59E0B"/>
+<circle cx="90" cy="169" r="4.5" fill="#10B981"/>
+<text x="222.0" y="173" font-size="11.5" fill="#466356" font-weight="600" text-anchor="middle" >安克豆语音 (Floating HUD)</text>
+<circle cx="380" cy="169" r="10" fill="#E5F5D3" stroke="#A8D582"/>
+<text x="380" y="173" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">1</text>
+<text x="64" y="210" font-size="15.5" fill="#0F2921" font-weight="700" text-anchor="start" >Recording · D3200 Ready</text>
+<text x="64" y="230" font-size="11.5" fill="#6E887B" font-weight="400" text-anchor="start" >BLE Connected · Small (465MB) · Battery 92%</text>
+<rect x="64" y="244" width="130" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="129.0" y="260.14" font-size="11.5" fill="#0F2921" font-weight="600" text-anchor="middle" >Target: Paseo v</text>
+<rect x="202" y="244" width="178" height="24" rx="6" fill="#E5F5D3" stroke="#A8D582"/>
+<rect x="213" y="255" width="10" height="7.5" rx="1.8" fill="none" stroke="#12372D" stroke-width="1.6"/>
+<path d="M215 255V252.5A3 3 0 0 1 221 252.5V255" fill="none" stroke="#12372D" stroke-width="1.6"/>
+<text x="298" y="260" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" >Locked · Single Window</text>
+<rect x="64" y="280" width="316" height="176" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="78" y="304" font-size="12" fill="#12372D" font-weight="700" text-anchor="start" >Locked Chat: BeanBridge Workspace</text>
+<text x="78" y="328" font-size="11" fill="#6E887B" font-weight="400" text-anchor="start" >Live In-Memory Preview (Zero FFmpeg):</text>
+<text x="78" y="354" font-size="13" fill="#0F2921" font-weight="600" text-anchor="start" >“Upgrade the bilingual README with</text>
+<text x="78" y="374" font-size="13" fill="#0F2921" font-weight="600" text-anchor="start" >adaptive dark/light visual cards…”</text>
+<rect x="78" y="416" width="288" height="26" rx="6" fill="#E6F7F5" stroke="#99E2DA" stroke-width="1"/>
+<circle cx="92" cy="429.0" r="3.5" fill="#0F766E"/>
+<text x="228.0" y="432.78" font-size="10.5" fill="#0F766E" font-weight="600" text-anchor="middle" >Tap D3200 body (04.92) -&gt; Fork clean chat</text>
+<rect x="64" y="474" width="56" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="92.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Probe</text>
+<rect x="125.5" y="474" width="62" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="156.5" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Pending</text>
+<rect x="193.0" y="474" width="78" height="28" rx="6" fill="#12372D"/>
+<text x="232.0" y="491.96" font-size="11" fill="#C6F38A" font-weight="700" text-anchor="middle" >Workbench</text>
+<rect x="276.5" y="474" width="40" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="296.5" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >AX</text>
+<rect x="322.0" y="474" width="58" height="28" rx="6" fill="#FEF5E7" stroke="#F5CBA7" stroke-width="1"/>
+<text x="351.0" y="491.96" font-size="11" fill="#B45309" font-weight="700" text-anchor="middle" >Cancel</text>
+<rect x="420" y="102" width="440" height="422" rx="14" fill="#FFFFFF" stroke="#CFE0C8" stroke-width="1.3" filter="url(#cardShadow)"/>
+<path d="M420 116Q420 102 434 102H846Q860 102 860 116V136H420Z" fill="#F1F6EE"/>
+<line x1="420" y1="136" x2="860" y2="136" stroke="#E2EDE0"/>
+<circle cx="438" cy="119" r="4.5" fill="#EF4444"/>
+<circle cx="452" cy="119" r="4.5" fill="#F59E0B"/>
+<circle cx="466" cy="119" r="4.5" fill="#10B981"/>
+<text x="640.0" y="123" font-size="11.5" fill="#466356" font-weight="600" text-anchor="middle" >安克豆工作台 · Workbench &amp; VAD Replay</text>
+<circle cx="840" cy="119" r="10" fill="#E5F5D3" stroke="#A8D582"/>
+<text x="840" y="123" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">2</text>
+<rect x="438" y="148" width="166" height="26" rx="7" fill="#EDF3EA" stroke="#E2EDE0"/>
+<rect x="441" y="151" width="52" height="20" rx="5" fill="#FFFFFF" stroke="#CFE0C8" stroke-width="1"/>
+<text x="467.0" y="164.96" font-size="11" fill="#0F2921" font-weight="700" text-anchor="middle" >All</text>
+<text x="520" y="165" font-size="11" fill="#466356" font-weight="500" text-anchor="middle" >Inbox</text>
+<text x="574" y="165" font-size="11" fill="#466356" font-weight="500" text-anchor="middle" >Replay</text>
+<rect x="612" y="148" width="118" height="26" rx="7" fill="#EEF6E8" stroke="#CFE0C8" stroke-width="1"/>
+<text x="671.0" y="164.96" font-size="11" fill="#6E887B" font-weight="400" text-anchor="middle" >Search words…</text>
+<rect x="738" y="148" width="104" height="26" rx="7" fill="#12372D"/>
+<text x="790.0" y="164.96" font-size="11" fill="#C6F38A" font-weight="700" text-anchor="middle" >Sync Device</text>
+<text x="438" y="198" font-size="11" fill="#6E887B" font-weight="400" text-anchor="start" >ASR: Small · Hotwords active</text>
+<rect x="640" y="184" width="64" height="22" rx="5" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="672.0" y="198.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" >Pending</text>
+<rect x="708" y="184" width="64" height="22" rx="5" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="740.0" y="198.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" >Hotwords</text>
+<rect x="776" y="184" width="64" height="22" rx="5" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="808.0" y="198.78" font-size="10.5" fill="#466356" font-weight="600" text-anchor="middle" >Models</text>
+<rect x="438" y="216" width="404" height="132" rx="8" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="450" y="235" font-size="10.5" fill="#6E887B" font-weight="700" text-anchor="start" >Tag</text>
+<text x="498" y="235" font-size="10.5" fill="#6E887B" font-weight="700" text-anchor="start" >Time</text>
+<text x="578" y="235" font-size="10.5" fill="#6E887B" font-weight="700" text-anchor="start" >VAD Slice</text>
+<text x="662" y="235" font-size="10.5" fill="#6E887B" font-weight="700" text-anchor="start" >Segment Excerpt</text>
+<line x1="438" y1="244" x2="842" y2="244" stroke="#E2EDE0"/>
+<rect x="442" y="250" width="396" height="27" rx="6" fill="#E5F5D3" stroke="#A8D582"/>
+<text x="450" y="268" font-size="11" fill="#12372D" font-weight="700" text-anchor="start" >Inbox</text>
+<text x="498" y="268" font-size="11" fill="#466356" font-weight="400" text-anchor="start" >11-18 23:40</text>
+<text x="578" y="268" font-size="10.5" fill="#6E887B" font-weight="400" text-anchor="start" class="mono">00:01-00:06</text>
+<text x="662" y="268" font-size="11" fill="#0F2921" font-weight="600" text-anchor="start" >Redesign README with Bento.</text>
+<text x="450" y="299" font-size="11" fill="#466356" font-weight="700" text-anchor="start" >Replay</text>
+<text x="498" y="299" font-size="11" fill="#466356" font-weight="400" text-anchor="start" >11-18 22:15</text>
+<text x="578" y="299" font-size="10.5" fill="#6E887B" font-weight="400" text-anchor="start" class="mono">00:02-00:09</text>
+<text x="662" y="299" font-size="11" fill="#0F2921" font-weight="400" text-anchor="start" >Live Paseo workspace tab lock.</text>
+<text x="450" y="330" font-size="11" fill="#466356" font-weight="700" text-anchor="start" >Inbox</text>
+<text x="498" y="330" font-size="11" fill="#466356" font-weight="400" text-anchor="start" >11-18 21:04</text>
+<text x="578" y="330" font-size="10.5" fill="#6E887B" font-weight="400" text-anchor="start" class="mono">00:00-00:14</text>
+<text x="662" y="330" font-size="11" fill="#0F2921" font-weight="400" text-anchor="start" >DoubaoWork single-window fix.</text>
+<rect x="438" y="360" width="404" height="96" rx="8" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="452" y="382" font-size="11" fill="#6E887B" font-weight="400" text-anchor="start" >Editable Segment Transcript (VAD 00:01-00:06):</text>
+<text x="452" y="406" font-size="13" fill="#0F2921" font-weight="600" text-anchor="start" >Redesign the bilingual README with Bento &amp; Dark Mode.</text>
+<rect x="454" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="464" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="474" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="484" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="494" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="504" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="514" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="524" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="534" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="544" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="554" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="564" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="574" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="584" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="594" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="604" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="614" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="624" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="634" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="644" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="654" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="664" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="674" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="684" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="694" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="704" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="714" y="433.0" width="4" height="6" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="724" y="429.5" width="4" height="13" rx="2" fill="#12372D" opacity="0.75"/>
+<rect x="438" y="474" width="62" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="469.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Play</text>
+<rect x="506" y="474" width="56" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="534.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Copy</text>
+<rect x="568" y="474" width="58" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="597.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Move</text>
+<rect x="632" y="474" width="132" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="698.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Target: Paseo v</text>
+<rect x="770" y="474" width="72" height="28" rx="6" fill="#12372D"/>
+<text x="806.0" y="491.96" font-size="11" fill="#C6F38A" font-weight="700" text-anchor="middle" >Send -&gt;</text>
+<rect x="880" y="102" width="356" height="422" rx="14" fill="#FFFFFF" stroke="#CFE0C8" stroke-width="1.3" filter="url(#cardShadow)"/>
+<path d="M880 116Q880 102 894 102H1222Q1236 102 1236 116V136H880Z" fill="#F1F6EE"/>
+<line x1="880" y1="136" x2="1236" y2="136" stroke="#E2EDE0"/>
+<circle cx="898" cy="119" r="4.5" fill="#EF4444"/>
+<circle cx="912" cy="119" r="4.5" fill="#F59E0B"/>
+<circle cx="926" cy="119" r="4.5" fill="#10B981"/>
+<text x="1058.0" y="123" font-size="11.5" fill="#466356" font-weight="600" text-anchor="middle" >ASR 模型管理与下载中心</text>
+<circle cx="1216" cy="119" r="10" fill="#E5F5D3" stroke="#A8D582"/>
+<text x="1216" y="123" font-size="11" fill="#12372D" font-weight="700" text-anchor="middle" class="mono">3</text>
+<text x="900" y="158" font-size="12.5" fill="#0F2921" font-weight="700" text-anchor="start" >Active: Small (465 MB) · Auto-selected</text>
+<rect x="900" y="170" width="158" height="24" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="979.0" y="185.78" font-size="10.5" fill="#0F2921" font-weight="600" text-anchor="middle" >Mirror: hf-mirror.com v</text>
+<rect x="1066" y="170" width="150" height="24" rx="6" fill="#E5F5D3" stroke="#A8D582" stroke-width="1"/>
+<circle cx="1080" cy="182.0" r="3.5" fill="#12372D"/>
+<text x="1147.0" y="185.78" font-size="10.5" fill="#12372D" font-weight="700" text-anchor="middle" >SHA-256 Verified</text>
+<rect x="900" y="208" width="316" height="52" rx="10" fill="#E5F5D3" stroke="#A8D582"/>
+<text x="914" y="229" font-size="12" fill="#0F2921" font-weight="700" text-anchor="start" >Small · Recommended (~465 MB)</text>
+<text x="914" y="248" font-size="11" fill="#12372D" font-weight="600" text-anchor="start" >Active · Best ZH/EN balance</text>
+<rect x="900" y="270" width="316" height="52" rx="10" fill="#E6F7F5" stroke="#99E2DA"/>
+<text x="914" y="291" font-size="12" fill="#0F2921" font-weight="700" text-anchor="start" >Small-Q5_1 (~181 MB)</text>
+<text x="914" y="310" font-size="11" fill="#0F766E" font-weight="600" text-anchor="start" >Downloading 72% · 16.4 MB/s</text>
+<rect x="1104" y="303" width="98" height="6" rx="3" fill="#CFE0C8"/>
+<rect x="1104" y="303" width="70" height="6" rx="3" fill="#0F766E"/>
+<rect x="900" y="332" width="316" height="52" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="914" y="353" font-size="12" fill="#0F2921" font-weight="700" text-anchor="start" >Medium · Flagship (~1.43 GB)</text>
+<text x="914" y="372" font-size="11" fill="#466356" font-weight="600" text-anchor="start" >Available · Dense terminology</text>
+<rect x="900" y="394" width="316" height="52" rx="10" fill="#EEF6E8" stroke="#E2EDE0"/>
+<text x="914" y="415" font-size="12" fill="#0F2921" font-weight="700" text-anchor="start" >Base · Fast (~141 MB)</text>
+<text x="914" y="434" font-size="11" fill="#466356" font-weight="600" text-anchor="start" >Installed · Low-latency fallback</text>
+<rect x="900" y="474" width="152" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="976.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Verify All SHA-256</text>
+<rect x="1064" y="474" width="152" height="28" rx="6" fill="#EDF3EA" stroke="#CFE0C8" stroke-width="1"/>
+<text x="1140.0" y="491.96" font-size="11" fill="#0F2921" font-weight="600" text-anchor="middle" >Open Models/</text>
+</svg>

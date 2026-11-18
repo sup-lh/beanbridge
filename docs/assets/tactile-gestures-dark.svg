@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="416" viewBox="0 0 1280 416" role="img" aria-label="物理按键交互三定律">
+<title>物理按键交互三定律</title>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif} .mono{font-family:"SF Mono",Menlo,Monaco,Consolas,"Liberation Mono",monospace} </style>
+<rect x="0.75" y="0.75" width="1278.5" height="414.5" rx="24" fill="#0B1613" stroke="#1E3B31" stroke-width="1.5"/>
+<defs><filter id="cardShadow" x="-8%" y="-8%" width="116%" height="120%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#04110D" flood-opacity="0.42"/></filter><linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#285948"/><stop offset="55%" stop-color="#14382D"/><stop offset="100%" stop-color="#0A1F19"/></linearGradient><linearGradient id="metalRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D7E2DC"/><stop offset="50%" stop-color="#7C9087"/><stop offset="100%" stop-color="#C8D6CE"/></linearGradient></defs>
+<text x="44" y="52" font-size="26" fill="#F3F8F2" font-weight="700" text-anchor="start" letter-spacing="-0.5">无需看键盘的三段式盲操交互</text>
+<text x="44" y="80" font-size="15" fill="#9BB8A8" font-weight="400" text-anchor="start" >从按下第一秒起锁定去向；中途变卦可轻敲分叉；任何歧义一律安全兜底进待发箱。</text>
+<rect x="1052" y="30" width="184" height="30" rx="15.0" fill="#1B3B2B" stroke="#3F6E50" stroke-width="1"/>
+<text x="1144.0" y="49.14" font-size="11.5" fill="#C6F38A" font-weight="700" text-anchor="middle" class="mono">D3200 · FW 04.92</text>
+<rect x="44" y="106" width="384" height="278" rx="18" fill="#11231E" stroke="#25493D" stroke-width="1.3" filter="url(#cardShadow)"/>
+<rect x="364" y="126" width="44" height="44" rx="12" fill="#1B3B2B" stroke="#3F6E50"/>
+<rect x="377" y="147" width="18" height="13" rx="3" fill="none" stroke="#C6F38A" stroke-width="2.2"/>
+<path d="M380 147V142A6 6 0 0 1 392 142V147" fill="none" stroke="#C6F38A" stroke-width="2.2"/>
+<text x="68" y="144" font-size="11.5" fill="#C6F38A" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">01 · PRESS TO LOCK</text>
+<text x="68" y="174" font-size="21" fill="#F3F8F2" font-weight="700" text-anchor="start" >短按 · 首按即锁定</text>
+<text x="68" y="204" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >首次按下瞬间冻结前台唯一对话 ID；</text>
+<text x="68" y="224" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >录音途中切标签、切应用绝不串台。</text>
+<line x1="68" y1="244" x2="404" y2="244" stroke="#1C382F"/>
+<circle cx="74" cy="270" r="3.2" fill="#C6F38A"/>
+<text x="88" y="274" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >Codex 双重深链一致性核验</text>
+<circle cx="74" cy="302" r="3.2" fill="#C6F38A"/>
+<text x="88" y="306" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >豆包过滤 25 字空框默认占位符</text>
+<circle cx="74" cy="334" r="3.2" fill="#C6F38A"/>
+<text x="88" y="338" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >Paseo 守护进程唯一非归档消歧</text>
+<rect x="448" y="106" width="384" height="278" rx="18" fill="#11231E" stroke="#25493D" stroke-width="1.3" filter="url(#cardShadow)"/>
+<rect x="768" y="126" width="44" height="44" rx="12" fill="#12322F" stroke="#265953"/>
+<path d="M784 158V149Q784 144 790 144H797M793 139L798 144L793 149" fill="none" stroke="#5EEAD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="784" cy="140" r="2.5" fill="#5EEAD4"/>
+<text x="472" y="144" font-size="11.5" fill="#5EEAD4" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">02 · TAP TO FORK (04.92)</text>
+<text x="472" y="174" font-size="21" fill="#F3F8F2" font-weight="700" text-anchor="start" >轻敲 · 震动改发新聊</text>
+<text x="472" y="204" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >说到一半不想发进当前旧话题？</text>
+<text x="472" y="224" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >轻敲豆身至震动，自动改建独立新聊。</text>
+<line x1="472" y1="244" x2="808" y2="244" stroke="#1C382F"/>
+<circle cx="478" cy="270" r="3.2" fill="#5EEAD4"/>
+<text x="492" y="274" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >硬件分片 flags=01 震动确认</text>
+<circle cx="478" cy="302" r="3.2" fill="#5EEAD4"/>
+<text x="492" y="306" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >浮窗实时亮起「轻敲已确认」</text>
+<circle cx="478" cy="334" r="3.2" fill="#5EEAD4"/>
+<text x="492" y="338" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >多次轻敲幂等保护，绝不重复建聊</text>
+<rect x="852" y="106" width="384" height="278" rx="18" fill="#11231E" stroke="#25493D" stroke-width="1.3" filter="url(#cardShadow)"/>
+<rect x="1172" y="126" width="44" height="44" rx="12" fill="#2B2413" stroke="#684F1D"/>
+<path d="M1194 137L1205 141V149C1205 155 1200 159 1194 161C1188 159 1183 155 1183 149V141Z" fill="none" stroke="#FBBF24" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M1190 149L1193 152L1199 145" fill="none" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="876" y="144" font-size="11.5" fill="#FBBF24" font-weight="700" text-anchor="start" class="mono" letter-spacing="0.8">03 · FAIL-CLOSED GUARD</text>
+<text x="876" y="174" font-size="21" fill="#F3F8F2" font-weight="700" text-anchor="start" >兜底 · 歧义零误发</text>
+<text x="876" y="204" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >遇分屏多窗、同名会话、失焦或未授权，</text>
+<text x="876" y="224" font-size="13.5" fill="#9BB8A8" font-weight="400" text-anchor="start" >绝不盲猜最近窗口，加密落盘待发箱。</text>
+<line x1="876" y1="244" x2="1212" y2="244" stroke="#1C382F"/>
+<circle cx="882" cy="270" r="3.2" fill="#FBBF24"/>
+<text x="896" y="274" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >Pending/ 与回执均以 0o600 落盘</text>
+<circle cx="882" cy="302" r="3.2" fill="#FBBF24"/>
+<text x="896" y="306" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >支持随时点「取消本条」静默丢弃</text>
+<circle cx="882" cy="334" r="3.2" fill="#FBBF24"/>
+<text x="896" y="338" font-size="13.5" fill="#F3F8F2" font-weight="500" text-anchor="start" >补绑链接或一键改发新聊零丢失</text>
+</svg>
